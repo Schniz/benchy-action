@@ -12,8 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - run: npm ci
-    - run: npm test
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+    - uses: pnpm/action-setup@v2
+      with:
+        run_install: true
+    - run: pnpm run test
 
   # test action works running from the graph
   test:
