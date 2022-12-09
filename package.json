@@ -1,7 +1,7 @@
 {
-  "name": "javascript-action",
+  "name": "@benchy/action",
   "version": "1.0.0",
-  "description": "JavaScript Action Template",
+  "description": "A GitHub Action to benchmark your code",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
@@ -29,6 +29,8 @@
   },
   "packageManager": "pnpm@7.14.0",
   "devDependencies": {
+    "@changesets/changelog-github": "^0.4.7",
+    "@changesets/cli": "^2.25.2",
     "eslint": "^8.0.0",
     "jest": "^27.2.5",
     "ts-node": "^10.9.1",
