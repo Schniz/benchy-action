@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+    - uses: pnpm/action-setup@v2
+      with:
+        run_install: true
+    - name: Create Release Pull Request or Publish to npm
+      id: changesets
+      uses: changesets/action@v1
+      with:
+        version: pnpm prepare
+        publish: echo "nothing to publish right now"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
