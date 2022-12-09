@@ -6,8 +6,9 @@ const path = require("path");
 test("test runs", () => {
   process.env["INPUT_MILLISECONDS"] = 100;
   const ip = path.join(__dirname, "../src/index.ts");
-  const result = cp
-    .execSync(`pnpm ts-node ${ip}`, { env: process.env })
-    .toString();
+  const result = cp.spawnSync(`pnpm`, ["ts-node", ip], {
+    env: process.env,
+    encoding: "utf8",
+  }).stdout;
   console.log(result);
 });
