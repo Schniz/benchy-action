@@ -1,29 +1,21 @@
 import z from "zod";
 import * as core from "@actions/core";
-
-// const Metric = z.object({
-//   key: z.string().max(255),
-//   value: z.number(),
-// });
-
-function wait(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import { Input } from "./input";
+import { downloadArtifacts } from "./download-artifacts";
 
 async function run() {
   try {
-    const ms = z
-      .number()
-      .int()
-      .positive()
-      .parse(parseInt(core.getInput("milliseconds", { required: true }), 10));
-    core.info(`Waiting ${ms} milliseconds ...`);
+    const input = Input.parse({
+      artifact_name: core.getInput("artifact_name"),
+      github_token: core.getInput("github_token"),
+      main_branch: core.getInput("main_branch"),
+      max_commits_to_traverse: core.getInput("max_commits_to_traverse"),
+    } satisfies z.input<typeof Input>);
 
-    core.debug(new Date().toTimeString());
-    await wait(ms);
-    core.info(new Date().toTimeString());
+    const urls = await downloadArtifacts(input);
+    core.setOutput("artifact_urls", JSON.stringify(urls));
 
-    core.setOutput("time", new Date().toTimeString());
+    console.log(urls);
   } catch (error) {
     core.setFailed(String(error));
   }
