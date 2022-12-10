@@ -1,32 +1,37 @@
-import z from "zod";
 import * as core from "@actions/core";
-
-// const Metric = z.object({
-//   key: z.string().max(255),
-//   value: z.number(),
-// });
-
-function wait(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import { Input, parseInput } from "./input";
+import { downloadArtifacts } from "./download-artifacts";
+import { context as github } from "@actions/github";
+import { Artifact } from "./artifact";
+import { storeArtifact } from "./store-artifact";
 
 async function run() {
   try {
-    const ms = z
-      .number()
-      .int()
-      .positive()
-      .parse(parseInt(core.getInput("milliseconds", { required: true }), 10));
-    core.info(`Waiting ${ms} milliseconds ...`);
+    const input = await parseInput();
+    const currentArtifacts = getCurrentArtifacts(input);
+    const [storedArtifacts] = await Promise.all([
+      downloadArtifacts(input),
+      storeArtifact(currentArtifacts, input),
+    ]);
 
-    core.debug(new Date().toTimeString());
-    await wait(ms);
-    core.info(new Date().toTimeString());
+    const artifacts = [...storedArtifacts, ...currentArtifacts];
 
-    core.setOutput("time", new Date().toTimeString());
+    core.setOutput("downloaded_artifacts", JSON.stringify(artifacts));
+    console.log(artifacts);
   } catch (error) {
     core.setFailed(String(error));
   }
+}
+
+function getCurrentArtifacts(input: Pick<Input, "metrics">): Artifact[] {
+  const sha = github.sha;
+  const sortDate = new Date();
+  return input.metrics.map((metric) => ({
+    key: metric.key,
+    value: metric.value,
+    sha,
+    sortDate,
+  }));
 }
 
 run();
