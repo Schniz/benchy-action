@@ -29,3 +29,5 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         main_branch: main
+        key: my-key
+        value: 10
