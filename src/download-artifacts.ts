@@ -1,49 +1,47 @@
 import { getOctokit, context as github } from "@actions/github";
 import type { Input } from "./input";
-import fetch from "node-fetch";
 import * as core from "@actions/core";
+import { unzip } from "unzipit";
+import { Artifact } from "./artifact";
 
 type Octokit = ReturnType<typeof getOctokit>;
 
 export async function downloadArtifacts(
   opts: Pick<
     Input,
-    "artifactName" | "githubToken" | "mainBranch" | "maxCommitsToTraverse"
+    "artifactName" | "token" | "mainBranch" | "maxCommitsToTraverse"
   >
 ) {
-  const octokit = getOctokit(opts.githubToken);
-  const urls$: Promise<string>[] = [];
+  const octokit = getOctokit(opts.token);
+  const urls$: Promise<Artifact | undefined>[] = [];
   for await (const url of findAllArtifacts(octokit, opts)) {
-    const endpoint = octokit.rest.actions.downloadArtifact.endpoint({
-      owner: github.repo.owner,
-      repo: github.repo.repo,
-      artifact_id: url,
-      archive_format: "zip",
-    });
+    urls$.push(
+      (async () => {
+        const { data } = await octokit.rest.actions.downloadArtifact({
+          owner: github.repo.owner,
+          repo: github.repo.repo,
+          artifact_id: url,
+          archive_format: "zip",
+        });
 
-    const response$ = fetch(endpoint.url, {
-      method: endpoint.method,
-      body: endpoint.body,
-      headers: {
-        authorization: `token ${opts.githubToken}`,
-        ...endpoint.headers,
-      },
-    }).then((x) => {
-      if (!x.ok) {
-        throw new Error(`Failed to request ${JSON.stringify(endpoint)}`);
-      }
-      const location = x.headers.get("location");
-      if (!location) {
-        throw new Error(
-          `Request ${JSON.stringify(endpoint)} did not return a location header`
-        );
-      }
-      return location;
-    });
-    urls$.push(response$);
+        const { entries } = await unzip(data as ArrayBuffer);
+        for (const [_name, entry] of Object.entries(entries)) {
+          try {
+            return Artifact.parse(await entry.json());
+          } catch {}
+        }
+        core.warning(`no valid json file found in artifact ${url}`);
+        return undefined;
+      })()
+    );
   }
 
-  return Promise.all(urls$);
+  const urls = await Promise.all(urls$);
+  return urls
+    .filter((url): url is Artifact => url !== undefined)
+    .sort((a, z) => {
+      return new Date(a.sortDate).getTime() - new Date(z.sortDate).getTime();
+    });
 }
 
 async function* findAllArtifacts(

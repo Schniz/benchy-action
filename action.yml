@@ -1,13 +1,22 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'benchmark'
+description: 'benchmark your codebase continuously'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  token:
+    description: 'The GitHub token to use'
     required: true
-    default: '1000'
+  main_branch:
+    description: 'The main branch of the repository. Will be used to compare data against.'
+    required: true
+  artifact_name:
+    description: 'The name of the artifact to upload'
+    required: false
+  max_commits_to_traverse:
+    description: 'The maximum number of commits to traverse when searching for artifacts'
+    required: false
+    default: '20'
 outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+  downloaded_artifacts:
+    description: data that was stored in the main branch
 runs:
   using: 'node16'
   main: 'dist/index.js'
