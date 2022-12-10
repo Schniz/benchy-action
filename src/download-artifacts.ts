@@ -68,6 +68,10 @@ async function* findAllArtifacts(
           continue;
         }
 
+        if (resp.workflow_run?.head_branch !== body.mainBranch) {
+          continue;
+        }
+
         if (resp.workflow_run?.head_sha) {
           visitedCommits.add(resp.workflow_run.head_sha);
         }

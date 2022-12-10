@@ -864,7 +864,7 @@ var require_tunnel = __commonJS({
         connectOptions.headers = connectOptions.headers || {};
         connectOptions.headers["Proxy-Authorization"] = "Basic " + new Buffer(connectOptions.proxyAuth).toString("base64");
       }
-      debug2("making CONNECT request");
+      debug3("making CONNECT request");
       var connectReq = self.request(connectOptions);
       connectReq.useChunkedEncodingByDefault = false;
       connectReq.once("response", onResponse);
@@ -884,7 +884,7 @@ var require_tunnel = __commonJS({
         connectReq.removeAllListeners();
         socket.removeAllListeners();
         if (res.statusCode !== 200) {
-          debug2(
+          debug3(
             "tunneling socket could not be established, statusCode=%d",
             res.statusCode
           );
@@ -896,7 +896,7 @@ var require_tunnel = __commonJS({
           return;
         }
         if (head.length > 0) {
-          debug2("got illegal response body from proxy");
+          debug3("got illegal response body from proxy");
           socket.destroy();
           var error = new Error("got illegal response body from proxy");
           error.code = "ECONNRESET";
@@ -904,13 +904,13 @@ var require_tunnel = __commonJS({
           self.removeSocket(placeholder);
           return;
         }
-        debug2("tunneling connection has established");
+        debug3("tunneling connection has established");
         self.sockets[self.sockets.indexOf(placeholder)] = socket;
         return cb(socket);
       }
       function onError(cause) {
         connectReq.removeAllListeners();
-        debug2(
+        debug3(
           "tunneling socket could not be established, cause=%s\n",
           cause.message,
           cause.stack
@@ -972,9 +972,9 @@ var require_tunnel = __commonJS({
       }
       return target;
     }
-    var debug2;
+    var debug3;
     if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
-      debug2 = function() {
+      debug3 = function() {
         var args = Array.prototype.slice.call(arguments);
         if (typeof args[0] === "string") {
           args[0] = "TUNNEL: " + args[0];
@@ -984,10 +984,10 @@ var require_tunnel = __commonJS({
         console.error.apply(console, args);
       };
     } else {
-      debug2 = function() {
+      debug3 = function() {
       };
     }
-    exports.debug = debug2;
+    exports.debug = debug3;
   }
 });
 
@@ -2109,10 +2109,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       return process.env["RUNNER_DEBUG"] === "1";
     }
     exports.isDebug = isDebug;
-    function debug2(message) {
+    function debug3(message) {
       command_1.issueCommand("debug", {}, message);
     }
-    exports.debug = debug2;
+    exports.debug = debug3;
     function error(message, properties = {}) {
       command_1.issueCommand("error", utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
     }
@@ -9090,7 +9090,7 @@ var require_minimatch = __commonJS({
       this.parseNegate();
       var set = this.globSet = this.braceExpand();
       if (options.debug)
-        this.debug = function debug2() {
+        this.debug = function debug3() {
           console.error.apply(console, arguments);
         };
       this.debug(this.pattern, set);
@@ -17472,13 +17472,16 @@ async function* findAllArtifacts(octokit, body) {
   const urls = [];
   const visitedCommits = /* @__PURE__ */ new Set();
   yield* async function* () {
-    var _a, _b;
+    var _a, _b, _c;
     for await (const workflowsResponse of workflowsIterator) {
       for (const resp of workflowsResponse.data) {
         if (((_a = resp.workflow_run) == null ? void 0 : _a.head_sha) === import_github.context.sha) {
           continue;
         }
-        if ((_b = resp.workflow_run) == null ? void 0 : _b.head_sha) {
+        if (((_b = resp.workflow_run) == null ? void 0 : _b.head_branch) !== body.mainBranch) {
+          continue;
+        }
+        if ((_c = resp.workflow_run) == null ? void 0 : _c.head_sha) {
           visitedCommits.add(resp.workflow_run.head_sha);
         }
         if (resp.name === body.artifactName) {
@@ -17508,6 +17511,10 @@ var artifactsClient = __toESM(require_artifact_client2());
 var core3 = __toESM(require_core());
 var import_node_os2 = __toESM(require("os"));
 async function storeArtifact(value, input) {
+  if (!("ACTIONS_RUNTIME_URL" in process.env)) {
+    core3.debug("Not running in GitHub Actions, skipping artifact upload");
+    return;
+  }
   const client = artifactsClient.create();
   const filename = `${import_github2.context.sha}.json`;
   const tmpdir = import_node_path.default.join(import_node_os2.default.tmpdir(), `benchy-artifact-${Date.now()}`);
