@@ -17456,10 +17456,9 @@ async function downloadArtifacts(opts) {
     );
   }
   const urls = await Promise.all(urls$);
-  return urls.filter((url) => url !== void 0 && url.length > 0).sort((a, z) => {
-    var _a;
-    return new Date((_a = a[0]) == null ? void 0 : _a.sortDate).getTime() - new Date(z[0].sortDate).getTime();
-  }).flat();
+  return urls.filter((url) => url !== void 0).flat().sort((a, z) => {
+    return new Date(a.sortDate).getTime() - new Date(z.sortDate).getTime();
+  });
 }
 async function* findAllArtifacts(octokit, body) {
   const workflowsIterator = octokit.paginate.iterator(

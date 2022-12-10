@@ -38,13 +38,11 @@ export async function downloadArtifacts(
 
   const urls = await Promise.all(urls$);
   return urls
-    .filter((url): url is Artifact[] => url !== undefined && url.length > 0)
+    .filter((url): url is Artifact[] => url !== undefined)
+    .flat()
     .sort((a, z) => {
-      return (
-        new Date(a[0]?.sortDate).getTime() - new Date(z[0].sortDate).getTime()
-      );
-    })
-    .flat();
+      return new Date(a.sortDate).getTime() - new Date(z.sortDate).getTime();
+    });
 }
 
 async function* findAllArtifacts(
