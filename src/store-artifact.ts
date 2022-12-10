@@ -11,6 +11,11 @@ export async function storeArtifact(
   value: Artifact[],
   input: Pick<Input, "artifactName" | "mainBranch">
 ) {
+  if (!("ACTIONS_RUNTIME_URL" in process.env)) {
+    core.debug("Not running in GitHub Actions, skipping artifact upload");
+    return;
+  }
+
   const client = artifactsClient.create();
   const filename = `${github.sha}.json`;
   const tmpdir = path.join(os.tmpdir(), `benchy-artifact-${Date.now()}`);
