@@ -7,8 +7,8 @@ import * as core from "@actions/core";
 import type { Artifact } from "./artifact";
 
 export async function storeArtifact(
-  value: Artifact,
-  input: Pick<Input, "artifactName">
+  value: Artifact[],
+  input: Pick<Input, "artifactName" | "mainBranch">
 ) {
   const client = artifactsClient.create();
   const filename = path.join(".benchy", `${github.sha}.json`);

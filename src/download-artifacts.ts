@@ -11,9 +11,9 @@ export async function downloadArtifacts(
     Input,
     "artifactName" | "token" | "mainBranch" | "maxCommitsToTraverse"
   >
-) {
+): Promise<Artifact[]> {
   const octokit = getOctokit(opts.token);
-  const urls$: Promise<Artifact | undefined>[] = [];
+  const urls$: Promise<Artifact[] | undefined>[] = [];
   for await (const url of findAllArtifacts(octokit, opts)) {
     urls$.push(
       (async () => {
@@ -27,7 +27,7 @@ export async function downloadArtifacts(
         const { entries } = await unzip(data as ArrayBuffer);
         for (const [_name, entry] of Object.entries(entries)) {
           try {
-            return Artifact.parse(await entry.json());
+            return Artifact.array().parse(await entry.json());
           } catch {}
         }
         core.warning(`no valid json file found in artifact ${url}`);
@@ -38,10 +38,13 @@ export async function downloadArtifacts(
 
   const urls = await Promise.all(urls$);
   return urls
-    .filter((url): url is Artifact => url !== undefined)
+    .filter((url): url is Artifact[] => url !== undefined && url.length > 0)
     .sort((a, z) => {
-      return new Date(a.sortDate).getTime() - new Date(z.sortDate).getTime();
-    });
+      return (
+        new Date(a[0]?.sortDate).getTime() - new Date(z[0].sortDate).getTime()
+      );
+    })
+    .flat();
 }
 
 async function* findAllArtifacts(
@@ -63,6 +66,10 @@ async function* findAllArtifacts(
   yield* (async function* () {
     for await (const workflowsResponse of workflowsIterator) {
       for (const resp of workflowsResponse.data) {
+        if (resp.workflow_run?.head_sha === github.sha) {
+          continue;
+        }
+
         if (resp.workflow_run?.head_sha) {
           visitedCommits.add(resp.workflow_run.head_sha);
         }
