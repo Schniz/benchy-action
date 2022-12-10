@@ -95,11 +95,11 @@ var require_command = __commonJS({
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.issue = exports.issueCommand = void 0;
-    var os2 = __importStar(require("os"));
+    var os3 = __importStar(require("os"));
     var utils_1 = require_utils();
     function issueCommand(command, properties, message) {
       const cmd = new Command(command, properties, message);
-      process.stdout.write(cmd.toString() + os2.EOL);
+      process.stdout.write(cmd.toString() + os3.EOL);
     }
     exports.issueCommand = issueCommand;
     function issue(name, message = "") {
@@ -674,7 +674,7 @@ var require_file_command = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.prepareKeyValueMessage = exports.issueFileCommand = void 0;
     var fs2 = __importStar(require("fs"));
-    var os2 = __importStar(require("os"));
+    var os3 = __importStar(require("os"));
     var uuid_1 = require_dist();
     var utils_1 = require_utils();
     function issueFileCommand(command, message) {
@@ -685,7 +685,7 @@ var require_file_command = __commonJS({
       if (!fs2.existsSync(filePath)) {
         throw new Error(`Missing file at path: ${filePath}`);
       }
-      fs2.appendFileSync(filePath, `${utils_1.toCommandValue(message)}${os2.EOL}`, {
+      fs2.appendFileSync(filePath, `${utils_1.toCommandValue(message)}${os3.EOL}`, {
         encoding: "utf8"
       });
     }
@@ -699,7 +699,7 @@ var require_file_command = __commonJS({
       if (convertedValue.includes(delimiter)) {
         throw new Error(`Unexpected input: value should not contain the delimiter "${delimiter}"`);
       }
-      return `${key}<<${delimiter}${os2.EOL}${convertedValue}${os2.EOL}${delimiter}`;
+      return `${key}<<${delimiter}${os3.EOL}${convertedValue}${os3.EOL}${delimiter}`;
     }
     exports.prepareKeyValueMessage = prepareKeyValueMessage;
   }
@@ -2024,7 +2024,7 @@ var require_core = __commonJS({
     var command_1 = require_command();
     var file_command_1 = require_file_command();
     var utils_1 = require_utils();
-    var os2 = __importStar(require("os"));
+    var os3 = __importStar(require("os"));
     var path2 = __importStar(require("path"));
     var oidc_utils_1 = require_oidc_utils();
     var ExitCode;
@@ -2092,7 +2092,7 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       if (filePath) {
         return file_command_1.issueFileCommand("OUTPUT", file_command_1.prepareKeyValueMessage(name, value));
       }
-      process.stdout.write(os2.EOL);
+      process.stdout.write(os3.EOL);
       command_1.issueCommand("set-output", { name }, utils_1.toCommandValue(value));
     }
     exports.setOutput = setOutput2;
@@ -2126,7 +2126,7 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
     }
     exports.notice = notice;
     function info2(message) {
-      process.stdout.write(message + os2.EOL);
+      process.stdout.write(message + os3.EOL);
     }
     exports.info = info2;
     function startGroup(name) {
@@ -11046,16 +11046,16 @@ var require_rimraf = __commonJS({
 var require_tmp = __commonJS({
   "node_modules/.pnpm/tmp@0.2.1/node_modules/tmp/lib/tmp.js"(exports, module2) {
     var fs2 = require("fs");
-    var os2 = require("os");
+    var os3 = require("os");
     var path2 = require("path");
     var crypto = require("crypto");
-    var _c = { fs: fs2.constants, os: os2.constants };
+    var _c = { fs: fs2.constants, os: os3.constants };
     var rimraf = require_rimraf();
     var RANDOM_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     var TEMPLATE_PATTERN = /XXXXXX/;
     var DEFAULT_TRIES = 3;
     var CREATE_FLAGS = (_c.O_CREAT || _c.fs.O_CREAT) | (_c.O_EXCL || _c.fs.O_EXCL) | (_c.O_RDWR || _c.fs.O_RDWR);
-    var IS_WIN32 = os2.platform() === "win32";
+    var IS_WIN32 = os3.platform() === "win32";
     var EBADF = _c.EBADF || _c.os.errno.EBADF;
     var ENOENT = _c.ENOENT || _c.os.errno.ENOENT;
     var DIR_MODE = 448;
@@ -11352,7 +11352,7 @@ var require_tmp = __commonJS({
       _gracefulCleanup = true;
     }
     function _getTmpDir(options) {
-      return path2.resolve(_sanitizeName(options && options.tmpdir || os2.tmpdir()));
+      return path2.resolve(_sanitizeName(options && options.tmpdir || os3.tmpdir()));
     }
     process.addListener(EXIT, _garbageCollector);
     Object.defineProperty(module2.exports, "tmpdir", {
@@ -17507,17 +17507,16 @@ var import_node_path = __toESM(require("path"));
 var import_github2 = __toESM(require_github());
 var artifactsClient = __toESM(require_artifact_client2());
 var core3 = __toESM(require_core());
+var import_node_os2 = __toESM(require("os"));
 async function storeArtifact(value, input) {
   const client = artifactsClient.create();
-  const filename = import_node_path.default.join(".benchy", `${import_github2.context.sha}.json`);
-  try {
-    await import_promises2.default.writeFile(filename, JSON.stringify(value, null, 2));
-    await client.uploadArtifact(input.artifactName, [filename], process.cwd());
-    core3.info(`Uploaded artifact ${input.artifactName}`);
-  } finally {
-    await import_promises2.default.rm(filename).catch(() => {
-    });
-  }
+  const filename = `${import_github2.context.sha}.json`;
+  const tmpdir = import_node_path.default.join(import_node_os2.default.tmpdir(), `benchy-artifact-${Date.now()}`);
+  await import_promises2.default.mkdir(tmpdir, { recursive: true });
+  const fullpath = import_node_path.default.join(tmpdir, filename);
+  await import_promises2.default.writeFile(fullpath, JSON.stringify(value, null, 2));
+  await client.uploadArtifact(input.artifactName, [fullpath], tmpdir);
+  core3.info(`Uploaded artifact ${input.artifactName}`);
 }
 
 // src/index.ts
