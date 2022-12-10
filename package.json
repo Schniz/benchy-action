@@ -7,7 +7,8 @@
     "lint": "eslint .",
     "prepare": "tsup",
     "test": "jest",
-    "all": "npm run lint && npm run prepare && npm run test"
+    "all": "npm run lint && npm run prepare && npm run test",
+    "version:prepare": "changeset version && pnpm run prepare"
   },
   "repository": {
     "type": "git",

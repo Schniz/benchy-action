@@ -24,7 +24,7 @@ jobs:
       id: changesets
       uses: changesets/action@v1
       with:
-        version: pnpm changeset version && pnpm prepare
+        version: pnpm run version:prepare
         publish: echo "nothing to publish right now"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
