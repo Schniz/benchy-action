@@ -14,10 +14,17 @@ inputs:
     description: 'The maximum number of commits to traverse when searching for artifacts'
     required: false
     default: '20'
+
+  # one of [key,value], [json], or [input_file] must be provided
   key:
     description: 'the key to use for the benchmark'
   value:
     description: 'the value for the benchmark'
+  json:
+    description: 'A json for an array of metrics'
+  input_file:
+    description: 'A file containing a json for an array of metrics'
+
 outputs:
   downloaded_artifacts:
     description: data that was stored in the main branch
