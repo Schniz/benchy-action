@@ -17,7 +17,7 @@ const StringToNumber = z.string().transform((x, ctx) => {
 
 const Metric = z.object({
   key: z.string().min(1),
-  value: StringToNumber,
+  value: z.number().or(StringToNumber),
 });
 
 const ReadableFile = z.string().transform(async (x, ctx) => {
