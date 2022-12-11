@@ -15,6 +15,7 @@ specifiers:
   typescript: ^4.9.4
   unzipit: ^1.4.0
   zod: 3.20.0-beta.0
+  zod-error: ^1.0.5
 
 dependencies:
   '@actions/core': 1.10.0
@@ -33,6 +34,7 @@ devDependencies:
   typescript: 4.9.4
   unzipit: 1.4.0
   zod: 3.20.0-beta.0
+  zod-error: 1.0.5
 
 packages:
 
@@ -5081,6 +5083,16 @@ packages:
   /yocto-queue/0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+    dev: true
+
+  /zod-error/1.0.5:
+    resolution: {integrity: sha512-dfLN+ds6YFUG3IOIrDbXewczB/fSh15GThi3SJmwL+/TAlMTPV/ebf4ttJt3MKdr1qzCYxnakWxmyOF3kI7DTA==}
+    dependencies:
+      zod: 3.19.1
+    dev: true
+
+  /zod/3.19.1:
+    resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
     dev: true
 
   /zod/3.20.0-beta.0:
