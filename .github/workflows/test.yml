@@ -40,4 +40,4 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         main_branch: main
-        json_file: tmp/metrics.json
+        input_file: tmp/metrics.json
