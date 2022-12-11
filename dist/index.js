@@ -2775,7 +2775,7 @@ var require_lib2 = __commonJS({
     "use strict";
     var conversions = {};
     module2.exports = conversions;
-    function sign(x) {
+    function sign2(x) {
       return x < 0 ? -1 : 1;
     }
     function evenRound(x) {
@@ -2801,7 +2801,7 @@ var require_lib2 = __commonJS({
           if (!Number.isFinite(x)) {
             throw new TypeError("Argument is not a finite number");
           }
-          x = sign(x) * Math.floor(Math.abs(x));
+          x = sign2(x) * Math.floor(Math.abs(x));
           if (x < lowerBound || x > upperBound) {
             throw new TypeError("Argument is not in byte range");
           }
@@ -2818,7 +2818,7 @@ var require_lib2 = __commonJS({
         if (!Number.isFinite(x) || x === 0) {
           return 0;
         }
-        x = sign(x) * Math.floor(Math.abs(x));
+        x = sign2(x) * Math.floor(Math.abs(x));
         x = x % moduloVal;
         if (!typeOpts.unsigned && x >= moduloBound) {
           return x - moduloVal;
@@ -20046,9 +20046,12 @@ var StringToNumber = mod.string().transform((x, ctx) => {
   }
   return num;
 });
+var Trend = mod.enum(["lower-is-better", "higher-is-better"]);
 var Metric = mod.object({
   key: mod.string().min(1),
-  value: mod.number().or(StringToNumber)
+  value: mod.number().or(StringToNumber),
+  units: mod.string().optional(),
+  trend: Trend.optional()
 });
 var ReadableFile = mod.string().transform(async (x, ctx) => {
   try {
@@ -20987,7 +20990,9 @@ var Artifact = mod.object({
   key: mod.string().min(1),
   sortDate: mod.string().datetime().transform((x) => new Date(x)),
   sha: mod.string().min(1),
-  value: mod.number()
+  value: mod.number(),
+  units: mod.string().optional(),
+  trend: Trend.optional()
 });
 
 // src/download-artifacts.ts
@@ -21131,6 +21136,148 @@ function pick(obj, keys) {
   return result;
 }
 
+// src/comment.ts
+function createElement(tagName, props, children) {
+  return {
+    children: children != null ? children : [],
+    props: props != null ? props : {},
+    tagName
+  };
+}
+function stringifyTag(tag) {
+  if (typeof tag === "string") {
+    return tag;
+  }
+  const { tagName, props, children } = tag;
+  let attributes = Object.entries(props).map(([key, value]) => `${key}="${value}"`).join(" ");
+  if (attributes) {
+    attributes = " " + attributes;
+  }
+  if (["img", "br"].includes(tagName)) {
+    return `<${tagName}${attributes} />`;
+  }
+  const openTag = `<${tagName}${attributes}>`;
+  return `${openTag}${children.map(stringifyTag).join("")}</${tagName}>`;
+}
+var html = new Proxy(
+  {},
+  {
+    get: (_, tagName) => (props, children) => createElement(tagName, props, children)
+  }
+);
+function getComparisonTable(params) {
+  return html.table({}, [
+    html.thead({}, [
+      html.tr({}, [
+        html.th({ align: "left" }, ["benchmark"]),
+        html.th({}, ["current value"]),
+        html.th({}, ["last value"]),
+        html.th({}, ["diff"]),
+        html.th({}, ["trend"])
+      ])
+    ]),
+    html.tbody(
+      {},
+      Object.entries(params.artifacts).map(([key, artifacts]) => {
+        var _a;
+        const lastOnes = artifacts.slice(-2);
+        const current = lastOnes.length === 2 ? lastOnes[1] : lastOnes[0];
+        const last = lastOnes.length === 2 ? lastOnes[0] : void 0;
+        const diff = !last ? void 0 : last.value - current.value;
+        const units = (_a = current.units) != null ? _a : "";
+        const trendApiUrl = `https://benchy.hagever.com/api/embed/small`;
+        const getSearchParamsValues = () => {
+          const sp = new URLSearchParams();
+          sp.set("current", String(current.value));
+          artifacts.slice(0, -1).forEach((artifact) => {
+            sp.append("stored", String(artifact.value));
+          });
+          if (current.trend) {
+            sp.set("coloring", current.trend);
+          }
+          sp.set("debug", "true");
+          return sp;
+        };
+        const smallTrendParams = (() => {
+          const sp = getSearchParamsValues();
+          sp.set("withNumbers", "false");
+          sp.set("width", "100");
+          sp.set("height", "25");
+          return String(sp);
+        })();
+        const bigTrendParams = (() => {
+          const sp = getSearchParamsValues();
+          return String(sp);
+        })();
+        return html.tr({ "data-testid": `row-${key}` }, [
+          html.td({ "data-testid": `benchmark-${key}` }, [
+            html.code({}, [key])
+          ]),
+          html.td({ "data-testid": `current-value` }, [
+            html.code({}, [stringifyNumber(current.value), units])
+          ]),
+          html.td({ "data-testid": "last-value" }, [
+            !last ? "-" : html.code({}, [stringifyNumber(last.value), units])
+          ]),
+          html.td({ "data-testid": "diff" }, [
+            ...typeof diff === "undefined" ? ["-"] : [
+              diff === 0 ? "" : html.picture(
+                { title: diff && diff > 0 ? "increase" : "decrease" },
+                [
+                  html.img({
+                    width: "16",
+                    valign: "middle",
+                    src: arrowImage(
+                      diff > 0 ? "up" : "down",
+                      arrowColor(diff, current.trend)
+                    )
+                  })
+                ]
+              ),
+              " ",
+              html.code({}, [sign(diff), stringifyNumber(diff), units])
+            ]
+          ]),
+          html.td({ "data-testid": "trend" }, [
+            html.details({}, [
+              html.summary({}, [
+                html.img({
+                  valign: "middle",
+                  src: `${trendApiUrl}?${smallTrendParams}`
+                })
+              ]),
+              html.br(),
+              html.img({
+                src: `${trendApiUrl}?${bigTrendParams}`,
+                valign: "middle"
+              })
+            ])
+          ])
+        ]);
+      })
+    )
+  ]);
+}
+function sign(number) {
+  return number > 0 ? "+" : "";
+}
+function stringifyNumber(number, digitsAfterPoint = 2) {
+  const exponent = 10 ** digitsAfterPoint;
+  return String(Math.round(number * exponent) / exponent);
+}
+function arrowImage(direction, color) {
+  return `https://benchy.hagever.com/assets/${direction}-${color}.svg`;
+}
+function arrowColor(diff, trend) {
+  if (diff === 0 || !trend) {
+    return "blue";
+  }
+  if (trend === "lower-is-better") {
+    return diff > 0 ? "red" : "green";
+  }
+  return diff > 0 ? "green" : "red";
+}
+
 // src/index.ts
 async function run() {
   try {
@@ -21143,8 +21290,10 @@ async function run() {
     const artifacts = [...storedArtifacts, ...currentArtifacts];
     const keys = [...new Set(currentArtifacts.map((a) => a.key))];
     const keyed = pick(groupBy(artifacts, "key"), keys);
+    const resultsTable = stringifyTag(getComparisonTable({ artifacts: keyed }));
     core4.setOutput("downloaded_artifacts", JSON.stringify(keyed));
-    console.log(keyed);
+    core4.setOutput("results_table", resultsTable);
+    console.log(resultsTable);
   } catch (error) {
     const message = error instanceof ZodError ? readableZodErrorMessage(error) : String(error);
     core4.setFailed(message);
@@ -21155,8 +21304,7 @@ function getCurrentArtifacts(input) {
   const sha = import_github3.context.sha;
   const sortDate = new Date();
   return input.metrics.map((metric) => ({
-    key: metric.key,
-    value: metric.value,
+    ...metric,
     sha,
     sortDate
   }));

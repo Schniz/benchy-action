@@ -1,6 +1,10 @@
+// @ts-check
+
 import { stat, writeFile, mkdir } from "node:fs/promises";
 import { create } from "@actions/glob";
 import { relative } from "node:path";
+
+/** @typedef {import('../src/input').Metric} Metric */
 
 async function main() {
   const globber = await create("dist/**/*", {
@@ -9,14 +13,17 @@ async function main() {
   });
   console.log(globber);
   const distDir = new URL("../dist", import.meta.url);
-  const metrics$ = (await globber.glob()).map(async (url) => {
-    const { size } = await stat(url);
-    return {
-      key: relative(distDir.pathname, url),
-      value: Math.round(size / 1024), // in KB
-      units: "KB",
-    };
-  });
+  const metrics$ = (await globber.glob()).map(
+    /** @returns {Promise<Metric>} */ async (url) => {
+      const { size } = await stat(url);
+      return {
+        key: relative(distDir.pathname, url),
+        value: Math.round(size / 1024), // in KB
+        units: "KB",
+        trend: "lower-is-better",
+      };
+    }
+  );
 
   const metrics = await Promise.all(metrics$);
   const json = JSON.stringify(metrics, null, 2);

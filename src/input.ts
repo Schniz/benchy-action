@@ -15,10 +15,15 @@ const StringToNumber = z.string().transform((x, ctx) => {
   return num;
 });
 
-const Metric = z.object({
+export const Trend = z.enum(["lower-is-better", "higher-is-better"]);
+
+export const Metric = z.object({
   key: z.string().min(1),
   value: z.number().or(StringToNumber),
+  units: z.string().optional(),
+  trend: Trend.optional(),
 });
+export type Metric = z.infer<typeof Metric>;
 
 const ReadableFile = z.string().transform(async (x, ctx) => {
   try {
