@@ -6,6 +6,7 @@ import { Artifact } from "./artifact";
 import { storeArtifact } from "./store-artifact";
 import { ZodError } from "zod";
 import { readableZodErrorMessage } from "./readable-zod-error-message";
+import { pick, groupBy } from "./collections";
 
 async function run() {
   try {
@@ -17,9 +18,11 @@ async function run() {
     ]);
 
     const artifacts = [...storedArtifacts, ...currentArtifacts];
+    const keys = [...new Set(currentArtifacts.map((a) => a.key))];
+    const keyed = pick(groupBy(artifacts, "key"), keys);
 
-    core.setOutput("downloaded_artifacts", JSON.stringify(artifacts));
-    console.log(artifacts);
+    core.setOutput("downloaded_artifacts", JSON.stringify(keyed));
+    console.log(keyed);
   } catch (error) {
     const message =
       error instanceof ZodError

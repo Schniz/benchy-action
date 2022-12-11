@@ -21111,6 +21111,26 @@ function readableZodErrorMessage(error) {
   });
 }
 
+// src/collections.ts
+function groupBy(array, key) {
+  const result = {};
+  for (const item of array) {
+    const value = item[key];
+    if (!result[value]) {
+      result[value] = [];
+    }
+    result[value].push(item);
+  }
+  return result;
+}
+function pick(obj, keys) {
+  const result = {};
+  for (const key of keys) {
+    result[key] = obj[key];
+  }
+  return result;
+}
+
 // src/index.ts
 async function run() {
   try {
@@ -21121,8 +21141,10 @@ async function run() {
       storeArtifact(currentArtifacts, input)
     ]);
     const artifacts = [...storedArtifacts, ...currentArtifacts];
-    core4.setOutput("downloaded_artifacts", JSON.stringify(artifacts));
-    console.log(artifacts);
+    const keys = [...new Set(currentArtifacts.map((a) => a.key))];
+    const keyed = pick(groupBy(artifacts, "key"), keys);
+    core4.setOutput("downloaded_artifacts", JSON.stringify(keyed));
+    console.log(keyed);
   } catch (error) {
     const message = error instanceof ZodError ? readableZodErrorMessage(error) : String(error);
     core4.setFailed(message);
