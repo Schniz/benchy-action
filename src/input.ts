@@ -90,7 +90,9 @@ const Input = z
     metrics: input.input,
   }));
 
-export async function parseInput(): Promise<z.infer<typeof Input>> {
+export async function parseInput({
+  getInput,
+}: Pick<typeof core, "getInput">): Promise<z.infer<typeof Input>> {
   const data: Partial<Record<keyof z.input<typeof Input>, string>> = {};
   const keys = [
     "artifact_name",
@@ -103,7 +105,7 @@ export async function parseInput(): Promise<z.infer<typeof Input>> {
     "value",
   ];
   for (const key of keys) {
-    const value = core.getInput(key);
+    const value = getInput(key);
     if (value !== "") {
       data[key as keyof z.input<typeof Input>] = value;
     }
