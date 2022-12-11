@@ -864,7 +864,7 @@ var require_tunnel = __commonJS({
         connectOptions.headers = connectOptions.headers || {};
         connectOptions.headers["Proxy-Authorization"] = "Basic " + new Buffer(connectOptions.proxyAuth).toString("base64");
       }
-      debug3("making CONNECT request");
+      debug4("making CONNECT request");
       var connectReq = self.request(connectOptions);
       connectReq.useChunkedEncodingByDefault = false;
       connectReq.once("response", onResponse);
@@ -884,7 +884,7 @@ var require_tunnel = __commonJS({
         connectReq.removeAllListeners();
         socket.removeAllListeners();
         if (res.statusCode !== 200) {
-          debug3(
+          debug4(
             "tunneling socket could not be established, statusCode=%d",
             res.statusCode
           );
@@ -896,7 +896,7 @@ var require_tunnel = __commonJS({
           return;
         }
         if (head.length > 0) {
-          debug3("got illegal response body from proxy");
+          debug4("got illegal response body from proxy");
           socket.destroy();
           var error = new Error("got illegal response body from proxy");
           error.code = "ECONNRESET";
@@ -904,13 +904,13 @@ var require_tunnel = __commonJS({
           self.removeSocket(placeholder);
           return;
         }
-        debug3("tunneling connection has established");
+        debug4("tunneling connection has established");
         self.sockets[self.sockets.indexOf(placeholder)] = socket;
         return cb(socket);
       }
       function onError(cause) {
         connectReq.removeAllListeners();
-        debug3(
+        debug4(
           "tunneling socket could not be established, cause=%s\n",
           cause.message,
           cause.stack
@@ -972,9 +972,9 @@ var require_tunnel = __commonJS({
       }
       return target;
     }
-    var debug3;
+    var debug4;
     if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
-      debug3 = function() {
+      debug4 = function() {
         var args = Array.prototype.slice.call(arguments);
         if (typeof args[0] === "string") {
           args[0] = "TUNNEL: " + args[0];
@@ -984,10 +984,10 @@ var require_tunnel = __commonJS({
         console.error.apply(console, args);
       };
     } else {
-      debug3 = function() {
+      debug4 = function() {
       };
     }
-    exports.debug = debug3;
+    exports.debug = debug4;
   }
 });
 
@@ -2056,7 +2056,7 @@ var require_core = __commonJS({
       process.env["PATH"] = `${inputPath}${path2.delimiter}${process.env["PATH"]}`;
     }
     exports.addPath = addPath;
-    function getInput2(name, options) {
+    function getInput(name, options) {
       const val = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || "";
       if (options && options.required && !val) {
         throw new Error(`Input required and not supplied: ${name}`);
@@ -2066,9 +2066,9 @@ var require_core = __commonJS({
       }
       return val.trim();
     }
-    exports.getInput = getInput2;
+    exports.getInput = getInput;
     function getMultilineInput(name, options) {
-      const inputs = getInput2(name, options).split("\n").filter((x) => x !== "");
+      const inputs = getInput(name, options).split("\n").filter((x) => x !== "");
       if (options && options.trimWhitespace === false) {
         return inputs;
       }
@@ -2078,7 +2078,7 @@ var require_core = __commonJS({
     function getBooleanInput(name, options) {
       const trueValue = ["true", "True", "TRUE"];
       const falseValue = ["false", "False", "FALSE"];
-      const val = getInput2(name, options);
+      const val = getInput(name, options);
       if (trueValue.includes(val))
         return true;
       if (falseValue.includes(val))
@@ -2109,10 +2109,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       return process.env["RUNNER_DEBUG"] === "1";
     }
     exports.isDebug = isDebug;
-    function debug3(message) {
+    function debug4(message) {
       command_1.issueCommand("debug", {}, message);
     }
-    exports.debug = debug3;
+    exports.debug = debug4;
     function error(message, properties = {}) {
       command_1.issueCommand("error", utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
     }
@@ -9090,7 +9090,7 @@ var require_minimatch = __commonJS({
       this.parseNegate();
       var set = this.globSet = this.braceExpand();
       if (options.debug)
-        this.debug = function debug3() {
+        this.debug = function debug4() {
           console.error.apply(console, arguments);
         };
       this.debug(this.pattern, set);
@@ -20034,7 +20034,6 @@ var mod = /* @__PURE__ */ Object.freeze({
 });
 
 // src/input.ts
-var core = __toESM(require_core());
 var import_promises = require("fs/promises");
 var StringToNumber = mod.string().transform((x, ctx) => {
   const num = Number(x);
@@ -20049,7 +20048,7 @@ var StringToNumber = mod.string().transform((x, ctx) => {
 });
 var Metric = mod.object({
   key: mod.string().min(1),
-  value: StringToNumber
+  value: mod.number().or(StringToNumber)
 });
 var ReadableFile = mod.string().transform(async (x, ctx) => {
   try {
@@ -20107,7 +20106,9 @@ var Input = mod.object({
   maxCommitsToTraverse: input.max_commits_to_traverse,
   metrics: input.input
 }));
-async function parseInput() {
+async function parseInput({
+  getInput
+}) {
   const data = {};
   const keys = [
     "artifact_name",
@@ -20120,7 +20121,7 @@ async function parseInput() {
     "value"
   ];
   for (const key of keys) {
-    const value = core.getInput(key);
+    const value = getInput(key);
     if (value !== "") {
       data[key] = value;
     }
@@ -20130,7 +20131,7 @@ async function parseInput() {
 
 // src/download-artifacts.ts
 var import_github = __toESM(require_github());
-var core2 = __toESM(require_core());
+var core = __toESM(require_core());
 
 // node_modules/.pnpm/unzipit@1.4.0/node_modules/unzipit/dist/unzipit.module.js
 function readBlobAsArrayBuffer(blob) {
@@ -21009,7 +21010,7 @@ async function downloadArtifacts(opts) {
           } catch {
           }
         }
-        core2.warning(`no valid json file found in artifact ${url}`);
+        core.warning(`no valid json file found in artifact ${url}`);
         return void 0;
       })()
     );
@@ -21052,7 +21053,7 @@ async function* findAllArtifacts(octokit, body) {
         }
       }
       if (visitedCommits.size > body.maxCommitsToTraverse) {
-        core2.debug("went through too many commits");
+        core.debug("went through too many commits");
         return;
       }
     }
@@ -21067,11 +21068,11 @@ var import_promises2 = __toESM(require("fs/promises"));
 var import_node_path = __toESM(require("path"));
 var import_github2 = __toESM(require_github());
 var artifactsClient = __toESM(require_artifact_client2());
-var core3 = __toESM(require_core());
+var core2 = __toESM(require_core());
 var import_node_os2 = __toESM(require("os"));
 async function storeArtifact(value, input) {
   if (!("ACTIONS_RUNTIME_URL" in process.env)) {
-    core3.debug("Not running in GitHub Actions, skipping artifact upload");
+    core2.debug("Not running in GitHub Actions, skipping artifact upload");
     return;
   }
   const client = artifactsClient.create();
@@ -21081,12 +21082,14 @@ async function storeArtifact(value, input) {
   const fullpath = import_node_path.default.join(tmpdir, filename);
   await import_promises2.default.writeFile(fullpath, JSON.stringify(value, null, 2));
   await client.uploadArtifact(input.artifactName, [fullpath], tmpdir);
-  core3.info(`Uploaded artifact ${input.artifactName}`);
+  core2.info(`Uploaded artifact ${input.artifactName}`);
 }
 
 // src/readable-zod-error-message.ts
 var import_zod_error = __toESM(require_lib4());
+var core3 = __toESM(require_core());
 function readableZodErrorMessage(error) {
+  core3.debug(`ZodError: ${JSON.stringify(error.issues, null, 2)}`);
   return (0, import_zod_error.generateErrorMessage)(error.issues, {
     code: {
       enabled: false
@@ -21111,7 +21114,7 @@ function readableZodErrorMessage(error) {
 // src/index.ts
 async function run() {
   try {
-    const input = await parseInput();
+    const input = await parseInput(core4);
     const currentArtifacts = getCurrentArtifacts(input);
     const [storedArtifacts] = await Promise.all([
       downloadArtifacts(input),

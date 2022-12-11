@@ -8,7 +8,8 @@
     "prepare": "tsup",
     "test": "jest",
     "all": "npm run lint && npm run prepare && npm run test",
-    "version:prepare": "changeset version && pnpm run prepare"
+    "version:prepare": "changeset version && pnpm run prepare",
+    "create-metrics": "node scripts/create-metrics.mjs"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@actions/artifact": "^1.1.0",
     "@actions/github": "^5.1.1",
+    "@actions/glob": "^0.3.0",
     "@changesets/changelog-github": "^0.4.7",
     "@changesets/cli": "^2.25.2",
     "@types/node": "^18.11.12",

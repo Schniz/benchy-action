@@ -5,12 +5,11 @@ import { context as github } from "@actions/github";
 import { Artifact } from "./artifact";
 import { storeArtifact } from "./store-artifact";
 import { ZodError } from "zod";
-import { generateErrorMessage } from "zod-error";
 import { readableZodErrorMessage } from "./readable-zod-error-message";
 
 async function run() {
   try {
-    const input = await parseInput();
+    const input = await parseInput(core);
     const currentArtifacts = getCurrentArtifacts(input);
     const [storedArtifacts] = await Promise.all([
       downloadArtifacts(input),
