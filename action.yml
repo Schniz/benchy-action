@@ -14,6 +14,8 @@ inputs:
     description: 'The maximum number of commits to traverse when searching for artifacts'
     required: false
     default: '20'
+  should_comment:
+    description: 'Whether or not to comment on the PR'
 
   # one of [key,value], [json], or [input_file] must be provided
   key:

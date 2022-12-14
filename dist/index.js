@@ -21281,29 +21281,18 @@ function arrowColor(diff, trend) {
 var import_node_crypto = require("crypto");
 var import_github3 = __toESM(require_github());
 var core4 = __toESM(require_core());
-function sha1(str) {
-  return (0, import_node_crypto.createHash)("sha1").update(str).digest("hex");
-}
 async function commentOnGitHub(input, resultsTable) {
+  var _a;
   const { artifactName } = input;
   const octokit = (0, import_github3.getOctokit)(input.token);
   const magicComment = `<!-- benchy-stats-comment:${sha1(artifactName)} -->`;
-  const commentToUpdate = await findCommentToUpdate({ octokit, magicComment });
   const title = `# Benchmarks for ${import_github3.context.sha}`;
   const comment = [title, resultsTable, magicComment].join("\n\n");
-  if (commentToUpdate) {
-    core4.debug(`Updating comment ${commentToUpdate.id}`);
-    await updateComment({ octokit, commentToUpdate, comment });
-  } else {
-    core4.debug(`Posting a new comment`);
-    await postComment({ octokit, comment });
-  }
+  const updater = ((_a = import_github3.context.issue) == null ? void 0 : _a.number) ? await getIssueCommentUpdater({ magicComment, octokit }) : await getCommitCommentUpdater({ magicComment, octokit });
+  await updater(comment);
 }
-async function findCommentToUpdate(params) {
+async function getIssueCommentUpdater(params) {
   var _a;
-  if (!import_github3.context.issue.number) {
-    return null;
-  }
   const iterator2 = params.octokit.paginate.iterator(
     params.octokit.rest.issues.listComments,
     {
@@ -21315,13 +21304,49 @@ async function findCommentToUpdate(params) {
   for await (const response of iterator2) {
     for (const comment of response.data) {
       if ((_a = comment == null ? void 0 : comment.body) == null ? void 0 : _a.includes(params.magicComment)) {
-        return { id: comment.id };
+        const id = comment.id;
+        return (comment2) => {
+          return updateIssueComment({
+            comment: comment2,
+            commentToUpdate: { id },
+            octokit: params.octokit
+          });
+        };
       }
     }
   }
-  return null;
+  return (comment) => postIssueComment({ comment, octokit: params.octokit });
 }
-async function updateComment(params) {
+async function getCommitCommentUpdater(params) {
+  var _a;
+  const iterator2 = params.octokit.paginate.iterator(
+    params.octokit.rest.repos.listCommentsForCommit,
+    {
+      owner: import_github3.context.repo.owner,
+      repo: import_github3.context.repo.repo,
+      commit_sha: import_github3.context.sha
+    }
+  );
+  for await (const response of iterator2) {
+    for (const comment of response.data) {
+      if ((_a = comment == null ? void 0 : comment.body) == null ? void 0 : _a.includes(params.magicComment)) {
+        const id = comment.id;
+        return (comment2) => {
+          return updateCommitComment({
+            comment: comment2,
+            commentToUpdate: { id },
+            octokit: params.octokit
+          });
+        };
+      }
+    }
+  }
+  return (comment) => postCommitComment({ comment, octokit: params.octokit });
+}
+async function updateIssueComment(params) {
+  core4.debug(
+    `Updating comment ${params.commentToUpdate.id} on issue ${import_github3.context.issue.number}`
+  );
   await params.octokit.rest.issues.updateComment({
     owner: import_github3.context.repo.owner,
     repo: import_github3.context.repo.repo,
@@ -21329,13 +21354,37 @@ async function updateComment(params) {
     body: params.comment
   });
 }
-async function postComment(params) {
+async function postIssueComment(params) {
+  core4.debug(`Posting issue comment on issue ${import_github3.context.issue.number}`);
   await params.octokit.rest.issues.createComment({
     owner: import_github3.context.repo.owner,
     repo: import_github3.context.repo.repo,
     issue_number: import_github3.context.issue.number,
     body: params.comment
   });
+}
+async function postCommitComment(params) {
+  core4.debug(`Posting commit comment on commit ${import_github3.context.sha}`);
+  await params.octokit.rest.repos.createCommitComment({
+    owner: import_github3.context.repo.owner,
+    repo: import_github3.context.repo.repo,
+    commit_sha: import_github3.context.sha,
+    body: params.comment
+  });
+}
+async function updateCommitComment(params) {
+  core4.debug(
+    `Updating comment ${params.commentToUpdate.id} on commit ${import_github3.context.sha}`
+  );
+  await params.octokit.rest.repos.updateCommitComment({
+    owner: import_github3.context.repo.owner,
+    repo: import_github3.context.repo.repo,
+    comment_id: params.commentToUpdate.id,
+    body: params.comment
+  });
+}
+function sha1(str) {
+  return (0, import_node_crypto.createHash)("sha1").update(str).digest("hex");
 }
 
 // src/index.ts

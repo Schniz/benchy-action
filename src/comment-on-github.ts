@@ -5,10 +5,6 @@ import * as core from "@actions/core";
 
 type Octokit = ReturnType<typeof getOctokit>;
 
-function sha1(str: string): string {
-  return createHash("sha1").update(str).digest("hex");
-}
-
 export async function commentOnGitHub(
   input: Pick<Input, "artifactName" | "token">,
   resultsTable: string
@@ -17,27 +13,21 @@ export async function commentOnGitHub(
   const octokit = getOctokit(input.token);
   const magicComment = `<!-- benchy-stats-comment:${sha1(artifactName)} -->`;
 
-  const commentToUpdate = await findCommentToUpdate({ octokit, magicComment });
   const title = `# Benchmarks for ${github.sha}`;
   const comment = [title, resultsTable, magicComment].join("\n\n");
 
-  if (commentToUpdate) {
-    core.debug(`Updating comment ${commentToUpdate.id}`);
-    await updateComment({ octokit, commentToUpdate, comment });
-  } else {
-    core.debug(`Posting a new comment`);
-    await postComment({ octokit, comment });
-  }
+  const updater = github.issue?.number
+    ? await getIssueCommentUpdater({ magicComment, octokit })
+    : await getCommitCommentUpdater({ magicComment, octokit });
+  await updater(comment);
 }
 
-async function findCommentToUpdate(params: {
+type Updater = (comment: string) => Promise<void>;
+
+async function getIssueCommentUpdater(params: {
   octokit: Octokit;
   magicComment: string;
-}): Promise<null | { id: number }> {
-  if (!github.issue.number) {
-    return null;
-  }
-
+}): Promise<Updater> {
   const iterator = params.octokit.paginate.iterator(
     params.octokit.rest.issues.listComments,
     {
@@ -50,19 +40,61 @@ async function findCommentToUpdate(params: {
   for await (const response of iterator) {
     for (const comment of response.data) {
       if (comment?.body?.includes(params.magicComment)) {
-        return { id: comment.id };
+        const id = comment.id;
+        return (comment) => {
+          return updateIssueComment({
+            comment,
+            commentToUpdate: { id },
+            octokit: params.octokit,
+          });
+        };
       }
     }
   }
 
-  return null;
+  return (comment) => postIssueComment({ comment, octokit: params.octokit });
 }
 
-async function updateComment(params: {
+async function getCommitCommentUpdater(params: {
+  octokit: Octokit;
+  magicComment: string;
+}): Promise<Updater> {
+  const iterator = params.octokit.paginate.iterator(
+    params.octokit.rest.repos.listCommentsForCommit,
+    {
+      owner: github.repo.owner,
+      repo: github.repo.repo,
+      commit_sha: github.sha,
+    }
+  );
+
+  for await (const response of iterator) {
+    for (const comment of response.data) {
+      if (comment?.body?.includes(params.magicComment)) {
+        // return { id: comment.id };
+        const id = comment.id;
+        return (comment) => {
+          return updateCommitComment({
+            comment,
+            commentToUpdate: { id },
+            octokit: params.octokit,
+          });
+        };
+      }
+    }
+  }
+
+  return (comment) => postCommitComment({ comment, octokit: params.octokit });
+}
+
+async function updateIssueComment(params: {
   octokit: Octokit;
   commentToUpdate: { id: number };
   comment: string;
 }) {
+  core.debug(
+    `Updating comment ${params.commentToUpdate.id} on issue ${github.issue.number}`
+  );
   await params.octokit.rest.issues.updateComment({
     owner: github.repo.owner,
     repo: github.repo.repo,
@@ -71,11 +103,45 @@ async function updateComment(params: {
   });
 }
 
-async function postComment(params: { octokit: Octokit; comment: string }) {
+async function postIssueComment(params: { octokit: Octokit; comment: string }) {
+  core.debug(`Posting issue comment on issue ${github.issue.number}`);
   await params.octokit.rest.issues.createComment({
     owner: github.repo.owner,
     repo: github.repo.repo,
     issue_number: github.issue.number,
     body: params.comment,
   });
+}
+
+async function postCommitComment(params: {
+  octokit: Octokit;
+  comment: string;
+}) {
+  core.debug(`Posting commit comment on commit ${github.sha}`);
+  await params.octokit.rest.repos.createCommitComment({
+    owner: github.repo.owner,
+    repo: github.repo.repo,
+    commit_sha: github.sha,
+    body: params.comment,
+  });
+}
+
+async function updateCommitComment(params: {
+  octokit: Octokit;
+  commentToUpdate: { id: number };
+  comment: string;
+}) {
+  core.debug(
+    `Updating comment ${params.commentToUpdate.id} on commit ${github.sha}`
+  );
+  await params.octokit.rest.repos.updateCommitComment({
+    owner: github.repo.owner,
+    repo: github.repo.repo,
+    comment_id: params.commentToUpdate.id,
+    body: params.comment,
+  });
+}
+
+function sha1(str: string): string {
+  return createHash("sha1").update(str).digest("hex");
 }
