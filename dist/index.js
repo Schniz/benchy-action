@@ -20458,20 +20458,22 @@ async function parseInput({
       return void 0;
     }
   };
-  const input = {
-    artifact_name: getInput("artifact_name"),
-    token: getInput("token"),
-    main_branch: getInput("main_branch"),
-    max_commits_to_traverse: getInput("max_commits_to_traverse"),
-    input_file: getInput("input_file"),
-    units: getInput("units"),
-    json: getInput("json"),
-    key: getInput("key"),
-    value: getInput("value"),
-    trend: getInput("trend"),
-    should_comment: (_a = getBool("should_comment")) != null ? _a : true
+  const getString = (name) => {
+    return getInput(name) || void 0;
   };
-  return Input.parseAsync(input);
+  return Input.parseAsync({
+    artifact_name: getString("artifact_name"),
+    token: getString("token"),
+    main_branch: getString("main_branch"),
+    max_commits_to_traverse: getString("max_commits_to_traverse"),
+    input_file: getString("input_file"),
+    units: getString("units"),
+    json: getString("json"),
+    key: getString("key"),
+    value: getString("value"),
+    trend: getString("trend"),
+    should_comment: (_a = getBool("should_comment")) != null ? _a : true
+  });
 }
 
 // src/download-artifacts.ts

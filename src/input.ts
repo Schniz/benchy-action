@@ -97,16 +97,6 @@ const Input = z
     shouldComment: input.should_comment,
   }));
 
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-  k: infer I
-) => void
-  ? I
-  : never;
-
-type ConvertOptionalToUndefined<T> = {
-  [K in keyof T]-?: undefined extends T[K] ? T[K] : T[K] | undefined;
-};
-
 export async function parseInput({
   getInput,
   getBooleanInput,
@@ -121,23 +111,23 @@ export async function parseInput({
     }
   };
 
-  const input: ConvertOptionalToUndefined<
-    UnionToIntersection<z.input<typeof Input>>
-  > = {
-    artifact_name: getInput("artifact_name"),
-    token: getInput("token"),
-    main_branch: getInput("main_branch"),
-    max_commits_to_traverse: getInput("max_commits_to_traverse"),
-    input_file: getInput("input_file"),
-    units: getInput("units"),
-    json: getInput("json"),
-    key: getInput("key"),
-    value: getInput("value"),
-    trend: getInput("trend"),
-    should_comment: getBool("should_comment") ?? true,
+  const getString = (name: string): string | undefined => {
+    return getInput(name) || undefined;
   };
 
-  return Input.parseAsync(input);
+  return Input.parseAsync({
+    artifact_name: getString("artifact_name"),
+    token: getString("token"),
+    main_branch: getString("main_branch"),
+    max_commits_to_traverse: getString("max_commits_to_traverse"),
+    input_file: getString("input_file"),
+    units: getString("units"),
+    json: getString("json"),
+    key: getString("key"),
+    value: getString("value"),
+    trend: getString("trend"),
+    should_comment: getBool("should_comment") ?? true,
+  });
 }
 
 export type Input = z.infer<typeof Input>;
