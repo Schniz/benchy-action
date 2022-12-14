@@ -13518,9 +13518,9 @@ var require_generate_error_message = __commonJS({
   }
 });
 
-// node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/helpers/util.js
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/helpers/util.js
 var require_util = __commonJS({
-  "node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/helpers/util.js"(exports) {
+  "node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/helpers/util.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getParsedType = exports.ZodParsedType = exports.util = void 0;
@@ -13619,6 +13619,8 @@ var require_util = __commonJS({
           return exports.ZodParsedType.function;
         case "bigint":
           return exports.ZodParsedType.bigint;
+        case "symbol":
+          return exports.ZodParsedType.symbol;
         case "object":
           if (Array.isArray(data)) {
             return exports.ZodParsedType.array;
@@ -13647,9 +13649,9 @@ var require_util = __commonJS({
   }
 });
 
-// node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/ZodError.js
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/ZodError.js
 var require_ZodError = __commonJS({
-  "node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/ZodError.js"(exports) {
+  "node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/ZodError.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ZodError = exports.quotelessJson = exports.ZodIssueCode = void 0;
@@ -13669,7 +13671,8 @@ var require_ZodError = __commonJS({
       "too_small",
       "too_big",
       "invalid_intersection_types",
-      "not_multiple_of"
+      "not_multiple_of",
+      "not_finite"
     ]);
     var quotelessJson2 = (obj) => {
       const json = JSON.stringify(obj, null, 2);
@@ -13768,9 +13771,9 @@ var require_ZodError = __commonJS({
   }
 });
 
-// node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/locales/en.js
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/locales/en.js
 var require_en = __commonJS({
-  "node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/locales/en.js"(exports) {
+  "node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/locales/en.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var util_1 = require_util();
@@ -13826,25 +13829,25 @@ var require_en = __commonJS({
           break;
         case ZodError_1.ZodIssueCode.too_small:
           if (issue.type === "array")
-            message = `Array must contain ${issue.inclusive ? `at least` : `more than`} ${issue.minimum} element(s)`;
+            message = `Array must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `more than`} ${issue.minimum} element(s)`;
           else if (issue.type === "string")
-            message = `String must contain ${issue.inclusive ? `at least` : `over`} ${issue.minimum} character(s)`;
+            message = `String must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `over`} ${issue.minimum} character(s)`;
           else if (issue.type === "number")
-            message = `Number must be greater than ${issue.inclusive ? `or equal to ` : ``}${issue.minimum}`;
+            message = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
           else if (issue.type === "date")
-            message = `Date must be greater than ${issue.inclusive ? `or equal to ` : ``}${new Date(issue.minimum)}`;
+            message = `Date must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${new Date(issue.minimum)}`;
           else
             message = "Invalid input";
           break;
         case ZodError_1.ZodIssueCode.too_big:
           if (issue.type === "array")
-            message = `Array must contain ${issue.inclusive ? `at most` : `less than`} ${issue.maximum} element(s)`;
+            message = `Array must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `less than`} ${issue.maximum} element(s)`;
           else if (issue.type === "string")
-            message = `String must contain ${issue.inclusive ? `at most` : `under`} ${issue.maximum} character(s)`;
+            message = `String must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `under`} ${issue.maximum} character(s)`;
           else if (issue.type === "number")
-            message = `Number must be less than ${issue.inclusive ? `or equal to ` : ``}${issue.maximum}`;
+            message = `Number must be ${issue.exact ? `exactly` : issue.inclusive ? `less than or equal to` : `less than`} ${issue.maximum}`;
           else if (issue.type === "date")
-            message = `Date must be smaller than ${issue.inclusive ? `or equal to ` : ``}${new Date(issue.maximum)}`;
+            message = `Date must be ${issue.exact ? `exactly` : issue.inclusive ? `smaller than or equal to` : `smaller than`} ${new Date(issue.maximum)}`;
           else
             message = "Invalid input";
           break;
@@ -13857,6 +13860,9 @@ var require_en = __commonJS({
         case ZodError_1.ZodIssueCode.not_multiple_of:
           message = `Number must be a multiple of ${issue.multipleOf}`;
           break;
+        case ZodError_1.ZodIssueCode.not_finite:
+          message = "Number must be finite";
+          break;
         default:
           message = _ctx.defaultError;
           util_1.util.assertNever(issue);
@@ -13867,9 +13873,9 @@ var require_en = __commonJS({
   }
 });
 
-// node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/errors.js
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/errors.js
 var require_errors = __commonJS({
-  "node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/errors.js"(exports) {
+  "node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/errors.js"(exports) {
     "use strict";
     var __importDefault = exports && exports.__importDefault || function(mod2) {
       return mod2 && mod2.__esModule ? mod2 : { "default": mod2 };
@@ -13890,9 +13896,9 @@ var require_errors = __commonJS({
   }
 });
 
-// node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/helpers/parseUtil.js
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/helpers/parseUtil.js
 var require_parseUtil = __commonJS({
-  "node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/helpers/parseUtil.js"(exports) {
+  "node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/helpers/parseUtil.js"(exports) {
     "use strict";
     var __importDefault = exports && exports.__importDefault || function(mod2) {
       return mod2 && mod2.__esModule ? mod2 : { "default": mod2 };
@@ -13922,14 +13928,14 @@ var require_parseUtil = __commonJS({
     exports.makeIssue = makeIssue2;
     exports.EMPTY_PATH = [];
     function addIssueToContext2(ctx, issueData) {
-      const issue = exports.makeIssue({
+      const issue = (0, exports.makeIssue)({
         issueData,
         data: ctx.data,
         path: ctx.path,
         errorMaps: [
           ctx.common.contextualErrorMap,
           ctx.schemaErrorMap,
-          errors_1.getErrorMap(),
+          (0, errors_1.getErrorMap)(),
           en_1.default
         ].filter((x) => !!x)
       });
@@ -14007,17 +14013,17 @@ var require_parseUtil = __commonJS({
   }
 });
 
-// node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/helpers/typeAliases.js
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/helpers/typeAliases.js
 var require_typeAliases = __commonJS({
-  "node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/helpers/typeAliases.js"(exports) {
+  "node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/helpers/typeAliases.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
   }
 });
 
-// node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/helpers/errorUtil.js
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/helpers/errorUtil.js
 var require_errorUtil = __commonJS({
-  "node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/helpers/errorUtil.js"(exports) {
+  "node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/helpers/errorUtil.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.errorUtil = void 0;
@@ -14029,13 +14035,13 @@ var require_errorUtil = __commonJS({
   }
 });
 
-// node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/types.js
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/types.js
 var require_types = __commonJS({
-  "node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/types.js"(exports) {
+  "node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/types.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.function = exports.enum = exports.effect = exports.discriminatedUnion = exports.date = exports.boolean = exports.bigint = exports.array = exports.any = exports.ZodFirstPartyTypeKind = exports.late = exports.ZodSchema = exports.Schema = exports.custom = exports.ZodBranded = exports.BRAND = exports.ZodNaN = exports.ZodDefault = exports.ZodNullable = exports.ZodOptional = exports.ZodTransformer = exports.ZodEffects = exports.ZodPromise = exports.ZodNativeEnum = exports.ZodEnum = exports.ZodLiteral = exports.ZodLazy = exports.ZodFunction = exports.ZodSet = exports.ZodMap = exports.ZodRecord = exports.ZodTuple = exports.ZodIntersection = exports.ZodDiscriminatedUnion = exports.ZodUnion = exports.ZodObject = exports.objectUtil = exports.ZodArray = exports.ZodVoid = exports.ZodNever = exports.ZodUnknown = exports.ZodAny = exports.ZodNull = exports.ZodUndefined = exports.ZodDate = exports.ZodBoolean = exports.ZodBigInt = exports.ZodNumber = exports.ZodString = exports.ZodType = void 0;
-    exports.NEVER = exports.void = exports.unknown = exports.union = exports.undefined = exports.tuple = exports.transformer = exports.string = exports.strictObject = exports.set = exports.record = exports.promise = exports.preprocess = exports.ostring = exports.optional = exports.onumber = exports.oboolean = exports.object = exports.number = exports.nullable = exports.null = exports.never = exports.nativeEnum = exports.nan = exports.map = exports.literal = exports.lazy = exports.intersection = exports.instanceof = void 0;
+    exports.date = exports.boolean = exports.bigint = exports.array = exports.any = exports.coerce = exports.ZodFirstPartyTypeKind = exports.late = exports.ZodSchema = exports.Schema = exports.custom = exports.ZodPipeline = exports.ZodBranded = exports.BRAND = exports.ZodNaN = exports.ZodCatch = exports.ZodDefault = exports.ZodNullable = exports.ZodOptional = exports.ZodTransformer = exports.ZodEffects = exports.ZodPromise = exports.ZodNativeEnum = exports.ZodEnum = exports.ZodLiteral = exports.ZodLazy = exports.ZodFunction = exports.ZodSet = exports.ZodMap = exports.ZodRecord = exports.ZodTuple = exports.ZodIntersection = exports.ZodDiscriminatedUnion = exports.ZodUnion = exports.ZodObject = exports.objectUtil = exports.ZodArray = exports.ZodVoid = exports.ZodNever = exports.ZodUnknown = exports.ZodAny = exports.ZodNull = exports.ZodUndefined = exports.ZodSymbol = exports.ZodDate = exports.ZodBoolean = exports.ZodBigInt = exports.ZodNumber = exports.ZodString = exports.ZodType = void 0;
+    exports.NEVER = exports.void = exports.unknown = exports.union = exports.undefined = exports.tuple = exports.transformer = exports.symbol = exports.string = exports.strictObject = exports.set = exports.record = exports.promise = exports.preprocess = exports.pipeline = exports.ostring = exports.optional = exports.onumber = exports.oboolean = exports.object = exports.number = exports.nullable = exports.null = exports.never = exports.nativeEnum = exports.nan = exports.map = exports.literal = exports.lazy = exports.intersection = exports.instanceof = exports.function = exports.enum = exports.effect = exports.discriminatedUnion = void 0;
     var errors_1 = require_errors();
     var errorUtil_1 = require_errorUtil();
     var parseUtil_1 = require_parseUtil();
@@ -14053,7 +14059,7 @@ var require_types = __commonJS({
       }
     };
     var handleResult3 = (ctx, result) => {
-      if (parseUtil_1.isValid(result)) {
+      if ((0, parseUtil_1.isValid)(result)) {
         return { success: true, data: result.value };
       } else {
         if (!ctx.common.issues.length) {
@@ -14085,7 +14091,6 @@ var require_types = __commonJS({
     var ZodType2 = class {
       constructor(def) {
         this.spa = this.safeParseAsync;
-        this.superRefine = this._refinement;
         this._def = def;
         this.parse = this.parse.bind(this);
         this.safeParse = this.safeParse.bind(this);
@@ -14103,8 +14108,11 @@ var require_types = __commonJS({
         this.or = this.or.bind(this);
         this.and = this.and.bind(this);
         this.transform = this.transform.bind(this);
+        this.brand = this.brand.bind(this);
         this.default = this.default.bind(this);
+        this.catch = this.catch.bind(this);
         this.describe = this.describe.bind(this);
+        this.pipe = this.pipe.bind(this);
         this.isNullable = this.isNullable.bind(this);
         this.isOptional = this.isOptional.bind(this);
       }
@@ -14112,13 +14120,13 @@ var require_types = __commonJS({
         return this._def.description;
       }
       _getType(input) {
-        return util_1.getParsedType(input.data);
+        return (0, util_1.getParsedType)(input.data);
       }
       _getOrReturnCtx(input, ctx) {
         return ctx || {
           common: input.parent.common,
           data: input.data,
-          parsedType: util_1.getParsedType(input.data),
+          parsedType: (0, util_1.getParsedType)(input.data),
           schemaErrorMap: this._def.errorMap,
           path: input.path,
           parent: input.parent
@@ -14130,7 +14138,7 @@ var require_types = __commonJS({
           ctx: {
             common: input.parent.common,
             data: input.data,
-            parsedType: util_1.getParsedType(input.data),
+            parsedType: (0, util_1.getParsedType)(input.data),
             schemaErrorMap: this._def.errorMap,
             path: input.path,
             parent: input.parent
@@ -14139,7 +14147,7 @@ var require_types = __commonJS({
       }
       _parseSync(input) {
         const result = this._parse(input);
-        if (parseUtil_1.isAsync(result)) {
+        if ((0, parseUtil_1.isAsync)(result)) {
           throw new Error("Synchronous parse encountered promise.");
         }
         return result;
@@ -14166,7 +14174,7 @@ var require_types = __commonJS({
           schemaErrorMap: this._def.errorMap,
           parent: null,
           data,
-          parsedType: util_1.getParsedType(data)
+          parsedType: (0, util_1.getParsedType)(data)
         };
         const result = this._parseSync({ data, path: ctx.path, parent: ctx });
         return handleResult3(ctx, result);
@@ -14188,10 +14196,10 @@ var require_types = __commonJS({
           schemaErrorMap: this._def.errorMap,
           parent: null,
           data,
-          parsedType: util_1.getParsedType(data)
+          parsedType: (0, util_1.getParsedType)(data)
         };
-        const maybeAsyncResult = this._parse({ data, path: [], parent: ctx });
-        const result = await (parseUtil_1.isAsync(maybeAsyncResult) ? maybeAsyncResult : Promise.resolve(maybeAsyncResult));
+        const maybeAsyncResult = this._parse({ data, path: ctx.path, parent: ctx });
+        const result = await ((0, parseUtil_1.isAsync)(maybeAsyncResult) ? maybeAsyncResult : Promise.resolve(maybeAsyncResult));
         return handleResult3(ctx, result);
       }
       refine(check, message) {
@@ -14245,6 +14253,9 @@ var require_types = __commonJS({
           effect: { type: "refinement", refinement }
         });
       }
+      superRefine(refinement) {
+        return this._refinement(refinement);
+      }
       optional() {
         return ZodOptional2.create(this);
       }
@@ -14288,12 +14299,23 @@ var require_types = __commonJS({
           ...processCreateParams2(void 0)
         });
       }
+      catch(def) {
+        const defaultValueFunc = typeof def === "function" ? def : () => def;
+        return new ZodCatch2({
+          innerType: this,
+          defaultValue: defaultValueFunc,
+          typeName: ZodFirstPartyTypeKind2.ZodCatch
+        });
+      }
       describe(description) {
         const This = this.constructor;
         return new This({
           ...this._def,
           description
         });
+      }
+      pipe(target) {
+        return ZodPipeline2.create(this, target);
       }
       isOptional() {
         return this.safeParse(void 0).success;
@@ -14308,6 +14330,27 @@ var require_types = __commonJS({
     var cuidRegex2 = /^c[^\s-]{8,}$/i;
     var uuidRegex2 = /^([a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[a-f0-9]{4}-[a-f0-9]{12}|00000000-0000-0000-0000-000000000000)$/i;
     var emailRegex2 = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    var datetimeRegex2 = (args) => {
+      if (args.precision) {
+        if (args.offset) {
+          return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{${args.precision}}(([+-]\\d{2}:\\d{2})|Z)$`);
+        } else {
+          return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{${args.precision}}Z$`);
+        }
+      } else if (args.precision === 0) {
+        if (args.offset) {
+          return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(([+-]\\d{2}:\\d{2})|Z)$`);
+        } else {
+          return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$`);
+        }
+      } else {
+        if (args.offset) {
+          return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?(([+-]\\d{2}:\\d{2})|Z)$`);
+        } else {
+          return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$`);
+        }
+      }
+    };
     var ZodString2 = class extends ZodType2 {
       constructor() {
         super(...arguments);
@@ -14323,10 +14366,13 @@ var require_types = __commonJS({
         });
       }
       _parse(input) {
+        if (this._def.coerce) {
+          input.data = String(input.data);
+        }
         const parsedType = this._getType(input);
         if (parsedType !== util_1.ZodParsedType.string) {
           const ctx2 = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(
+          (0, parseUtil_1.addIssueToContext)(
             ctx2,
             {
               code: ZodError_1.ZodIssueCode.invalid_type,
@@ -14342,11 +14388,12 @@ var require_types = __commonJS({
           if (check.kind === "min") {
             if (input.data.length < check.value) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.too_small,
                 minimum: check.value,
                 type: "string",
                 inclusive: true,
+                exact: false,
                 message: check.message
               });
               status.dirty();
@@ -14354,19 +14401,46 @@ var require_types = __commonJS({
           } else if (check.kind === "max") {
             if (input.data.length > check.value) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.too_big,
                 maximum: check.value,
                 type: "string",
                 inclusive: true,
+                exact: false,
                 message: check.message
               });
+              status.dirty();
+            }
+          } else if (check.kind === "length") {
+            const tooBig = input.data.length > check.value;
+            const tooSmall = input.data.length < check.value;
+            if (tooBig || tooSmall) {
+              ctx = this._getOrReturnCtx(input, ctx);
+              if (tooBig) {
+                (0, parseUtil_1.addIssueToContext)(ctx, {
+                  code: ZodError_1.ZodIssueCode.too_big,
+                  maximum: check.value,
+                  type: "string",
+                  inclusive: true,
+                  exact: true,
+                  message: check.message
+                });
+              } else if (tooSmall) {
+                (0, parseUtil_1.addIssueToContext)(ctx, {
+                  code: ZodError_1.ZodIssueCode.too_small,
+                  minimum: check.value,
+                  type: "string",
+                  inclusive: true,
+                  exact: true,
+                  message: check.message
+                });
+              }
               status.dirty();
             }
           } else if (check.kind === "email") {
             if (!emailRegex2.test(input.data)) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 validation: "email",
                 code: ZodError_1.ZodIssueCode.invalid_string,
                 message: check.message
@@ -14376,7 +14450,7 @@ var require_types = __commonJS({
           } else if (check.kind === "uuid") {
             if (!uuidRegex2.test(input.data)) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 validation: "uuid",
                 code: ZodError_1.ZodIssueCode.invalid_string,
                 message: check.message
@@ -14386,7 +14460,7 @@ var require_types = __commonJS({
           } else if (check.kind === "cuid") {
             if (!cuidRegex2.test(input.data)) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 validation: "cuid",
                 code: ZodError_1.ZodIssueCode.invalid_string,
                 message: check.message
@@ -14398,7 +14472,7 @@ var require_types = __commonJS({
               new URL(input.data);
             } catch (_a) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 validation: "url",
                 code: ZodError_1.ZodIssueCode.invalid_string,
                 message: check.message
@@ -14410,7 +14484,7 @@ var require_types = __commonJS({
             const testResult = check.regex.test(input.data);
             if (!testResult) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 validation: "regex",
                 code: ZodError_1.ZodIssueCode.invalid_string,
                 message: check.message
@@ -14422,7 +14496,7 @@ var require_types = __commonJS({
           } else if (check.kind === "startsWith") {
             if (!input.data.startsWith(check.value)) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.invalid_string,
                 validation: { startsWith: check.value },
                 message: check.message
@@ -14432,9 +14506,20 @@ var require_types = __commonJS({
           } else if (check.kind === "endsWith") {
             if (!input.data.endsWith(check.value)) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.invalid_string,
                 validation: { endsWith: check.value },
+                message: check.message
+              });
+              status.dirty();
+            }
+          } else if (check.kind === "datetime") {
+            const regex = datetimeRegex2(check);
+            if (!regex.test(input.data)) {
+              ctx = this._getOrReturnCtx(input, ctx);
+              (0, parseUtil_1.addIssueToContext)(ctx, {
+                code: ZodError_1.ZodIssueCode.invalid_string,
+                validation: "datetime",
                 message: check.message
               });
               status.dirty();
@@ -14462,6 +14547,23 @@ var require_types = __commonJS({
       }
       cuid(message) {
         return this._addCheck({ kind: "cuid", ...errorUtil_1.errorUtil.errToObj(message) });
+      }
+      datetime(options) {
+        var _a;
+        if (typeof options === "string") {
+          return this._addCheck({
+            kind: "datetime",
+            precision: null,
+            offset: false,
+            message: options
+          });
+        }
+        return this._addCheck({
+          kind: "datetime",
+          precision: typeof (options === null || options === void 0 ? void 0 : options.precision) === "undefined" ? null : options === null || options === void 0 ? void 0 : options.precision,
+          offset: (_a = options === null || options === void 0 ? void 0 : options.offset) !== null && _a !== void 0 ? _a : false,
+          ...errorUtil_1.errorUtil.errToObj(options === null || options === void 0 ? void 0 : options.message)
+        });
       }
       regex(regex, message) {
         return this._addCheck({
@@ -14499,7 +14601,14 @@ var require_types = __commonJS({
         });
       }
       length(len, message) {
-        return this.min(len, message).max(len, message);
+        return this._addCheck({
+          kind: "length",
+          value: len,
+          ...errorUtil_1.errorUtil.errToObj(message)
+        });
+      }
+      get isDatetime() {
+        return !!this._def.checks.find((ch) => ch.kind === "datetime");
       }
       get isEmail() {
         return !!this._def.checks.find((ch) => ch.kind === "email");
@@ -14536,9 +14645,11 @@ var require_types = __commonJS({
     };
     exports.ZodString = ZodString2;
     ZodString2.create = (params) => {
+      var _a;
       return new ZodString2({
         checks: [],
         typeName: ZodFirstPartyTypeKind2.ZodString,
+        coerce: (_a = params === null || params === void 0 ? void 0 : params.coerce) !== null && _a !== void 0 ? _a : false,
         ...processCreateParams2(params)
       });
     };
@@ -14558,10 +14669,13 @@ var require_types = __commonJS({
         this.step = this.multipleOf;
       }
       _parse(input) {
+        if (this._def.coerce) {
+          input.data = Number(input.data);
+        }
         const parsedType = this._getType(input);
         if (parsedType !== util_1.ZodParsedType.number) {
           const ctx2 = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx2, {
+          (0, parseUtil_1.addIssueToContext)(ctx2, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.number,
             received: ctx2.parsedType
@@ -14574,7 +14688,7 @@ var require_types = __commonJS({
           if (check.kind === "int") {
             if (!util_1.util.isInteger(input.data)) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.invalid_type,
                 expected: "integer",
                 received: "float",
@@ -14586,11 +14700,12 @@ var require_types = __commonJS({
             const tooSmall = check.inclusive ? input.data < check.value : input.data <= check.value;
             if (tooSmall) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.too_small,
                 minimum: check.value,
                 type: "number",
                 inclusive: check.inclusive,
+                exact: false,
                 message: check.message
               });
               status.dirty();
@@ -14599,11 +14714,12 @@ var require_types = __commonJS({
             const tooBig = check.inclusive ? input.data > check.value : input.data >= check.value;
             if (tooBig) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.too_big,
                 maximum: check.value,
                 type: "number",
                 inclusive: check.inclusive,
+                exact: false,
                 message: check.message
               });
               status.dirty();
@@ -14611,9 +14727,18 @@ var require_types = __commonJS({
           } else if (check.kind === "multipleOf") {
             if (floatSafeRemainder2(input.data, check.value) !== 0) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.not_multiple_of,
                 multipleOf: check.value,
+                message: check.message
+              });
+              status.dirty();
+            }
+          } else if (check.kind === "finite") {
+            if (!Number.isFinite(input.data)) {
+              ctx = this._getOrReturnCtx(input, ctx);
+              (0, parseUtil_1.addIssueToContext)(ctx, {
+                code: ZodError_1.ZodIssueCode.not_finite,
                 message: check.message
               });
               status.dirty();
@@ -14701,6 +14826,12 @@ var require_types = __commonJS({
           message: errorUtil_1.errorUtil.toString(message)
         });
       }
+      finite(message) {
+        return this._addCheck({
+          kind: "finite",
+          message: errorUtil_1.errorUtil.toString(message)
+        });
+      }
       get minValue() {
         let min = null;
         for (const ch of this._def.checks) {
@@ -14730,59 +14861,72 @@ var require_types = __commonJS({
       return new ZodNumber2({
         checks: [],
         typeName: ZodFirstPartyTypeKind2.ZodNumber,
+        coerce: (params === null || params === void 0 ? void 0 : params.coerce) || false,
         ...processCreateParams2(params)
       });
     };
     var ZodBigInt2 = class extends ZodType2 {
       _parse(input) {
+        if (this._def.coerce) {
+          input.data = BigInt(input.data);
+        }
         const parsedType = this._getType(input);
         if (parsedType !== util_1.ZodParsedType.bigint) {
           const ctx = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.bigint,
             received: ctx.parsedType
           });
           return parseUtil_1.INVALID;
         }
-        return parseUtil_1.OK(input.data);
+        return (0, parseUtil_1.OK)(input.data);
       }
     };
     exports.ZodBigInt = ZodBigInt2;
     ZodBigInt2.create = (params) => {
+      var _a;
       return new ZodBigInt2({
         typeName: ZodFirstPartyTypeKind2.ZodBigInt,
+        coerce: (_a = params === null || params === void 0 ? void 0 : params.coerce) !== null && _a !== void 0 ? _a : false,
         ...processCreateParams2(params)
       });
     };
     var ZodBoolean2 = class extends ZodType2 {
       _parse(input) {
+        if (this._def.coerce) {
+          input.data = Boolean(input.data);
+        }
         const parsedType = this._getType(input);
         if (parsedType !== util_1.ZodParsedType.boolean) {
           const ctx = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.boolean,
             received: ctx.parsedType
           });
           return parseUtil_1.INVALID;
         }
-        return parseUtil_1.OK(input.data);
+        return (0, parseUtil_1.OK)(input.data);
       }
     };
     exports.ZodBoolean = ZodBoolean2;
     ZodBoolean2.create = (params) => {
       return new ZodBoolean2({
         typeName: ZodFirstPartyTypeKind2.ZodBoolean,
+        coerce: (params === null || params === void 0 ? void 0 : params.coerce) || false,
         ...processCreateParams2(params)
       });
     };
     var ZodDate2 = class extends ZodType2 {
       _parse(input) {
+        if (this._def.coerce) {
+          input.data = new Date(input.data);
+        }
         const parsedType = this._getType(input);
         if (parsedType !== util_1.ZodParsedType.date) {
           const ctx2 = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx2, {
+          (0, parseUtil_1.addIssueToContext)(ctx2, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.date,
             received: ctx2.parsedType
@@ -14791,7 +14935,7 @@ var require_types = __commonJS({
         }
         if (isNaN(input.data.getTime())) {
           const ctx2 = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx2, {
+          (0, parseUtil_1.addIssueToContext)(ctx2, {
             code: ZodError_1.ZodIssueCode.invalid_date
           });
           return parseUtil_1.INVALID;
@@ -14802,10 +14946,11 @@ var require_types = __commonJS({
           if (check.kind === "min") {
             if (input.data.getTime() < check.value) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.too_small,
                 message: check.message,
                 inclusive: true,
+                exact: false,
                 minimum: check.value,
                 type: "date"
               });
@@ -14814,10 +14959,11 @@ var require_types = __commonJS({
           } else if (check.kind === "max") {
             if (input.data.getTime() > check.value) {
               ctx = this._getOrReturnCtx(input, ctx);
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.too_big,
                 message: check.message,
                 inclusive: true,
+                exact: false,
                 maximum: check.value,
                 type: "date"
               });
@@ -14877,7 +15023,30 @@ var require_types = __commonJS({
     ZodDate2.create = (params) => {
       return new ZodDate2({
         checks: [],
+        coerce: (params === null || params === void 0 ? void 0 : params.coerce) || false,
         typeName: ZodFirstPartyTypeKind2.ZodDate,
+        ...processCreateParams2(params)
+      });
+    };
+    var ZodSymbol2 = class extends ZodType2 {
+      _parse(input) {
+        const parsedType = this._getType(input);
+        if (parsedType !== util_1.ZodParsedType.symbol) {
+          const ctx = this._getOrReturnCtx(input);
+          (0, parseUtil_1.addIssueToContext)(ctx, {
+            code: ZodError_1.ZodIssueCode.invalid_type,
+            expected: util_1.ZodParsedType.symbol,
+            received: ctx.parsedType
+          });
+          return parseUtil_1.INVALID;
+        }
+        return (0, parseUtil_1.OK)(input.data);
+      }
+    };
+    exports.ZodSymbol = ZodSymbol2;
+    ZodSymbol2.create = (params) => {
+      return new ZodSymbol2({
+        typeName: ZodFirstPartyTypeKind2.ZodSymbol,
         ...processCreateParams2(params)
       });
     };
@@ -14886,14 +15055,14 @@ var require_types = __commonJS({
         const parsedType = this._getType(input);
         if (parsedType !== util_1.ZodParsedType.undefined) {
           const ctx = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.undefined,
             received: ctx.parsedType
           });
           return parseUtil_1.INVALID;
         }
-        return parseUtil_1.OK(input.data);
+        return (0, parseUtil_1.OK)(input.data);
       }
     };
     exports.ZodUndefined = ZodUndefined2;
@@ -14908,14 +15077,14 @@ var require_types = __commonJS({
         const parsedType = this._getType(input);
         if (parsedType !== util_1.ZodParsedType.null) {
           const ctx = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.null,
             received: ctx.parsedType
           });
           return parseUtil_1.INVALID;
         }
-        return parseUtil_1.OK(input.data);
+        return (0, parseUtil_1.OK)(input.data);
       }
     };
     exports.ZodNull = ZodNull2;
@@ -14931,7 +15100,7 @@ var require_types = __commonJS({
         this._any = true;
       }
       _parse(input) {
-        return parseUtil_1.OK(input.data);
+        return (0, parseUtil_1.OK)(input.data);
       }
     };
     exports.ZodAny = ZodAny2;
@@ -14947,7 +15116,7 @@ var require_types = __commonJS({
         this._unknown = true;
       }
       _parse(input) {
-        return parseUtil_1.OK(input.data);
+        return (0, parseUtil_1.OK)(input.data);
       }
     };
     exports.ZodUnknown = ZodUnknown2;
@@ -14960,7 +15129,7 @@ var require_types = __commonJS({
     var ZodNever2 = class extends ZodType2 {
       _parse(input) {
         const ctx = this._getOrReturnCtx(input);
-        parseUtil_1.addIssueToContext(ctx, {
+        (0, parseUtil_1.addIssueToContext)(ctx, {
           code: ZodError_1.ZodIssueCode.invalid_type,
           expected: util_1.ZodParsedType.never,
           received: ctx.parsedType
@@ -14980,14 +15149,14 @@ var require_types = __commonJS({
         const parsedType = this._getType(input);
         if (parsedType !== util_1.ZodParsedType.undefined) {
           const ctx = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.void,
             received: ctx.parsedType
           });
           return parseUtil_1.INVALID;
         }
-        return parseUtil_1.OK(input.data);
+        return (0, parseUtil_1.OK)(input.data);
       }
     };
     exports.ZodVoid = ZodVoid2;
@@ -15002,20 +15171,37 @@ var require_types = __commonJS({
         const { ctx, status } = this._processInputParams(input);
         const def = this._def;
         if (ctx.parsedType !== util_1.ZodParsedType.array) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.array,
             received: ctx.parsedType
           });
           return parseUtil_1.INVALID;
         }
+        if (def.exactLength !== null) {
+          const tooBig = ctx.data.length > def.exactLength.value;
+          const tooSmall = ctx.data.length < def.exactLength.value;
+          if (tooBig || tooSmall) {
+            (0, parseUtil_1.addIssueToContext)(ctx, {
+              code: tooBig ? ZodError_1.ZodIssueCode.too_big : ZodError_1.ZodIssueCode.too_small,
+              minimum: tooSmall ? def.exactLength.value : void 0,
+              maximum: tooBig ? def.exactLength.value : void 0,
+              type: "array",
+              inclusive: true,
+              exact: true,
+              message: def.exactLength.message
+            });
+            status.dirty();
+          }
+        }
         if (def.minLength !== null) {
           if (ctx.data.length < def.minLength.value) {
-            parseUtil_1.addIssueToContext(ctx, {
+            (0, parseUtil_1.addIssueToContext)(ctx, {
               code: ZodError_1.ZodIssueCode.too_small,
               minimum: def.minLength.value,
               type: "array",
               inclusive: true,
+              exact: false,
               message: def.minLength.message
             });
             status.dirty();
@@ -15023,11 +15209,12 @@ var require_types = __commonJS({
         }
         if (def.maxLength !== null) {
           if (ctx.data.length > def.maxLength.value) {
-            parseUtil_1.addIssueToContext(ctx, {
+            (0, parseUtil_1.addIssueToContext)(ctx, {
               code: ZodError_1.ZodIssueCode.too_big,
               maximum: def.maxLength.value,
               type: "array",
               inclusive: true,
+              exact: false,
               message: def.maxLength.message
             });
             status.dirty();
@@ -15061,7 +15248,10 @@ var require_types = __commonJS({
         });
       }
       length(len, message) {
-        return this.min(len, message).max(len, message);
+        return new ZodArray2({
+          ...this._def,
+          exactLength: { value: len, message: errorUtil_1.errorUtil.toString(message) }
+        });
       }
       nonempty(message) {
         return this.min(1, message);
@@ -15073,6 +15263,7 @@ var require_types = __commonJS({
         type: schema,
         minLength: null,
         maxLength: null,
+        exactLength: null,
         typeName: ZodFirstPartyTypeKind2.ZodArray,
         ...processCreateParams2(params)
       });
@@ -15137,7 +15328,7 @@ var require_types = __commonJS({
         const parsedType = this._getType(input);
         if (parsedType !== util_1.ZodParsedType.object) {
           const ctx2 = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx2, {
+          (0, parseUtil_1.addIssueToContext)(ctx2, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.object,
             received: ctx2.parsedType
@@ -15175,7 +15366,7 @@ var require_types = __commonJS({
             }
           } else if (unknownKeys === "strict") {
             if (extraKeys.length > 0) {
-              parseUtil_1.addIssueToContext(ctx, {
+              (0, parseUtil_1.addIssueToContext)(ctx, {
                 code: ZodError_1.ZodIssueCode.unrecognized_keys,
                 keys: extraKeys
               });
@@ -15321,15 +15512,30 @@ var require_types = __commonJS({
           shape: () => newShape
         });
       }
-      required() {
+      required(mask) {
         const newShape = {};
-        for (const key in this.shape) {
-          const fieldSchema = this.shape[key];
-          let newField = fieldSchema;
-          while (newField instanceof ZodOptional2) {
-            newField = newField._def.innerType;
+        if (mask) {
+          util_1.util.objectKeys(this.shape).map((key) => {
+            if (util_1.util.objectKeys(mask).indexOf(key) === -1) {
+              newShape[key] = this.shape[key];
+            } else {
+              const fieldSchema = this.shape[key];
+              let newField = fieldSchema;
+              while (newField instanceof ZodOptional2) {
+                newField = newField._def.innerType;
+              }
+              newShape[key] = newField;
+            }
+          });
+        } else {
+          for (const key in this.shape) {
+            const fieldSchema = this.shape[key];
+            let newField = fieldSchema;
+            while (newField instanceof ZodOptional2) {
+              newField = newField._def.innerType;
+            }
+            newShape[key] = newField;
           }
-          newShape[key] = newField;
         }
         return new ZodObject2({
           ...this._def,
@@ -15385,7 +15591,7 @@ var require_types = __commonJS({
             }
           }
           const unionErrors = results.map((result) => new ZodError_1.ZodError(result.ctx.common.issues));
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_union,
             unionErrors
           });
@@ -15441,7 +15647,7 @@ var require_types = __commonJS({
             return dirty.result;
           }
           const unionErrors = issues.map((issues2) => new ZodError_1.ZodError(issues2));
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_union,
             unionErrors
           });
@@ -15460,11 +15666,32 @@ var require_types = __commonJS({
         ...processCreateParams2(params)
       });
     };
+    var getDiscriminator2 = (type) => {
+      if (type instanceof ZodLazy2) {
+        return getDiscriminator2(type.schema);
+      } else if (type instanceof ZodEffects2) {
+        return getDiscriminator2(type.innerType());
+      } else if (type instanceof ZodLiteral2) {
+        return [type.value];
+      } else if (type instanceof ZodEnum2) {
+        return type.options;
+      } else if (type instanceof ZodNativeEnum2) {
+        return Object.keys(type.enum);
+      } else if (type instanceof ZodDefault2) {
+        return getDiscriminator2(type._def.innerType);
+      } else if (type instanceof ZodUndefined2) {
+        return [void 0];
+      } else if (type instanceof ZodNull2) {
+        return [null];
+      } else {
+        return null;
+      }
+    };
     var ZodDiscriminatedUnion2 = class extends ZodType2 {
       _parse(input) {
         const { ctx } = this._processInputParams(input);
         if (ctx.parsedType !== util_1.ZodParsedType.object) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.object,
             received: ctx.parsedType
@@ -15473,11 +15700,11 @@ var require_types = __commonJS({
         }
         const discriminator = this.discriminator;
         const discriminatorValue = ctx.data[discriminator];
-        const option = this.options.get(discriminatorValue);
+        const option = this.optionsMap.get(discriminatorValue);
         if (!option) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_union_discriminator,
-            options: this.validDiscriminatorValues,
+            options: Array.from(this.optionsMap.keys()),
             path: [discriminator]
           });
           return parseUtil_1.INVALID;
@@ -15499,37 +15726,39 @@ var require_types = __commonJS({
       get discriminator() {
         return this._def.discriminator;
       }
-      get validDiscriminatorValues() {
-        return Array.from(this.options.keys());
-      }
       get options() {
         return this._def.options;
       }
-      static create(discriminator, types, params) {
-        const options = /* @__PURE__ */ new Map();
-        try {
-          types.forEach((type) => {
-            const discriminatorValue = type.shape[discriminator].value;
-            options.set(discriminatorValue, type);
-          });
-        } catch (e) {
-          throw new Error("The discriminator value could not be extracted from all the provided schemas");
-        }
-        if (options.size !== types.length) {
-          throw new Error("Some of the discriminator values are not unique");
+      get optionsMap() {
+        return this._def.optionsMap;
+      }
+      static create(discriminator, options, params) {
+        const optionsMap = /* @__PURE__ */ new Map();
+        for (const type of options) {
+          const discriminatorValues = getDiscriminator2(type.shape[discriminator]);
+          if (!discriminatorValues) {
+            throw new Error(`A discriminator value for key \`${discriminator}\` could not be extracted from all schema options`);
+          }
+          for (const value of discriminatorValues) {
+            if (optionsMap.has(value)) {
+              throw new Error(`Discriminator property ${String(discriminator)} has duplicate value ${String(value)}`);
+            }
+            optionsMap.set(value, type);
+          }
         }
         return new ZodDiscriminatedUnion2({
           typeName: ZodFirstPartyTypeKind2.ZodDiscriminatedUnion,
           discriminator,
           options,
+          optionsMap,
           ...processCreateParams2(params)
         });
       }
     };
     exports.ZodDiscriminatedUnion = ZodDiscriminatedUnion2;
     function mergeValues2(a, b) {
-      const aType = util_1.getParsedType(a);
-      const bType = util_1.getParsedType(b);
+      const aType = (0, util_1.getParsedType)(a);
+      const bType = (0, util_1.getParsedType)(b);
       if (a === b) {
         return { valid: true, data: a };
       } else if (aType === util_1.ZodParsedType.object && bType === util_1.ZodParsedType.object) {
@@ -15569,17 +15798,17 @@ var require_types = __commonJS({
       _parse(input) {
         const { status, ctx } = this._processInputParams(input);
         const handleParsed = (parsedLeft, parsedRight) => {
-          if (parseUtil_1.isAborted(parsedLeft) || parseUtil_1.isAborted(parsedRight)) {
+          if ((0, parseUtil_1.isAborted)(parsedLeft) || (0, parseUtil_1.isAborted)(parsedRight)) {
             return parseUtil_1.INVALID;
           }
           const merged = mergeValues2(parsedLeft.value, parsedRight.value);
           if (!merged.valid) {
-            parseUtil_1.addIssueToContext(ctx, {
+            (0, parseUtil_1.addIssueToContext)(ctx, {
               code: ZodError_1.ZodIssueCode.invalid_intersection_types
             });
             return parseUtil_1.INVALID;
           }
-          if (parseUtil_1.isDirty(parsedLeft) || parseUtil_1.isDirty(parsedRight)) {
+          if ((0, parseUtil_1.isDirty)(parsedLeft) || (0, parseUtil_1.isDirty)(parsedRight)) {
             status.dirty();
           }
           return { status: status.value, value: merged.data };
@@ -15623,7 +15852,7 @@ var require_types = __commonJS({
       _parse(input) {
         const { status, ctx } = this._processInputParams(input);
         if (ctx.parsedType !== util_1.ZodParsedType.array) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.array,
             received: ctx.parsedType
@@ -15631,20 +15860,22 @@ var require_types = __commonJS({
           return parseUtil_1.INVALID;
         }
         if (ctx.data.length < this._def.items.length) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.too_small,
             minimum: this._def.items.length,
             inclusive: true,
+            exact: false,
             type: "array"
           });
           return parseUtil_1.INVALID;
         }
         const rest = this._def.rest;
         if (!rest && ctx.data.length > this._def.items.length) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.too_big,
             maximum: this._def.items.length,
             inclusive: true,
+            exact: false,
             type: "array"
           });
           status.dirty();
@@ -15695,7 +15926,7 @@ var require_types = __commonJS({
       _parse(input) {
         const { status, ctx } = this._processInputParams(input);
         if (ctx.parsedType !== util_1.ZodParsedType.object) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.object,
             received: ctx.parsedType
@@ -15742,7 +15973,7 @@ var require_types = __commonJS({
       _parse(input) {
         const { status, ctx } = this._processInputParams(input);
         if (ctx.parsedType !== util_1.ZodParsedType.map) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.map,
             received: ctx.parsedType
@@ -15803,7 +16034,7 @@ var require_types = __commonJS({
       _parse(input) {
         const { status, ctx } = this._processInputParams(input);
         if (ctx.parsedType !== util_1.ZodParsedType.set) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.set,
             received: ctx.parsedType
@@ -15813,11 +16044,12 @@ var require_types = __commonJS({
         const def = this._def;
         if (def.minSize !== null) {
           if (ctx.data.size < def.minSize.value) {
-            parseUtil_1.addIssueToContext(ctx, {
+            (0, parseUtil_1.addIssueToContext)(ctx, {
               code: ZodError_1.ZodIssueCode.too_small,
               minimum: def.minSize.value,
               type: "set",
               inclusive: true,
+              exact: false,
               message: def.minSize.message
             });
             status.dirty();
@@ -15825,11 +16057,12 @@ var require_types = __commonJS({
         }
         if (def.maxSize !== null) {
           if (ctx.data.size > def.maxSize.value) {
-            parseUtil_1.addIssueToContext(ctx, {
+            (0, parseUtil_1.addIssueToContext)(ctx, {
               code: ZodError_1.ZodIssueCode.too_big,
               maximum: def.maxSize.value,
               type: "set",
               inclusive: true,
+              exact: false,
               message: def.maxSize.message
             });
             status.dirty();
@@ -15891,7 +16124,7 @@ var require_types = __commonJS({
       _parse(input) {
         const { ctx } = this._processInputParams(input);
         if (ctx.parsedType !== util_1.ZodParsedType.function) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.function,
             received: ctx.parsedType
@@ -15899,13 +16132,13 @@ var require_types = __commonJS({
           return parseUtil_1.INVALID;
         }
         function makeArgsIssue(args, error) {
-          return parseUtil_1.makeIssue({
+          return (0, parseUtil_1.makeIssue)({
             data: args,
             path: ctx.path,
             errorMaps: [
               ctx.common.contextualErrorMap,
               ctx.schemaErrorMap,
-              errors_1.getErrorMap(),
+              (0, errors_1.getErrorMap)(),
               errors_1.defaultErrorMap
             ].filter((x) => !!x),
             issueData: {
@@ -15915,13 +16148,13 @@ var require_types = __commonJS({
           });
         }
         function makeReturnsIssue(returns, error) {
-          return parseUtil_1.makeIssue({
+          return (0, parseUtil_1.makeIssue)({
             data: returns,
             path: ctx.path,
             errorMaps: [
               ctx.common.contextualErrorMap,
               ctx.schemaErrorMap,
-              errors_1.getErrorMap(),
+              (0, errors_1.getErrorMap)(),
               errors_1.defaultErrorMap
             ].filter((x) => !!x),
             issueData: {
@@ -15933,7 +16166,7 @@ var require_types = __commonJS({
         const params = { errorMap: ctx.common.contextualErrorMap };
         const fn = ctx.data;
         if (this._def.returns instanceof ZodPromise2) {
-          return parseUtil_1.OK(async (...args) => {
+          return (0, parseUtil_1.OK)(async (...args) => {
             const error = new ZodError_1.ZodError([]);
             const parsedArgs = await this._def.args.parseAsync(args, params).catch((e) => {
               error.addIssue(makeArgsIssue(args, e));
@@ -15947,7 +16180,7 @@ var require_types = __commonJS({
             return parsedReturns;
           });
         } else {
-          return parseUtil_1.OK((...args) => {
+          return (0, parseUtil_1.OK)((...args) => {
             const parsedArgs = this._def.args.safeParse(args, params);
             if (!parsedArgs.success) {
               throw new ZodError_1.ZodError([makeArgsIssue(args, parsedArgs.error)]);
@@ -16019,7 +16252,7 @@ var require_types = __commonJS({
       _parse(input) {
         if (input.data !== this._def.value) {
           const ctx = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_literal,
             expected: this._def.value
           });
@@ -16051,7 +16284,7 @@ var require_types = __commonJS({
         if (typeof input.data !== "string") {
           const ctx = this._getOrReturnCtx(input);
           const expectedValues = this._def.values;
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             expected: util_1.util.joinValues(expectedValues),
             received: ctx.parsedType,
             code: ZodError_1.ZodIssueCode.invalid_type
@@ -16061,14 +16294,14 @@ var require_types = __commonJS({
         if (this._def.values.indexOf(input.data) === -1) {
           const ctx = this._getOrReturnCtx(input);
           const expectedValues = this._def.values;
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             received: ctx.data,
             code: ZodError_1.ZodIssueCode.invalid_enum_value,
             options: expectedValues
           });
           return parseUtil_1.INVALID;
         }
-        return parseUtil_1.OK(input.data);
+        return (0, parseUtil_1.OK)(input.data);
       }
       get options() {
         return this._def.values;
@@ -16103,7 +16336,7 @@ var require_types = __commonJS({
         const ctx = this._getOrReturnCtx(input);
         if (ctx.parsedType !== util_1.ZodParsedType.string && ctx.parsedType !== util_1.ZodParsedType.number) {
           const expectedValues = util_1.util.objectValues(nativeEnumValues);
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             expected: util_1.util.joinValues(expectedValues),
             received: ctx.parsedType,
             code: ZodError_1.ZodIssueCode.invalid_type
@@ -16112,14 +16345,14 @@ var require_types = __commonJS({
         }
         if (nativeEnumValues.indexOf(input.data) === -1) {
           const expectedValues = util_1.util.objectValues(nativeEnumValues);
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             received: ctx.data,
             code: ZodError_1.ZodIssueCode.invalid_enum_value,
             options: expectedValues
           });
           return parseUtil_1.INVALID;
         }
-        return parseUtil_1.OK(input.data);
+        return (0, parseUtil_1.OK)(input.data);
       }
       get enum() {
         return this._def.values;
@@ -16137,7 +16370,7 @@ var require_types = __commonJS({
       _parse(input) {
         const { ctx } = this._processInputParams(input);
         if (ctx.parsedType !== util_1.ZodParsedType.promise && ctx.common.async === false) {
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.promise,
             received: ctx.parsedType
@@ -16145,7 +16378,7 @@ var require_types = __commonJS({
           return parseUtil_1.INVALID;
         }
         const promisified = ctx.parsedType === util_1.ZodParsedType.promise ? ctx.data : Promise.resolve(ctx.data);
-        return parseUtil_1.OK(promisified.then((data) => {
+        return (0, parseUtil_1.OK)(promisified.then((data) => {
           return this._def.type.parseAsync(data, {
             path: ctx.path,
             errorMap: ctx.common.contextualErrorMap
@@ -16164,6 +16397,9 @@ var require_types = __commonJS({
     var ZodEffects2 = class extends ZodType2 {
       innerType() {
         return this._def.schema;
+      }
+      sourceType() {
+        return this._def.schema._def.typeName === ZodFirstPartyTypeKind2.ZodEffects ? this._def.schema.sourceType() : this._def.schema;
       }
       _parse(input) {
         const { status, ctx } = this._processInputParams(input);
@@ -16188,7 +16424,7 @@ var require_types = __commonJS({
         }
         const checkCtx = {
           addIssue: (arg) => {
-            parseUtil_1.addIssueToContext(ctx, arg);
+            (0, parseUtil_1.addIssueToContext)(ctx, arg);
             if (arg.fatal) {
               status.abort();
             } else {
@@ -16242,7 +16478,7 @@ var require_types = __commonJS({
               path: ctx.path,
               parent: ctx
             });
-            if (!parseUtil_1.isValid(base))
+            if (!(0, parseUtil_1.isValid)(base))
               return base;
             const result = effect.transform(base.value, checkCtx);
             if (result instanceof Promise) {
@@ -16251,7 +16487,7 @@ var require_types = __commonJS({
             return { status: status.value, value: result };
           } else {
             return this._def.schema._parseAsync({ data: ctx.data, path: ctx.path, parent: ctx }).then((base) => {
-              if (!parseUtil_1.isValid(base))
+              if (!(0, parseUtil_1.isValid)(base))
                 return base;
               return Promise.resolve(effect.transform(base.value, checkCtx)).then((result) => ({ status: status.value, value: result }));
             });
@@ -16282,7 +16518,7 @@ var require_types = __commonJS({
       _parse(input) {
         const parsedType = this._getType(input);
         if (parsedType === util_1.ZodParsedType.undefined) {
-          return parseUtil_1.OK(void 0);
+          return (0, parseUtil_1.OK)(void 0);
         }
         return this._def.innerType._parse(input);
       }
@@ -16302,7 +16538,7 @@ var require_types = __commonJS({
       _parse(input) {
         const parsedType = this._getType(input);
         if (parsedType === util_1.ZodParsedType.null) {
-          return parseUtil_1.OK(null);
+          return (0, parseUtil_1.OK)(null);
         }
         return this._def.innerType._parse(input);
       }
@@ -16337,9 +16573,45 @@ var require_types = __commonJS({
     };
     exports.ZodDefault = ZodDefault2;
     ZodDefault2.create = (type, params) => {
-      return new ZodOptional2({
+      return new ZodDefault2({
         innerType: type,
-        typeName: ZodFirstPartyTypeKind2.ZodOptional,
+        typeName: ZodFirstPartyTypeKind2.ZodDefault,
+        defaultValue: typeof params.default === "function" ? params.default : () => params.default,
+        ...processCreateParams2(params)
+      });
+    };
+    var ZodCatch2 = class extends ZodType2 {
+      _parse(input) {
+        const { ctx } = this._processInputParams(input);
+        const result = this._def.innerType._parse({
+          data: ctx.data,
+          path: ctx.path,
+          parent: ctx
+        });
+        if ((0, parseUtil_1.isAsync)(result)) {
+          return result.then((result2) => {
+            return {
+              status: "valid",
+              value: result2.status === "valid" ? result2.value : this._def.defaultValue()
+            };
+          });
+        } else {
+          return {
+            status: "valid",
+            value: result.status === "valid" ? result.value : this._def.defaultValue()
+          };
+        }
+      }
+      removeDefault() {
+        return this._def.innerType;
+      }
+    };
+    exports.ZodCatch = ZodCatch2;
+    ZodCatch2.create = (type, params) => {
+      return new ZodCatch2({
+        innerType: type,
+        typeName: ZodFirstPartyTypeKind2.ZodCatch,
+        defaultValue: typeof params.default === "function" ? params.default : () => params.default,
         ...processCreateParams2(params)
       });
     };
@@ -16348,7 +16620,7 @@ var require_types = __commonJS({
         const parsedType = this._getType(input);
         if (parsedType !== util_1.ZodParsedType.nan) {
           const ctx = this._getOrReturnCtx(input);
-          parseUtil_1.addIssueToContext(ctx, {
+          (0, parseUtil_1.addIssueToContext)(ctx, {
             code: ZodError_1.ZodIssueCode.invalid_type,
             expected: util_1.ZodParsedType.nan,
             received: ctx.parsedType
@@ -16381,6 +16653,62 @@ var require_types = __commonJS({
       }
     };
     exports.ZodBranded = ZodBranded2;
+    var ZodPipeline2 = class extends ZodType2 {
+      _parse(input) {
+        const { status, ctx } = this._processInputParams(input);
+        if (ctx.common.async) {
+          const handleAsync = async () => {
+            const inResult = await this._def.in._parseAsync({
+              data: ctx.data,
+              path: ctx.path,
+              parent: ctx
+            });
+            if (inResult.status === "aborted")
+              return parseUtil_1.INVALID;
+            if (inResult.status === "dirty") {
+              status.dirty();
+              return (0, parseUtil_1.DIRTY)(inResult.value);
+            } else {
+              return this._def.out._parseAsync({
+                data: inResult.value,
+                path: ctx.path,
+                parent: ctx
+              });
+            }
+          };
+          return handleAsync();
+        } else {
+          const inResult = this._def.in._parseSync({
+            data: ctx.data,
+            path: ctx.path,
+            parent: ctx
+          });
+          if (inResult.status === "aborted")
+            return parseUtil_1.INVALID;
+          if (inResult.status === "dirty") {
+            status.dirty();
+            return {
+              status: "dirty",
+              value: inResult.value
+            };
+          } else {
+            return this._def.out._parseSync({
+              data: inResult.value,
+              path: ctx.path,
+              parent: ctx
+            });
+          }
+        }
+      }
+      static create(a, b) {
+        return new ZodPipeline2({
+          in: a,
+          out: b,
+          typeName: ZodFirstPartyTypeKind2.ZodPipeline
+        });
+      }
+    };
+    exports.ZodPipeline = ZodPipeline2;
     var custom2 = (check, params = {}, fatal) => {
       if (check)
         return ZodAny2.create().superRefine((data, ctx) => {
@@ -16404,6 +16732,7 @@ var require_types = __commonJS({
       ZodFirstPartyTypeKind3["ZodBigInt"] = "ZodBigInt";
       ZodFirstPartyTypeKind3["ZodBoolean"] = "ZodBoolean";
       ZodFirstPartyTypeKind3["ZodDate"] = "ZodDate";
+      ZodFirstPartyTypeKind3["ZodSymbol"] = "ZodSymbol";
       ZodFirstPartyTypeKind3["ZodUndefined"] = "ZodUndefined";
       ZodFirstPartyTypeKind3["ZodNull"] = "ZodNull";
       ZodFirstPartyTypeKind3["ZodAny"] = "ZodAny";
@@ -16428,12 +16757,14 @@ var require_types = __commonJS({
       ZodFirstPartyTypeKind3["ZodOptional"] = "ZodOptional";
       ZodFirstPartyTypeKind3["ZodNullable"] = "ZodNullable";
       ZodFirstPartyTypeKind3["ZodDefault"] = "ZodDefault";
+      ZodFirstPartyTypeKind3["ZodCatch"] = "ZodCatch";
       ZodFirstPartyTypeKind3["ZodPromise"] = "ZodPromise";
       ZodFirstPartyTypeKind3["ZodBranded"] = "ZodBranded";
+      ZodFirstPartyTypeKind3["ZodPipeline"] = "ZodPipeline";
     })(ZodFirstPartyTypeKind2 = exports.ZodFirstPartyTypeKind || (exports.ZodFirstPartyTypeKind = {}));
     var instanceOfType2 = (cls, params = {
       message: `Input not instance of ${cls.name}`
-    }) => exports.custom((data) => data instanceof cls, params, true);
+    }) => (0, exports.custom)((data) => data instanceof cls, params, true);
     exports.instanceof = instanceOfType2;
     var stringType2 = ZodString2.create;
     exports.string = stringType2;
@@ -16447,6 +16778,8 @@ var require_types = __commonJS({
     exports.boolean = booleanType2;
     var dateType2 = ZodDate2.create;
     exports.date = dateType2;
+    var symbolType2 = ZodSymbol2.create;
+    exports.symbol = symbolType2;
     var undefinedType2 = ZodUndefined2.create;
     exports.undefined = undefinedType2;
     var nullType2 = ZodNull2.create;
@@ -16500,19 +16833,28 @@ var require_types = __commonJS({
     exports.nullable = nullableType2;
     var preprocessType2 = ZodEffects2.createWithPreprocess;
     exports.preprocess = preprocessType2;
+    var pipelineType2 = ZodPipeline2.create;
+    exports.pipeline = pipelineType2;
     var ostring2 = () => stringType2().optional();
     exports.ostring = ostring2;
     var onumber2 = () => numberType2().optional();
     exports.onumber = onumber2;
     var oboolean2 = () => booleanType2().optional();
     exports.oboolean = oboolean2;
+    exports.coerce = {
+      string: (arg) => ZodString2.create({ ...arg, coerce: true }),
+      number: (arg) => ZodNumber2.create({ ...arg, coerce: true }),
+      boolean: (arg) => ZodBoolean2.create({ ...arg, coerce: true }),
+      bigint: (arg) => ZodBigInt2.create({ ...arg, coerce: true }),
+      date: (arg) => ZodDate2.create({ ...arg, coerce: true })
+    };
     exports.NEVER = parseUtil_1.INVALID;
   }
 });
 
-// node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/external.js
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/external.js
 var require_external = __commonJS({
-  "node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/external.js"(exports) {
+  "node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/external.js"(exports) {
     "use strict";
     var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
       if (k2 === void 0)
@@ -16531,25 +16873,18 @@ var require_external = __commonJS({
           __createBinding(exports2, m, p);
     };
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ZodParsedType = exports.getParsedType = void 0;
     __exportStar(require_errors(), exports);
     __exportStar(require_parseUtil(), exports);
     __exportStar(require_typeAliases(), exports);
-    var util_1 = require_util();
-    Object.defineProperty(exports, "getParsedType", { enumerable: true, get: function() {
-      return util_1.getParsedType;
-    } });
-    Object.defineProperty(exports, "ZodParsedType", { enumerable: true, get: function() {
-      return util_1.ZodParsedType;
-    } });
+    __exportStar(require_util(), exports);
     __exportStar(require_types(), exports);
     __exportStar(require_ZodError(), exports);
   }
 });
 
-// node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/index.js
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/index.js
 var require_lib3 = __commonJS({
-  "node_modules/.pnpm/zod@3.19.1/node_modules/zod/lib/index.js"(exports) {
+  "node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/index.js"(exports) {
     "use strict";
     var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
       if (k2 === void 0)
@@ -16830,7 +17165,7 @@ var core5 = __toESM(require_core());
 // src/input.ts
 var import_node_os = __toESM(require("os"));
 
-// node_modules/.pnpm/zod@3.20.0-beta.0/node_modules/zod/lib/index.mjs
+// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/index.mjs
 var util;
 (function(util2) {
   util2.assertEqual = (val) => val;
@@ -17113,25 +17448,25 @@ var errorMap = (issue, _ctx) => {
       break;
     case ZodIssueCode.too_small:
       if (issue.type === "array")
-        message = `Array must contain ${issue.inclusive ? `at least` : `more than`} ${issue.minimum} element(s)`;
+        message = `Array must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `more than`} ${issue.minimum} element(s)`;
       else if (issue.type === "string")
-        message = `String must contain ${issue.inclusive ? `at least` : `over`} ${issue.minimum} character(s)`;
+        message = `String must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `over`} ${issue.minimum} character(s)`;
       else if (issue.type === "number")
-        message = `Number must be greater than ${issue.inclusive ? `or equal to ` : ``}${issue.minimum}`;
+        message = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
       else if (issue.type === "date")
-        message = `Date must be greater than ${issue.inclusive ? `or equal to ` : ``}${new Date(issue.minimum)}`;
+        message = `Date must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${new Date(issue.minimum)}`;
       else
         message = "Invalid input";
       break;
     case ZodIssueCode.too_big:
       if (issue.type === "array")
-        message = `Array must contain ${issue.inclusive ? `at most` : `less than`} ${issue.maximum} element(s)`;
+        message = `Array must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `less than`} ${issue.maximum} element(s)`;
       else if (issue.type === "string")
-        message = `String must contain ${issue.inclusive ? `at most` : `under`} ${issue.maximum} character(s)`;
+        message = `String must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `under`} ${issue.maximum} character(s)`;
       else if (issue.type === "number")
-        message = `Number must be less than ${issue.inclusive ? `or equal to ` : ``}${issue.maximum}`;
+        message = `Number must be ${issue.exact ? `exactly` : issue.inclusive ? `less than or equal to` : `less than`} ${issue.maximum}`;
       else if (issue.type === "date")
-        message = `Date must be smaller than ${issue.inclusive ? `or equal to ` : ``}${new Date(issue.maximum)}`;
+        message = `Date must be ${issue.exact ? `exactly` : issue.inclusive ? `smaller than or equal to` : `smaller than`} ${new Date(issue.maximum)}`;
       else
         message = "Invalid input";
       break;
@@ -17303,7 +17638,6 @@ function processCreateParams(params) {
 var ZodType = class {
   constructor(def) {
     this.spa = this.safeParseAsync;
-    this.superRefine = this._refinement;
     this._def = def;
     this.parse = this.parse.bind(this);
     this.safeParse = this.safeParse.bind(this);
@@ -17466,6 +17800,9 @@ var ZodType = class {
       effect: { type: "refinement", refinement }
     });
   }
+  superRefine(refinement) {
+    return this._refinement(refinement);
+  }
   optional() {
     return ZodOptional.create(this);
   }
@@ -17600,6 +17937,7 @@ var ZodString = class extends ZodType {
             minimum: check.value,
             type: "string",
             inclusive: true,
+            exact: false,
             message: check.message
           });
           status.dirty();
@@ -17612,8 +17950,35 @@ var ZodString = class extends ZodType {
             maximum: check.value,
             type: "string",
             inclusive: true,
+            exact: false,
             message: check.message
           });
+          status.dirty();
+        }
+      } else if (check.kind === "length") {
+        const tooBig = input.data.length > check.value;
+        const tooSmall = input.data.length < check.value;
+        if (tooBig || tooSmall) {
+          ctx = this._getOrReturnCtx(input, ctx);
+          if (tooBig) {
+            addIssueToContext(ctx, {
+              code: ZodIssueCode.too_big,
+              maximum: check.value,
+              type: "string",
+              inclusive: true,
+              exact: true,
+              message: check.message
+            });
+          } else if (tooSmall) {
+            addIssueToContext(ctx, {
+              code: ZodIssueCode.too_small,
+              minimum: check.value,
+              type: "string",
+              inclusive: true,
+              exact: true,
+              message: check.message
+            });
+          }
           status.dirty();
         }
       } else if (check.kind === "email") {
@@ -17780,9 +18145,13 @@ var ZodString = class extends ZodType {
     });
   }
   length(len, message) {
-    return this.min(len, message).max(len, message);
+    return this._addCheck({
+      kind: "length",
+      value: len,
+      ...errorUtil.errToObj(message)
+    });
   }
-  isDatetime() {
+  get isDatetime() {
     return !!this._def.checks.find((ch) => ch.kind === "datetime");
   }
   get isEmail() {
@@ -17879,6 +18248,7 @@ var ZodNumber = class extends ZodType {
             minimum: check.value,
             type: "number",
             inclusive: check.inclusive,
+            exact: false,
             message: check.message
           });
           status.dirty();
@@ -17892,6 +18262,7 @@ var ZodNumber = class extends ZodType {
             maximum: check.value,
             type: "number",
             inclusive: check.inclusive,
+            exact: false,
             message: check.message
           });
           status.dirty();
@@ -18119,6 +18490,7 @@ var ZodDate = class extends ZodType {
             code: ZodIssueCode.too_small,
             message: check.message,
             inclusive: true,
+            exact: false,
             minimum: check.value,
             type: "date"
           });
@@ -18131,6 +18503,7 @@ var ZodDate = class extends ZodType {
             code: ZodIssueCode.too_big,
             message: check.message,
             inclusive: true,
+            exact: false,
             maximum: check.value,
             type: "date"
           });
@@ -18337,6 +18710,22 @@ var ZodArray = class extends ZodType {
       });
       return INVALID;
     }
+    if (def.exactLength !== null) {
+      const tooBig = ctx.data.length > def.exactLength.value;
+      const tooSmall = ctx.data.length < def.exactLength.value;
+      if (tooBig || tooSmall) {
+        addIssueToContext(ctx, {
+          code: tooBig ? ZodIssueCode.too_big : ZodIssueCode.too_small,
+          minimum: tooSmall ? def.exactLength.value : void 0,
+          maximum: tooBig ? def.exactLength.value : void 0,
+          type: "array",
+          inclusive: true,
+          exact: true,
+          message: def.exactLength.message
+        });
+        status.dirty();
+      }
+    }
     if (def.minLength !== null) {
       if (ctx.data.length < def.minLength.value) {
         addIssueToContext(ctx, {
@@ -18344,6 +18733,7 @@ var ZodArray = class extends ZodType {
           minimum: def.minLength.value,
           type: "array",
           inclusive: true,
+          exact: false,
           message: def.minLength.message
         });
         status.dirty();
@@ -18356,6 +18746,7 @@ var ZodArray = class extends ZodType {
           maximum: def.maxLength.value,
           type: "array",
           inclusive: true,
+          exact: false,
           message: def.maxLength.message
         });
         status.dirty();
@@ -18389,7 +18780,10 @@ var ZodArray = class extends ZodType {
     });
   }
   length(len, message) {
-    return this.min(len, message).max(len, message);
+    return new ZodArray({
+      ...this._def,
+      exactLength: { value: len, message: errorUtil.toString(message) }
+    });
   }
   nonempty(message) {
     return this.min(1, message);
@@ -18400,6 +18794,7 @@ ZodArray.create = (schema, params) => {
     type: schema,
     minLength: null,
     maxLength: null,
+    exactLength: null,
     typeName: ZodFirstPartyTypeKind.ZodArray,
     ...processCreateParams(params)
   });
@@ -18997,6 +19392,7 @@ var ZodTuple = class extends ZodType {
         code: ZodIssueCode.too_small,
         minimum: this._def.items.length,
         inclusive: true,
+        exact: false,
         type: "array"
       });
       return INVALID;
@@ -19007,6 +19403,7 @@ var ZodTuple = class extends ZodType {
         code: ZodIssueCode.too_big,
         maximum: this._def.items.length,
         inclusive: true,
+        exact: false,
         type: "array"
       });
       status.dirty();
@@ -19177,6 +19574,7 @@ var ZodSet = class extends ZodType {
           minimum: def.minSize.value,
           type: "set",
           inclusive: true,
+          exact: false,
           message: def.minSize.message
         });
         status.dirty();
@@ -19189,6 +19587,7 @@ var ZodSet = class extends ZodType {
           maximum: def.maxSize.value,
           type: "set",
           inclusive: true,
+          exact: false,
           message: def.maxSize.message
         });
         status.dirty();
@@ -19704,17 +20103,15 @@ var ZodCatch = class extends ZodType {
     });
     if (isAsync(result)) {
       return result.then((result2) => {
-        const defaultValue = this._def.defaultValue();
         return {
           status: "valid",
-          value: result2.status === "valid" ? result2.value : defaultValue
+          value: result2.status === "valid" ? result2.value : this._def.defaultValue()
         };
       });
     } else {
-      const defaultValue = this._def.defaultValue();
       return {
         status: "valid",
-        value: result.status === "valid" ? result.value : defaultValue
+        value: result.status === "valid" ? result.value : this._def.defaultValue()
       };
     }
   }
@@ -19923,8 +20320,6 @@ var coerce = {
 var NEVER = INVALID;
 var mod = /* @__PURE__ */ Object.freeze({
   __proto__: null,
-  getParsedType,
-  ZodParsedType,
   defaultErrorMap: errorMap,
   setErrorMap,
   getErrorMap,
@@ -19939,6 +20334,11 @@ var mod = /* @__PURE__ */ Object.freeze({
   isDirty,
   isValid,
   isAsync,
+  get util() {
+    return util;
+  },
+  ZodParsedType,
+  getParsedType,
   ZodType,
   ZodString,
   ZodNumber,
@@ -20115,6 +20515,14 @@ async function parseInput({
   getInput,
   getBooleanInput
 }) {
+  var _a;
+  const getBool = (name) => {
+    try {
+      return getBooleanInput(name);
+    } catch (e) {
+      return void 0;
+    }
+  };
   const input = {
     artifact_name: getInput("artifact_name"),
     token: getInput("token"),
@@ -20126,7 +20534,7 @@ async function parseInput({
     key: getInput("key"),
     value: getInput("value"),
     trend: getInput("trend"),
-    should_comment: getBooleanInput("comment")
+    should_comment: (_a = getBool("should_comment")) != null ? _a : true
   };
   return Input.parseAsync(input);
 }

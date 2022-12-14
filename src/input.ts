@@ -113,6 +113,14 @@ export async function parseInput({
 }: Pick<typeof core, "getInput" | "getBooleanInput">): Promise<
   z.infer<typeof Input>
 > {
+  const getBool = (name: string): boolean | undefined => {
+    try {
+      return getBooleanInput(name);
+    } catch (e) {
+      return undefined;
+    }
+  };
+
   const input: ConvertOptionalToUndefined<
     UnionToIntersection<z.input<typeof Input>>
   > = {
@@ -126,7 +134,7 @@ export async function parseInput({
     key: getInput("key"),
     value: getInput("value"),
     trend: getInput("trend"),
-    should_comment: getBooleanInput("comment"),
+    should_comment: getBool("should_comment") ?? true,
   };
 
   return Input.parseAsync(input);
