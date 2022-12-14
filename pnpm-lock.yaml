@@ -15,7 +15,7 @@ specifiers:
   tsup: ^6.5.0
   typescript: ^4.9.4
   unzipit: ^1.4.0
-  zod: 3.20.2
+  zod: 3.20.0-beta.0
   zod-error: ^1.0.5
 
 dependencies:
@@ -35,7 +35,7 @@ devDependencies:
   tsup: 6.5.0_z6wznmtyb6ovnulj6iujpct7um
   typescript: 4.9.4
   unzipit: 1.4.0
-  zod: 3.20.2
+  zod: 3.20.0-beta.0
   zod-error: 1.0.5
 
 packages:
@@ -5098,6 +5098,10 @@ packages:
     resolution: {integrity: sha512-dfLN+ds6YFUG3IOIrDbXewczB/fSh15GThi3SJmwL+/TAlMTPV/ebf4ttJt3MKdr1qzCYxnakWxmyOF3kI7DTA==}
     dependencies:
       zod: 3.20.2
+    dev: true
+
+  /zod/3.20.0-beta.0:
+    resolution: {integrity: sha512-f3tzkrcUzmZi8Rsy0dS5BZJMahnMN1uR0a25du3xBH43kmVnSU6GBtuYSWu4aFPMh847GPUeoOoVARK5hj/rDw==}
     dev: true
 
   /zod/3.20.2:

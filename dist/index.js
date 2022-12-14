@@ -17165,7 +17165,7 @@ var core5 = __toESM(require_core());
 // src/input.ts
 var import_node_os = __toESM(require("os"));
 
-// node_modules/.pnpm/zod@3.20.2/node_modules/zod/lib/index.mjs
+// node_modules/.pnpm/zod@3.20.0-beta.0/node_modules/zod/lib/index.mjs
 var util;
 (function(util2) {
   util2.assertEqual = (val) => val;
@@ -17448,25 +17448,25 @@ var errorMap = (issue, _ctx) => {
       break;
     case ZodIssueCode.too_small:
       if (issue.type === "array")
-        message = `Array must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `more than`} ${issue.minimum} element(s)`;
+        message = `Array must contain ${issue.inclusive ? `at least` : `more than`} ${issue.minimum} element(s)`;
       else if (issue.type === "string")
-        message = `String must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `over`} ${issue.minimum} character(s)`;
+        message = `String must contain ${issue.inclusive ? `at least` : `over`} ${issue.minimum} character(s)`;
       else if (issue.type === "number")
-        message = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
+        message = `Number must be greater than ${issue.inclusive ? `or equal to ` : ``}${issue.minimum}`;
       else if (issue.type === "date")
-        message = `Date must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${new Date(issue.minimum)}`;
+        message = `Date must be greater than ${issue.inclusive ? `or equal to ` : ``}${new Date(issue.minimum)}`;
       else
         message = "Invalid input";
       break;
     case ZodIssueCode.too_big:
       if (issue.type === "array")
-        message = `Array must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `less than`} ${issue.maximum} element(s)`;
+        message = `Array must contain ${issue.inclusive ? `at most` : `less than`} ${issue.maximum} element(s)`;
       else if (issue.type === "string")
-        message = `String must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `under`} ${issue.maximum} character(s)`;
+        message = `String must contain ${issue.inclusive ? `at most` : `under`} ${issue.maximum} character(s)`;
       else if (issue.type === "number")
-        message = `Number must be ${issue.exact ? `exactly` : issue.inclusive ? `less than or equal to` : `less than`} ${issue.maximum}`;
+        message = `Number must be less than ${issue.inclusive ? `or equal to ` : ``}${issue.maximum}`;
       else if (issue.type === "date")
-        message = `Date must be ${issue.exact ? `exactly` : issue.inclusive ? `smaller than or equal to` : `smaller than`} ${new Date(issue.maximum)}`;
+        message = `Date must be smaller than ${issue.inclusive ? `or equal to ` : ``}${new Date(issue.maximum)}`;
       else
         message = "Invalid input";
       break;
@@ -17638,6 +17638,7 @@ function processCreateParams(params) {
 var ZodType = class {
   constructor(def) {
     this.spa = this.safeParseAsync;
+    this.superRefine = this._refinement;
     this._def = def;
     this.parse = this.parse.bind(this);
     this.safeParse = this.safeParse.bind(this);
@@ -17800,9 +17801,6 @@ var ZodType = class {
       effect: { type: "refinement", refinement }
     });
   }
-  superRefine(refinement) {
-    return this._refinement(refinement);
-  }
   optional() {
     return ZodOptional.create(this);
   }
@@ -17937,7 +17935,6 @@ var ZodString = class extends ZodType {
             minimum: check.value,
             type: "string",
             inclusive: true,
-            exact: false,
             message: check.message
           });
           status.dirty();
@@ -17950,35 +17947,8 @@ var ZodString = class extends ZodType {
             maximum: check.value,
             type: "string",
             inclusive: true,
-            exact: false,
             message: check.message
           });
-          status.dirty();
-        }
-      } else if (check.kind === "length") {
-        const tooBig = input.data.length > check.value;
-        const tooSmall = input.data.length < check.value;
-        if (tooBig || tooSmall) {
-          ctx = this._getOrReturnCtx(input, ctx);
-          if (tooBig) {
-            addIssueToContext(ctx, {
-              code: ZodIssueCode.too_big,
-              maximum: check.value,
-              type: "string",
-              inclusive: true,
-              exact: true,
-              message: check.message
-            });
-          } else if (tooSmall) {
-            addIssueToContext(ctx, {
-              code: ZodIssueCode.too_small,
-              minimum: check.value,
-              type: "string",
-              inclusive: true,
-              exact: true,
-              message: check.message
-            });
-          }
           status.dirty();
         }
       } else if (check.kind === "email") {
@@ -18145,13 +18115,9 @@ var ZodString = class extends ZodType {
     });
   }
   length(len, message) {
-    return this._addCheck({
-      kind: "length",
-      value: len,
-      ...errorUtil.errToObj(message)
-    });
+    return this.min(len, message).max(len, message);
   }
-  get isDatetime() {
+  isDatetime() {
     return !!this._def.checks.find((ch) => ch.kind === "datetime");
   }
   get isEmail() {
@@ -18248,7 +18214,6 @@ var ZodNumber = class extends ZodType {
             minimum: check.value,
             type: "number",
             inclusive: check.inclusive,
-            exact: false,
             message: check.message
           });
           status.dirty();
@@ -18262,7 +18227,6 @@ var ZodNumber = class extends ZodType {
             maximum: check.value,
             type: "number",
             inclusive: check.inclusive,
-            exact: false,
             message: check.message
           });
           status.dirty();
@@ -18490,7 +18454,6 @@ var ZodDate = class extends ZodType {
             code: ZodIssueCode.too_small,
             message: check.message,
             inclusive: true,
-            exact: false,
             minimum: check.value,
             type: "date"
           });
@@ -18503,7 +18466,6 @@ var ZodDate = class extends ZodType {
             code: ZodIssueCode.too_big,
             message: check.message,
             inclusive: true,
-            exact: false,
             maximum: check.value,
             type: "date"
           });
@@ -18710,22 +18672,6 @@ var ZodArray = class extends ZodType {
       });
       return INVALID;
     }
-    if (def.exactLength !== null) {
-      const tooBig = ctx.data.length > def.exactLength.value;
-      const tooSmall = ctx.data.length < def.exactLength.value;
-      if (tooBig || tooSmall) {
-        addIssueToContext(ctx, {
-          code: tooBig ? ZodIssueCode.too_big : ZodIssueCode.too_small,
-          minimum: tooSmall ? def.exactLength.value : void 0,
-          maximum: tooBig ? def.exactLength.value : void 0,
-          type: "array",
-          inclusive: true,
-          exact: true,
-          message: def.exactLength.message
-        });
-        status.dirty();
-      }
-    }
     if (def.minLength !== null) {
       if (ctx.data.length < def.minLength.value) {
         addIssueToContext(ctx, {
@@ -18733,7 +18679,6 @@ var ZodArray = class extends ZodType {
           minimum: def.minLength.value,
           type: "array",
           inclusive: true,
-          exact: false,
           message: def.minLength.message
         });
         status.dirty();
@@ -18746,7 +18691,6 @@ var ZodArray = class extends ZodType {
           maximum: def.maxLength.value,
           type: "array",
           inclusive: true,
-          exact: false,
           message: def.maxLength.message
         });
         status.dirty();
@@ -18780,10 +18724,7 @@ var ZodArray = class extends ZodType {
     });
   }
   length(len, message) {
-    return new ZodArray({
-      ...this._def,
-      exactLength: { value: len, message: errorUtil.toString(message) }
-    });
+    return this.min(len, message).max(len, message);
   }
   nonempty(message) {
     return this.min(1, message);
@@ -18794,7 +18735,6 @@ ZodArray.create = (schema, params) => {
     type: schema,
     minLength: null,
     maxLength: null,
-    exactLength: null,
     typeName: ZodFirstPartyTypeKind.ZodArray,
     ...processCreateParams(params)
   });
@@ -19392,7 +19332,6 @@ var ZodTuple = class extends ZodType {
         code: ZodIssueCode.too_small,
         minimum: this._def.items.length,
         inclusive: true,
-        exact: false,
         type: "array"
       });
       return INVALID;
@@ -19403,7 +19342,6 @@ var ZodTuple = class extends ZodType {
         code: ZodIssueCode.too_big,
         maximum: this._def.items.length,
         inclusive: true,
-        exact: false,
         type: "array"
       });
       status.dirty();
@@ -19574,7 +19512,6 @@ var ZodSet = class extends ZodType {
           minimum: def.minSize.value,
           type: "set",
           inclusive: true,
-          exact: false,
           message: def.minSize.message
         });
         status.dirty();
@@ -19587,7 +19524,6 @@ var ZodSet = class extends ZodType {
           maximum: def.maxSize.value,
           type: "set",
           inclusive: true,
-          exact: false,
           message: def.maxSize.message
         });
         status.dirty();
@@ -20103,15 +20039,17 @@ var ZodCatch = class extends ZodType {
     });
     if (isAsync(result)) {
       return result.then((result2) => {
+        const defaultValue = this._def.defaultValue();
         return {
           status: "valid",
-          value: result2.status === "valid" ? result2.value : this._def.defaultValue()
+          value: result2.status === "valid" ? result2.value : defaultValue
         };
       });
     } else {
+      const defaultValue = this._def.defaultValue();
       return {
         status: "valid",
-        value: result.status === "valid" ? result.value : this._def.defaultValue()
+        value: result.status === "valid" ? result.value : defaultValue
       };
     }
   }
@@ -20320,6 +20258,8 @@ var coerce = {
 var NEVER = INVALID;
 var mod = /* @__PURE__ */ Object.freeze({
   __proto__: null,
+  getParsedType,
+  ZodParsedType,
   defaultErrorMap: errorMap,
   setErrorMap,
   getErrorMap,
@@ -20334,11 +20274,6 @@ var mod = /* @__PURE__ */ Object.freeze({
   isDirty,
   isValid,
   isAsync,
-  get util() {
-    return util;
-  },
-  ZodParsedType,
-  getParsedType,
   ZodType,
   ZodString,
   ZodNumber,
