@@ -15,10 +15,15 @@ const StringToNumber = z.string().transform((x, ctx) => {
   return num;
 });
 
-const Metric = z.object({
+export const Trend = z.enum(["lower-is-better", "higher-is-better"]);
+
+export const Metric = z.object({
   key: z.string().min(1),
   value: z.number().or(StringToNumber),
+  units: z.string().optional(),
+  trend: z.string().pipe(Trend.optional()),
 });
+export type Metric = z.infer<typeof Metric>;
 
 const ReadableFile = z.string().transform(async (x, ctx) => {
   try {
@@ -80,6 +85,7 @@ const Input = z
     max_commits_to_traverse: StringToNumber.pipe(
       z.number().int().positive()
     ).default("20"),
+    should_comment: z.boolean().default(true),
   })
   .and(BenchmarkInput)
   .transform((input) => ({
@@ -88,30 +94,40 @@ const Input = z
     mainBranch: input.main_branch,
     maxCommitsToTraverse: input.max_commits_to_traverse,
     metrics: input.input,
+    shouldComment: input.should_comment,
   }));
 
 export async function parseInput({
   getInput,
-}: Pick<typeof core, "getInput">): Promise<z.infer<typeof Input>> {
-  const data: Partial<Record<keyof z.input<typeof Input>, string>> = {};
-  const keys = [
-    "artifact_name",
-    "token",
-    "main_branch",
-    "max_commits_to_traverse",
-    "json",
-    "input_file",
-    "key",
-    "value",
-  ];
-  for (const key of keys) {
-    const value = getInput(key);
-    if (value !== "") {
-      data[key as keyof z.input<typeof Input>] = value;
+  getBooleanInput,
+}: Pick<typeof core, "getInput" | "getBooleanInput">): Promise<
+  z.infer<typeof Input>
+> {
+  const getBool = (name: string): boolean | undefined => {
+    try {
+      return getBooleanInput(name);
+    } catch (e) {
+      return undefined;
     }
-  }
+  };
 
-  return Input.parseAsync(data);
+  const getString = (name: string): string | undefined => {
+    return getInput(name) || undefined;
+  };
+
+  return Input.parseAsync({
+    artifact_name: getString("artifact_name"),
+    token: getString("token"),
+    main_branch: getString("main_branch"),
+    max_commits_to_traverse: getString("max_commits_to_traverse"),
+    input_file: getString("input_file"),
+    units: getString("units"),
+    json: getString("json"),
+    key: getString("key"),
+    value: getString("value"),
+    trend: getString("trend"),
+    should_comment: getBool("should_comment") ?? true,
+  });
 }
 
 export type Input = z.infer<typeof Input>;

@@ -7,6 +7,8 @@ import { storeArtifact } from "./store-artifact";
 import { ZodError } from "zod";
 import { readableZodErrorMessage } from "./readable-zod-error-message";
 import { pick, groupBy } from "./collections";
+import { getComparisonTable, stringifyTag } from "./comment";
+import { commentOnGitHub } from "./comment-on-github";
 
 async function run() {
   try {
@@ -21,8 +23,14 @@ async function run() {
     const keys = [...new Set(currentArtifacts.map((a) => a.key))];
     const keyed = pick(groupBy(artifacts, "key"), keys);
 
+    const resultsTable = stringifyTag(getComparisonTable({ artifacts: keyed }));
+
     core.setOutput("downloaded_artifacts", JSON.stringify(keyed));
-    console.log(keyed);
+    core.setOutput("results_table", resultsTable);
+
+    if (input.shouldComment) {
+      await commentOnGitHub(input, resultsTable);
+    }
   } catch (error) {
     const message =
       error instanceof ZodError
@@ -37,8 +45,7 @@ function getCurrentArtifacts(input: Pick<Input, "metrics">): Artifact[] {
   const sha = github.sha;
   const sortDate = new Date();
   return input.metrics.map((metric) => ({
-    key: metric.key,
-    value: metric.value,
+    ...metric,
     sha,
     sortDate,
   }));
