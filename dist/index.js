@@ -495,7 +495,7 @@ var require_sha1 = __commonJS({
     function _interopRequireDefault(obj) {
       return obj && obj.__esModule ? obj : { default: obj };
     }
-    function sha1(bytes) {
+    function sha12(bytes) {
       if (Array.isArray(bytes)) {
         bytes = Buffer.from(bytes);
       } else if (typeof bytes === "string") {
@@ -503,7 +503,7 @@ var require_sha1 = __commonJS({
       }
       return _crypto.default.createHash("sha1").update(bytes).digest();
     }
-    var _default = sha1;
+    var _default = sha12;
     exports.default = _default;
   }
 });
@@ -864,7 +864,7 @@ var require_tunnel = __commonJS({
         connectOptions.headers = connectOptions.headers || {};
         connectOptions.headers["Proxy-Authorization"] = "Basic " + new Buffer(connectOptions.proxyAuth).toString("base64");
       }
-      debug4("making CONNECT request");
+      debug5("making CONNECT request");
       var connectReq = self.request(connectOptions);
       connectReq.useChunkedEncodingByDefault = false;
       connectReq.once("response", onResponse);
@@ -884,7 +884,7 @@ var require_tunnel = __commonJS({
         connectReq.removeAllListeners();
         socket.removeAllListeners();
         if (res.statusCode !== 200) {
-          debug4(
+          debug5(
             "tunneling socket could not be established, statusCode=%d",
             res.statusCode
           );
@@ -896,7 +896,7 @@ var require_tunnel = __commonJS({
           return;
         }
         if (head.length > 0) {
-          debug4("got illegal response body from proxy");
+          debug5("got illegal response body from proxy");
           socket.destroy();
           var error = new Error("got illegal response body from proxy");
           error.code = "ECONNRESET";
@@ -904,13 +904,13 @@ var require_tunnel = __commonJS({
           self.removeSocket(placeholder);
           return;
         }
-        debug4("tunneling connection has established");
+        debug5("tunneling connection has established");
         self.sockets[self.sockets.indexOf(placeholder)] = socket;
         return cb(socket);
       }
       function onError(cause) {
         connectReq.removeAllListeners();
-        debug4(
+        debug5(
           "tunneling socket could not be established, cause=%s\n",
           cause.message,
           cause.stack
@@ -972,9 +972,9 @@ var require_tunnel = __commonJS({
       }
       return target;
     }
-    var debug4;
+    var debug5;
     if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
-      debug4 = function() {
+      debug5 = function() {
         var args = Array.prototype.slice.call(arguments);
         if (typeof args[0] === "string") {
           args[0] = "TUNNEL: " + args[0];
@@ -984,10 +984,10 @@ var require_tunnel = __commonJS({
         console.error.apply(console, args);
       };
     } else {
-      debug4 = function() {
+      debug5 = function() {
       };
     }
-    exports.debug = debug4;
+    exports.debug = debug5;
   }
 });
 
@@ -2109,10 +2109,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       return process.env["RUNNER_DEBUG"] === "1";
     }
     exports.isDebug = isDebug;
-    function debug4(message) {
+    function debug5(message) {
       command_1.issueCommand("debug", {}, message);
     }
-    exports.debug = debug4;
+    exports.debug = debug5;
     function error(message, properties = {}) {
       command_1.issueCommand("error", utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
     }
@@ -8320,11 +8320,11 @@ var require_github = __commonJS({
     var Context = __importStar(require_context());
     var utils_1 = require_utils4();
     exports.context = new Context.Context();
-    function getOctokit2(token, options, ...additionalPlugins) {
+    function getOctokit3(token, options, ...additionalPlugins) {
       const GitHubWithPlugins = utils_1.GitHub.plugin(...additionalPlugins);
       return new GitHubWithPlugins(utils_1.getOctokitOptions(token, options));
     }
-    exports.getOctokit = getOctokit2;
+    exports.getOctokit = getOctokit3;
   }
 });
 
@@ -9090,7 +9090,7 @@ var require_minimatch = __commonJS({
       this.parseNegate();
       var set = this.globSet = this.braceExpand();
       if (options.debug)
-        this.debug = function debug4() {
+        this.debug = function debug5() {
           console.error.apply(console, arguments);
         };
       this.debug(this.pattern, set);
@@ -12329,7 +12329,7 @@ var require_requestUtils = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.retryHttpClientRequest = exports.retry = void 0;
     var utils_1 = require_utils5();
-    var core5 = __importStar(require_core());
+    var core6 = __importStar(require_core());
     var config_variables_1 = require_config_variables();
     function retry(name, operation, customErrorMessages, maxAttempts) {
       return __awaiter(this, void 0, void 0, function* () {
@@ -12356,13 +12356,13 @@ var require_requestUtils = __commonJS({
             errorMessage = error.message;
           }
           if (!isRetryable) {
-            core5.info(`${name} - Error is not retryable`);
+            core6.info(`${name} - Error is not retryable`);
             if (response) {
               utils_1.displayHttpDiagnostics(response);
             }
             break;
           }
-          core5.info(`${name} - Attempt ${attempt} of ${maxAttempts} failed with error: ${errorMessage}`);
+          core6.info(`${name} - Attempt ${attempt} of ${maxAttempts} failed with error: ${errorMessage}`);
           yield utils_1.sleep(utils_1.getExponentialRetryTimeInMilliseconds(attempt));
           attempt++;
         }
@@ -12447,7 +12447,7 @@ var require_upload_http_client = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.UploadHttpClient = void 0;
     var fs2 = __importStar(require("fs"));
-    var core5 = __importStar(require_core());
+    var core6 = __importStar(require_core());
     var tmp = __importStar(require_tmp_promise());
     var stream = __importStar(require("stream"));
     var utils_1 = require_utils5();
@@ -12501,7 +12501,7 @@ var require_upload_http_client = __commonJS({
         return __awaiter(this, void 0, void 0, function* () {
           const FILE_CONCURRENCY = config_variables_1.getUploadFileConcurrency();
           const MAX_CHUNK_SIZE = config_variables_1.getUploadChunkSize();
-          core5.debug(`File Concurrency: ${FILE_CONCURRENCY}, and Chunk Size: ${MAX_CHUNK_SIZE}`);
+          core6.debug(`File Concurrency: ${FILE_CONCURRENCY}, and Chunk Size: ${MAX_CHUNK_SIZE}`);
           const parameters = [];
           let continueOnError = true;
           if (options) {
@@ -12538,15 +12538,15 @@ var require_upload_http_client = __commonJS({
               }
               const startTime = perf_hooks_1.performance.now();
               const uploadFileResult = yield this.uploadFileAsync(index, currentFileParameters);
-              if (core5.isDebug()) {
-                core5.debug(`File: ${++completedFiles}/${filesToUpload.length}. ${currentFileParameters.file} took ${(perf_hooks_1.performance.now() - startTime).toFixed(3)} milliseconds to finish upload`);
+              if (core6.isDebug()) {
+                core6.debug(`File: ${++completedFiles}/${filesToUpload.length}. ${currentFileParameters.file} took ${(perf_hooks_1.performance.now() - startTime).toFixed(3)} milliseconds to finish upload`);
               }
               uploadFileSize += uploadFileResult.successfulUploadSize;
               totalFileSize += uploadFileResult.totalSize;
               if (uploadFileResult.isSuccess === false) {
                 failedItemsToReport.push(currentFileParameters.file);
                 if (!continueOnError) {
-                  core5.error(`aborting artifact upload`);
+                  core6.error(`aborting artifact upload`);
                   abortPendingFileUploads = true;
                 }
               }
@@ -12555,7 +12555,7 @@ var require_upload_http_client = __commonJS({
           })));
           this.statusReporter.stop();
           this.uploadHttpManager.disposeAndReplaceAllClients();
-          core5.info(`Total size of all the files uploaded is ${uploadFileSize} bytes`);
+          core6.info(`Total size of all the files uploaded is ${uploadFileSize} bytes`);
           return {
             uploadSize: uploadFileSize,
             totalSize: totalFileSize,
@@ -12574,16 +12574,16 @@ var require_upload_http_client = __commonJS({
           let uploadFileSize = 0;
           let isGzip = true;
           if (!isFIFO && totalFileSize < 65536) {
-            core5.debug(`${parameters.file} is less than 64k in size. Creating a gzip file in-memory to potentially reduce the upload size`);
+            core6.debug(`${parameters.file} is less than 64k in size. Creating a gzip file in-memory to potentially reduce the upload size`);
             const buffer = yield upload_gzip_1.createGZipFileInBuffer(parameters.file);
             let openUploadStream;
             if (totalFileSize < buffer.byteLength) {
-              core5.debug(`The gzip file created for ${parameters.file} did not help with reducing the size of the file. The original file will be uploaded as-is`);
+              core6.debug(`The gzip file created for ${parameters.file} did not help with reducing the size of the file. The original file will be uploaded as-is`);
               openUploadStream = () => fs2.createReadStream(parameters.file);
               isGzip = false;
               uploadFileSize = totalFileSize;
             } else {
-              core5.debug(`A gzip file created for ${parameters.file} helped with reducing the size of the original file. The file will be uploaded using gzip.`);
+              core6.debug(`A gzip file created for ${parameters.file} helped with reducing the size of the original file. The file will be uploaded using gzip.`);
               openUploadStream = () => {
                 const passThrough = new stream.PassThrough();
                 passThrough.end(buffer);
@@ -12595,7 +12595,7 @@ var require_upload_http_client = __commonJS({
             if (!result) {
               isUploadSuccessful = false;
               failedChunkSizes += uploadFileSize;
-              core5.warning(`Aborting upload for ${parameters.file} due to failure`);
+              core6.warning(`Aborting upload for ${parameters.file} due to failure`);
             }
             return {
               isSuccess: isUploadSuccessful,
@@ -12604,16 +12604,16 @@ var require_upload_http_client = __commonJS({
             };
           } else {
             const tempFile = yield tmp.file();
-            core5.debug(`${parameters.file} is greater than 64k in size. Creating a gzip file on-disk ${tempFile.path} to potentially reduce the upload size`);
+            core6.debug(`${parameters.file} is greater than 64k in size. Creating a gzip file on-disk ${tempFile.path} to potentially reduce the upload size`);
             uploadFileSize = yield upload_gzip_1.createGZipFileOnDisk(parameters.file, tempFile.path);
             let uploadFilePath = tempFile.path;
             if (!isFIFO && totalFileSize < uploadFileSize) {
-              core5.debug(`The gzip file created for ${parameters.file} did not help with reducing the size of the file. The original file will be uploaded as-is`);
+              core6.debug(`The gzip file created for ${parameters.file} did not help with reducing the size of the file. The original file will be uploaded as-is`);
               uploadFileSize = totalFileSize;
               uploadFilePath = parameters.file;
               isGzip = false;
             } else {
-              core5.debug(`The gzip file created for ${parameters.file} is smaller than the original file. The file will be uploaded using gzip.`);
+              core6.debug(`The gzip file created for ${parameters.file} is smaller than the original file. The file will be uploaded using gzip.`);
             }
             let abortFileUpload = false;
             while (offset < uploadFileSize) {
@@ -12633,7 +12633,7 @@ var require_upload_http_client = __commonJS({
               if (!result) {
                 isUploadSuccessful = false;
                 failedChunkSizes += chunkSize;
-                core5.warning(`Aborting upload for ${parameters.file} due to failure`);
+                core6.warning(`Aborting upload for ${parameters.file} due to failure`);
                 abortFileUpload = true;
               } else {
                 if (uploadFileSize > 8388608) {
@@ -12641,7 +12641,7 @@ var require_upload_http_client = __commonJS({
                 }
               }
             }
-            core5.debug(`deleting temporary gzip file ${tempFile.path}`);
+            core6.debug(`deleting temporary gzip file ${tempFile.path}`);
             yield tempFile.cleanup();
             return {
               isSuccess: isUploadSuccessful,
@@ -12667,7 +12667,7 @@ var require_upload_http_client = __commonJS({
               if (response) {
                 utils_1.displayHttpDiagnostics(response);
               }
-              core5.info(`Retry limit has been reached for chunk at offset ${start} to ${resourceUrl}`);
+              core6.info(`Retry limit has been reached for chunk at offset ${start} to ${resourceUrl}`);
               return true;
             }
             return false;
@@ -12675,14 +12675,14 @@ var require_upload_http_client = __commonJS({
           const backOff = (retryAfterValue) => __awaiter(this, void 0, void 0, function* () {
             this.uploadHttpManager.disposeAndReplaceClient(httpClientIndex);
             if (retryAfterValue) {
-              core5.info(`Backoff due to too many requests, retry #${retryCount}. Waiting for ${retryAfterValue} milliseconds before continuing the upload`);
+              core6.info(`Backoff due to too many requests, retry #${retryCount}. Waiting for ${retryAfterValue} milliseconds before continuing the upload`);
               yield utils_1.sleep(retryAfterValue);
             } else {
               const backoffTime = utils_1.getExponentialRetryTimeInMilliseconds(retryCount);
-              core5.info(`Exponential backoff for retry #${retryCount}. Waiting for ${backoffTime} milliseconds before continuing the upload at offset ${start}`);
+              core6.info(`Exponential backoff for retry #${retryCount}. Waiting for ${backoffTime} milliseconds before continuing the upload at offset ${start}`);
               yield utils_1.sleep(backoffTime);
             }
-            core5.info(`Finished backoff for retry #${retryCount}, continuing with upload`);
+            core6.info(`Finished backoff for retry #${retryCount}, continuing with upload`);
             return;
           });
           while (retryCount <= retryLimit) {
@@ -12690,7 +12690,7 @@ var require_upload_http_client = __commonJS({
             try {
               response = yield uploadChunkRequest();
             } catch (error) {
-              core5.info(`An error has been caught http-client index ${httpClientIndex}, retrying the upload`);
+              core6.info(`An error has been caught http-client index ${httpClientIndex}, retrying the upload`);
               console.log(error);
               if (incrementAndCheckRetryLimit()) {
                 return false;
@@ -12702,13 +12702,13 @@ var require_upload_http_client = __commonJS({
             if (utils_1.isSuccessStatusCode(response.message.statusCode)) {
               return true;
             } else if (utils_1.isRetryableStatusCode(response.message.statusCode)) {
-              core5.info(`A ${response.message.statusCode} status code has been received, will attempt to retry the upload`);
+              core6.info(`A ${response.message.statusCode} status code has been received, will attempt to retry the upload`);
               if (incrementAndCheckRetryLimit(response)) {
                 return false;
               }
               utils_1.isThrottledStatusCode(response.message.statusCode) ? yield backOff(utils_1.tryGetRetryAfterValueTimeInMilliseconds(response.message.headers)) : yield backOff();
             } else {
-              core5.error(`Unexpected response. Unable to upload chunk to ${resourceUrl}`);
+              core6.error(`Unexpected response. Unable to upload chunk to ${resourceUrl}`);
               utils_1.displayHttpDiagnostics(response);
               return false;
             }
@@ -12722,7 +12722,7 @@ var require_upload_http_client = __commonJS({
           resourceUrl.searchParams.append("artifactName", artifactName);
           const parameters = { Size: size };
           const data = JSON.stringify(parameters, null, 2);
-          core5.debug(`URL is ${resourceUrl.toString()}`);
+          core6.debug(`URL is ${resourceUrl.toString()}`);
           const client = this.uploadHttpManager.getClient(0);
           const headers = utils_1.getUploadHeaders("application/json", false);
           const customErrorMessages = /* @__PURE__ */ new Map([
@@ -12735,7 +12735,7 @@ var require_upload_http_client = __commonJS({
             return client.patch(resourceUrl.toString(), data, headers);
           }), customErrorMessages);
           yield response.readBody();
-          core5.debug(`Artifact ${artifactName} has been successfully uploaded, total size in bytes: ${size}`);
+          core6.debug(`Artifact ${artifactName} has been successfully uploaded, total size in bytes: ${size}`);
         });
       }
     };
@@ -12805,7 +12805,7 @@ var require_download_http_client = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DownloadHttpClient = void 0;
     var fs2 = __importStar(require("fs"));
-    var core5 = __importStar(require_core());
+    var core6 = __importStar(require_core());
     var zlib2 = __importStar(require("zlib"));
     var utils_1 = require_utils5();
     var url_1 = require("url");
@@ -12847,11 +12847,11 @@ var require_download_http_client = __commonJS({
       downloadSingleArtifact(downloadItems) {
         return __awaiter(this, void 0, void 0, function* () {
           const DOWNLOAD_CONCURRENCY = config_variables_1.getDownloadFileConcurrency();
-          core5.debug(`Download file concurrency is set to ${DOWNLOAD_CONCURRENCY}`);
+          core6.debug(`Download file concurrency is set to ${DOWNLOAD_CONCURRENCY}`);
           const parallelDownloads = [...new Array(DOWNLOAD_CONCURRENCY).keys()];
           let currentFile = 0;
           let downloadedFiles = 0;
-          core5.info(`Total number of files that will be downloaded: ${downloadItems.length}`);
+          core6.info(`Total number of files that will be downloaded: ${downloadItems.length}`);
           this.statusReporter.setTotalNumberOfFilesToProcess(downloadItems.length);
           this.statusReporter.start();
           yield Promise.all(parallelDownloads.map((index) => __awaiter(this, void 0, void 0, function* () {
@@ -12860,8 +12860,8 @@ var require_download_http_client = __commonJS({
               currentFile += 1;
               const startTime = perf_hooks_1.performance.now();
               yield this.downloadIndividualFile(index, currentFileToDownload.sourceLocation, currentFileToDownload.targetPath);
-              if (core5.isDebug()) {
-                core5.debug(`File: ${++downloadedFiles}/${downloadItems.length}. ${currentFileToDownload.targetPath} took ${(perf_hooks_1.performance.now() - startTime).toFixed(3)} milliseconds to finish downloading`);
+              if (core6.isDebug()) {
+                core6.debug(`File: ${++downloadedFiles}/${downloadItems.length}. ${currentFileToDownload.targetPath} took ${(perf_hooks_1.performance.now() - startTime).toFixed(3)} milliseconds to finish downloading`);
               }
               this.statusReporter.incrementProcessedCount();
             }
@@ -12893,19 +12893,19 @@ var require_download_http_client = __commonJS({
             } else {
               this.downloadHttpManager.disposeAndReplaceClient(httpClientIndex);
               if (retryAfterValue) {
-                core5.info(`Backoff due to too many requests, retry #${retryCount}. Waiting for ${retryAfterValue} milliseconds before continuing the download`);
+                core6.info(`Backoff due to too many requests, retry #${retryCount}. Waiting for ${retryAfterValue} milliseconds before continuing the download`);
                 yield utils_1.sleep(retryAfterValue);
               } else {
                 const backoffTime = utils_1.getExponentialRetryTimeInMilliseconds(retryCount);
-                core5.info(`Exponential backoff for retry #${retryCount}. Waiting for ${backoffTime} milliseconds before continuing the download`);
+                core6.info(`Exponential backoff for retry #${retryCount}. Waiting for ${backoffTime} milliseconds before continuing the download`);
                 yield utils_1.sleep(backoffTime);
               }
-              core5.info(`Finished backoff for retry #${retryCount}, continuing with download`);
+              core6.info(`Finished backoff for retry #${retryCount}, continuing with download`);
             }
           });
           const isAllBytesReceived = (expected, received) => {
             if (!expected || !received || process.env["ACTIONS_ARTIFACT_SKIP_DOWNLOAD_VALIDATION"]) {
-              core5.info("Skipping download validation.");
+              core6.info("Skipping download validation.");
               return true;
             }
             return parseInt(expected) === received;
@@ -12920,7 +12920,7 @@ var require_download_http_client = __commonJS({
             try {
               response = yield makeDownloadRequest();
             } catch (error) {
-              core5.info("An error occurred while attempting to download a file");
+              core6.info("An error occurred while attempting to download a file");
               console.log(error);
               yield backOff();
               continue;
@@ -12940,7 +12940,7 @@ var require_download_http_client = __commonJS({
               }
             }
             if (forceRetry || utils_1.isRetryableStatusCode(response.message.statusCode)) {
-              core5.info(`A ${response.message.statusCode} response code has been received while attempting to download an artifact`);
+              core6.info(`A ${response.message.statusCode} response code has been received while attempting to download an artifact`);
               resetDestinationStream(downloadPath);
               utils_1.isThrottledStatusCode(response.message.statusCode) ? yield backOff(utils_1.tryGetRetryAfterValueTimeInMilliseconds(response.message.headers)) : yield backOff();
             } else {
@@ -12956,29 +12956,29 @@ var require_download_http_client = __commonJS({
             if (isGzip) {
               const gunzip = zlib2.createGunzip();
               response.message.on("error", (error) => {
-                core5.error(`An error occurred while attempting to read the response stream`);
+                core6.error(`An error occurred while attempting to read the response stream`);
                 gunzip.close();
                 destinationStream.close();
                 reject(error);
               }).pipe(gunzip).on("error", (error) => {
-                core5.error(`An error occurred while attempting to decompress the response stream`);
+                core6.error(`An error occurred while attempting to decompress the response stream`);
                 destinationStream.close();
                 reject(error);
               }).pipe(destinationStream).on("close", () => {
                 resolve();
               }).on("error", (error) => {
-                core5.error(`An error occurred while writing a downloaded file to ${destinationStream.path}`);
+                core6.error(`An error occurred while writing a downloaded file to ${destinationStream.path}`);
                 reject(error);
               });
             } else {
               response.message.on("error", (error) => {
-                core5.error(`An error occurred while attempting to read the response stream`);
+                core6.error(`An error occurred while attempting to read the response stream`);
                 destinationStream.close();
                 reject(error);
               }).pipe(destinationStream).on("close", () => {
                 resolve();
               }).on("error", (error) => {
-                core5.error(`An error occurred while writing a downloaded file to ${destinationStream.path}`);
+                core6.error(`An error occurred while writing a downloaded file to ${destinationStream.path}`);
                 reject(error);
               });
             }
@@ -13119,7 +13119,7 @@ var require_artifact_client = __commonJS({
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DefaultArtifactClient = void 0;
-    var core5 = __importStar(require_core());
+    var core6 = __importStar(require_core());
     var upload_specification_1 = require_upload_specification();
     var upload_http_client_1 = require_upload_http_client();
     var utils_1 = require_utils5();
@@ -13134,7 +13134,7 @@ var require_artifact_client = __commonJS({
       }
       uploadArtifact(name, files, rootDirectory, options) {
         return __awaiter(this, void 0, void 0, function* () {
-          core5.info(`Starting artifact upload
+          core6.info(`Starting artifact upload
 For more detailed logs during the artifact upload process, enable step-debugging: https://docs.github.com/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging#enabling-step-debug-logging`);
           path_and_artifact_name_validation_1.checkArtifactName(name);
           const uploadSpecification = upload_specification_1.getUploadSpecification(name, rootDirectory, files);
@@ -13146,24 +13146,24 @@ For more detailed logs during the artifact upload process, enable step-debugging
           };
           const uploadHttpClient = new upload_http_client_1.UploadHttpClient();
           if (uploadSpecification.length === 0) {
-            core5.warning(`No files found that can be uploaded`);
+            core6.warning(`No files found that can be uploaded`);
           } else {
             const response = yield uploadHttpClient.createArtifactInFileContainer(name, options);
             if (!response.fileContainerResourceUrl) {
-              core5.debug(response.toString());
+              core6.debug(response.toString());
               throw new Error("No URL provided by the Artifact Service to upload an artifact to");
             }
-            core5.debug(`Upload Resource URL: ${response.fileContainerResourceUrl}`);
-            core5.info(`Container for artifact "${name}" successfully created. Starting upload of file(s)`);
+            core6.debug(`Upload Resource URL: ${response.fileContainerResourceUrl}`);
+            core6.info(`Container for artifact "${name}" successfully created. Starting upload of file(s)`);
             const uploadResult = yield uploadHttpClient.uploadArtifactToFileContainer(response.fileContainerResourceUrl, uploadSpecification, options);
-            core5.info(`File upload process has finished. Finalizing the artifact upload`);
+            core6.info(`File upload process has finished. Finalizing the artifact upload`);
             yield uploadHttpClient.patchArtifactSize(uploadResult.totalSize, name);
             if (uploadResult.failedItems.length > 0) {
-              core5.info(`Upload finished. There were ${uploadResult.failedItems.length} items that failed to upload`);
+              core6.info(`Upload finished. There were ${uploadResult.failedItems.length} items that failed to upload`);
             } else {
-              core5.info(`Artifact has been finalized. All files have been successfully uploaded!`);
+              core6.info(`Artifact has been finalized. All files have been successfully uploaded!`);
             }
-            core5.info(`
+            core6.info(`
 The raw size of all the files that were specified for upload is ${uploadResult.totalSize} bytes
 The size of all the files that were uploaded is ${uploadResult.uploadSize} bytes. This takes into account any gzip compression used to reduce the upload size, time and storage
 
@@ -13197,10 +13197,10 @@ Note: The size of downloaded zips can differ significantly from the reported siz
           path2 = path_1.resolve(path2);
           const downloadSpecification = download_specification_1.getDownloadSpecification(name, items.value, path2, (options === null || options === void 0 ? void 0 : options.createArtifactFolder) || false);
           if (downloadSpecification.filesToDownload.length === 0) {
-            core5.info(`No downloadable files were found for the artifact: ${artifactToDownload.name}`);
+            core6.info(`No downloadable files were found for the artifact: ${artifactToDownload.name}`);
           } else {
             yield utils_1.createDirectoriesForArtifact(downloadSpecification.directoryStructure);
-            core5.info("Directory structure has been setup for the artifact");
+            core6.info("Directory structure has been setup for the artifact");
             yield utils_1.createEmptyFilesForArtifact(downloadSpecification.emptyFilesToCreate);
             yield downloadHttpClient.downloadSingleArtifact(downloadSpecification.filesToDownload);
           }
@@ -13216,7 +13216,7 @@ Note: The size of downloaded zips can differ significantly from the reported siz
           const response = [];
           const artifacts = yield downloadHttpClient.listArtifacts();
           if (artifacts.count === 0) {
-            core5.info("Unable to find any artifacts for the associated workflow");
+            core6.info("Unable to find any artifacts for the associated workflow");
             return response;
           }
           if (!path2) {
@@ -13228,11 +13228,11 @@ Note: The size of downloaded zips can differ significantly from the reported siz
           while (downloadedArtifacts < artifacts.count) {
             const currentArtifactToDownload = artifacts.value[downloadedArtifacts];
             downloadedArtifacts += 1;
-            core5.info(`starting download of artifact ${currentArtifactToDownload.name} : ${downloadedArtifacts}/${artifacts.count}`);
+            core6.info(`starting download of artifact ${currentArtifactToDownload.name} : ${downloadedArtifacts}/${artifacts.count}`);
             const items = yield downloadHttpClient.getContainerItems(currentArtifactToDownload.name, currentArtifactToDownload.fileContainerResourceUrl);
             const downloadSpecification = download_specification_1.getDownloadSpecification(currentArtifactToDownload.name, items.value, path2, true);
             if (downloadSpecification.filesToDownload.length === 0) {
-              core5.info(`No downloadable files were found for any artifact ${currentArtifactToDownload.name}`);
+              core6.info(`No downloadable files were found for any artifact ${currentArtifactToDownload.name}`);
             } else {
               yield utils_1.createDirectoriesForArtifact(downloadSpecification.directoryStructure);
               yield utils_1.createEmptyFilesForArtifact(downloadSpecification.emptyFilesToCreate);
@@ -16825,7 +16825,7 @@ var require_lib4 = __commonJS({
 });
 
 // src/index.ts
-var core4 = __toESM(require_core());
+var core5 = __toESM(require_core());
 
 // src/input.ts
 var import_node_os = __toESM(require("os"));
@@ -20051,7 +20051,7 @@ var Metric = mod.object({
   key: mod.string().min(1),
   value: mod.number().or(StringToNumber),
   units: mod.string().optional(),
-  trend: Trend.optional()
+  trend: mod.string().pipe(Trend.optional())
 });
 var ReadableFile = mod.string().transform(async (x, ctx) => {
   try {
@@ -20101,35 +20101,34 @@ var Input = mod.object({
   main_branch: mod.string().min(1),
   max_commits_to_traverse: StringToNumber.pipe(
     mod.number().int().positive()
-  ).default("20")
+  ).default("20"),
+  should_comment: mod.boolean().default(true)
 }).and(BenchmarkInput).transform((input) => ({
   artifactName: input.artifact_name,
   token: input.token,
   mainBranch: input.main_branch,
   maxCommitsToTraverse: input.max_commits_to_traverse,
-  metrics: input.input
+  metrics: input.input,
+  shouldComment: input.should_comment
 }));
 async function parseInput({
-  getInput
+  getInput,
+  getBooleanInput
 }) {
-  const data = {};
-  const keys = [
-    "artifact_name",
-    "token",
-    "main_branch",
-    "max_commits_to_traverse",
-    "json",
-    "input_file",
-    "key",
-    "value"
-  ];
-  for (const key of keys) {
-    const value = getInput(key);
-    if (value !== "") {
-      data[key] = value;
-    }
-  }
-  return Input.parseAsync(data);
+  const input = {
+    artifact_name: getInput("artifact_name"),
+    token: getInput("token"),
+    main_branch: getInput("main_branch"),
+    max_commits_to_traverse: getInput("max_commits_to_traverse"),
+    input_file: getInput("input_file"),
+    units: getInput("units"),
+    json: getInput("json"),
+    key: getInput("key"),
+    value: getInput("value"),
+    trend: getInput("trend"),
+    should_comment: getBooleanInput("comment")
+  };
+  return Input.parseAsync(input);
 }
 
 // src/download-artifacts.ts
@@ -21066,7 +21065,7 @@ async function* findAllArtifacts(octokit, body) {
 }
 
 // src/index.ts
-var import_github3 = __toESM(require_github());
+var import_github4 = __toESM(require_github());
 
 // src/store-artifact.ts
 var import_promises2 = __toESM(require("fs/promises"));
@@ -21278,10 +21277,71 @@ function arrowColor(diff, trend) {
   return diff > 0 ? "green" : "red";
 }
 
+// src/comment-on-github.ts
+var import_node_crypto = require("crypto");
+var import_github3 = __toESM(require_github());
+var core4 = __toESM(require_core());
+function sha1(str) {
+  return (0, import_node_crypto.createHash)("sha1").update(str).digest("hex");
+}
+async function commentOnGitHub(input, resultsTable) {
+  const { artifactName } = input;
+  const octokit = (0, import_github3.getOctokit)(input.token);
+  const magicComment = `<!-- benchy-stats-comment:${sha1(artifactName)} -->`;
+  const commentToUpdate = await findCommentToUpdate({ octokit, magicComment });
+  const title = `# Benchmarks for ${import_github3.context.sha}`;
+  const comment = [title, resultsTable, magicComment].join("\n\n");
+  if (commentToUpdate) {
+    core4.debug(`Updating comment ${commentToUpdate.id}`);
+    await updateComment({ octokit, commentToUpdate, comment });
+  } else {
+    core4.debug(`Posting a new comment`);
+    await postComment({ octokit, comment });
+  }
+}
+async function findCommentToUpdate(params) {
+  var _a;
+  if (!import_github3.context.issue.number) {
+    return null;
+  }
+  const iterator2 = params.octokit.paginate.iterator(
+    params.octokit.rest.issues.listComments,
+    {
+      owner: import_github3.context.repo.owner,
+      repo: import_github3.context.repo.repo,
+      issue_number: import_github3.context.issue.number
+    }
+  );
+  for await (const response of iterator2) {
+    for (const comment of response.data) {
+      if ((_a = comment == null ? void 0 : comment.body) == null ? void 0 : _a.includes(params.magicComment)) {
+        return { id: comment.id };
+      }
+    }
+  }
+  return null;
+}
+async function updateComment(params) {
+  await params.octokit.rest.issues.updateComment({
+    owner: import_github3.context.repo.owner,
+    repo: import_github3.context.repo.repo,
+    comment_id: params.commentToUpdate.id,
+    body: params.comment
+  });
+}
+async function postComment(params) {
+  await params.octokit.rest.issues.createComment({
+    owner: import_github3.context.repo.owner,
+    repo: import_github3.context.repo.repo,
+    issue_number: import_github3.context.issue.number,
+    body: params.comment
+  });
+}
+
 // src/index.ts
 async function run() {
   try {
-    const input = await parseInput(core4);
+    const input = await parseInput(core5);
     const currentArtifacts = getCurrentArtifacts(input);
     const [storedArtifacts] = await Promise.all([
       downloadArtifacts(input),
@@ -21291,17 +21351,19 @@ async function run() {
     const keys = [...new Set(currentArtifacts.map((a) => a.key))];
     const keyed = pick(groupBy(artifacts, "key"), keys);
     const resultsTable = stringifyTag(getComparisonTable({ artifacts: keyed }));
-    core4.setOutput("downloaded_artifacts", JSON.stringify(keyed));
-    core4.setOutput("results_table", resultsTable);
-    console.log(resultsTable);
+    core5.setOutput("downloaded_artifacts", JSON.stringify(keyed));
+    core5.setOutput("results_table", resultsTable);
+    if (input.shouldComment) {
+      await commentOnGitHub(input, resultsTable);
+    }
   } catch (error) {
     const message = error instanceof ZodError ? readableZodErrorMessage(error) : String(error);
-    core4.setFailed(message);
+    core5.setFailed(message);
     process.exitCode = 1;
   }
 }
 function getCurrentArtifacts(input) {
-  const sha = import_github3.context.sha;
+  const sha = import_github4.context.sha;
   const sortDate = new Date();
   return input.metrics.map((metric) => ({
     ...metric,

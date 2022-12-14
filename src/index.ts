@@ -8,6 +8,7 @@ import { ZodError } from "zod";
 import { readableZodErrorMessage } from "./readable-zod-error-message";
 import { pick, groupBy } from "./collections";
 import { getComparisonTable, stringifyTag } from "./comment";
+import { commentOnGitHub } from "./comment-on-github";
 
 async function run() {
   try {
@@ -27,7 +28,9 @@ async function run() {
     core.setOutput("downloaded_artifacts", JSON.stringify(keyed));
     core.setOutput("results_table", resultsTable);
 
-    console.log(resultsTable);
+    if (input.shouldComment) {
+      await commentOnGitHub(input, resultsTable);
+    }
   } catch (error) {
     const message =
       error instanceof ZodError

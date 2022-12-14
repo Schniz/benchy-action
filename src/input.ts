@@ -21,7 +21,7 @@ export const Metric = z.object({
   key: z.string().min(1),
   value: z.number().or(StringToNumber),
   units: z.string().optional(),
-  trend: Trend.optional(),
+  trend: z.string().pipe(Trend.optional()),
 });
 export type Metric = z.infer<typeof Metric>;
 
@@ -85,6 +85,7 @@ const Input = z
     max_commits_to_traverse: StringToNumber.pipe(
       z.number().int().positive()
     ).default("20"),
+    should_comment: z.boolean().default(true),
   })
   .and(BenchmarkInput)
   .transform((input) => ({
@@ -93,30 +94,42 @@ const Input = z
     mainBranch: input.main_branch,
     maxCommitsToTraverse: input.max_commits_to_traverse,
     metrics: input.input,
+    shouldComment: input.should_comment,
   }));
+
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never;
+
+type ConvertOptionalToUndefined<T> = {
+  [K in keyof T]-?: undefined extends T[K] ? T[K] : T[K] | undefined;
+};
 
 export async function parseInput({
   getInput,
-}: Pick<typeof core, "getInput">): Promise<z.infer<typeof Input>> {
-  const data: Partial<Record<keyof z.input<typeof Input>, string>> = {};
-  const keys = [
-    "artifact_name",
-    "token",
-    "main_branch",
-    "max_commits_to_traverse",
-    "json",
-    "input_file",
-    "key",
-    "value",
-  ];
-  for (const key of keys) {
-    const value = getInput(key);
-    if (value !== "") {
-      data[key as keyof z.input<typeof Input>] = value;
-    }
-  }
+  getBooleanInput,
+}: Pick<typeof core, "getInput" | "getBooleanInput">): Promise<
+  z.infer<typeof Input>
+> {
+  const input: ConvertOptionalToUndefined<
+    UnionToIntersection<z.input<typeof Input>>
+  > = {
+    artifact_name: getInput("artifact_name"),
+    token: getInput("token"),
+    main_branch: getInput("main_branch"),
+    max_commits_to_traverse: getInput("max_commits_to_traverse"),
+    input_file: getInput("input_file"),
+    units: getInput("units"),
+    json: getInput("json"),
+    key: getInput("key"),
+    value: getInput("value"),
+    trend: getInput("trend"),
+    should_comment: getBooleanInput("comment"),
+  };
 
-  return Input.parseAsync(data);
+  return Input.parseAsync(input);
 }
 
 export type Input = z.infer<typeof Input>;
