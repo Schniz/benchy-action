@@ -55,13 +55,6 @@ jobs:
 
 An `Metric` ([definition](./src/input.ts)) is a JSON object that contains the following fields:
 
-```
-  key: z.string().min(1),
-  value: z.number().or(StringToNumber),
-  units: z.string().optional(),
-  trend: z.string().pipe(Trend.optional()),
-```
-
 | Name    | Description                                                                                                              | Type     | Required? |
 | ------- | ------------------------------------------------------------------------------------------------------------------------ | -------- | --------- |
 | `key`   | The name of the metric.                                                                                                  | `string` | ✅        |
