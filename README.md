@@ -1,7 +1,18 @@
 # `schniz/benchy-action`
 
 A GitHub Action to benchmark your code continuously.
-Store numbers as a function of time, and see how your code performs, and how your bundles weigh, over time.
+
+- Store numbers as a function of time
+- See how your code performs over time
+- Avoid unexpected bundles size increases
+
+### How does it work?
+
+Benchy is a GitHub Action that runs your benchmarks on every push to your repository, and stores the results in a JSON file.
+The JSON file is stored as an artifact of your GitHub Actions workflow.
+
+On every run, Benchy will download the artifacts of the previous runs in your main branch, and compare them to the current run.
+Then, it will generate a beautiful GitHub comment with the results, letting you know if your code is getting faster or slower.
 
 ## Usage
 
