@@ -66,7 +66,7 @@ export function getComparisonTable(params: {
         const lastOnes = artifacts.slice(-2);
         const current = lastOnes.length === 2 ? lastOnes[1] : lastOnes[0];
         const last = lastOnes.length === 2 ? lastOnes[0] : undefined;
-        const diff = !last ? undefined : last.value - current.value;
+        const diff = !last ? undefined : current.value - last.value;
         const units = current.units ?? "";
         const trendApiUrl = `https://benchy.hagever.com/api/embed/small`;
 
