@@ -50,62 +50,6 @@ const html = new Proxy<Record<string, HtmlFn>>(
 export function getComparisonTable(params: {
   artifacts: { [key: string]: Artifact[] };
 }) {
-  // const table = (() => {
-  // const rows = embeds
-  //   .map((data) => {
-  //     return dedent`
-  //         <tr>
-  //           <td><code>${data.displayName}</code></td>
-  //           <td><code>${round(data.currentValue, 2)}${data.units}</code></td>
-  //           <td>${
-  //             typeof data.lastValue === "undefined"
-  //               ? ""
-  //               : `<code>${round(data.lastValue, 2)}${data.units}</code>`
-  //           }</td>
-  //           <td>${
-  //             !data.diff
-  //               ? "<code>0</code>"
-  //               : dedent`
-  //               <picture title=${JSON.stringify(
-  //                 data.diff.value > 0 ? "increase" : "decrease"
-  //               )}>
-  //                 <img width="16" valign="middle" src="${
-  //                   data.diff.arrowImage
-  //                 }">
-  //               </picture>
-  //               <code>${data.diff.value > 0 ? "+" : ""}${round(
-  //                   data.diff.value,
-  //                   2
-  //                 )}${data.units}</code>
-  //                 `
-  //           }</td>
-  //           <td>
-  //             <details><summary><img valign="middle" src="${
-  //               data.small
-  //             }" /></summary><br/><img src="${data.big}" /></details>
-  //           </td>
-  //         </tr>
-  //       `;
-  //   })
-  //   .join("\n");
-  // return dedent`
-  //     <table>
-  //       <thead>
-  //         <tr>
-  //           <th align="left">benchmark</th>
-  //           <th>current value</th>
-  //           <th>last value</th>
-  //           <th>diff</th>
-  //           <th>trend</th>
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         ${rows}
-  //       </tbody>
-  //     </table>
-  //   `;
-  // })();
-
   return html.table({}, [
     html.thead({}, [
       html.tr({}, [
@@ -122,7 +66,7 @@ export function getComparisonTable(params: {
         const lastOnes = artifacts.slice(-2);
         const current = lastOnes.length === 2 ? lastOnes[1] : lastOnes[0];
         const last = lastOnes.length === 2 ? lastOnes[0] : undefined;
-        const diff = !last ? undefined : last.value - current.value;
+        const diff = !last ? undefined : current.value - last.value;
         const units = current.units ?? "";
         const trendApiUrl = `https://benchy.hagever.com/api/embed/small`;
 

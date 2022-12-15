@@ -21592,7 +21592,7 @@ function getComparisonTable(params) {
         const lastOnes = artifacts.slice(-2);
         const current = lastOnes.length === 2 ? lastOnes[1] : lastOnes[0];
         const last = lastOnes.length === 2 ? lastOnes[0] : void 0;
-        const diff = !last ? void 0 : last.value - current.value;
+        const diff = !last ? void 0 : current.value - last.value;
         const units = (_a = current.units) != null ? _a : "";
         const trendApiUrl = `https://benchy.hagever.com/api/embed/small`;
         const getSearchParamsValues = () => {
