@@ -3,7 +3,7 @@ description: 'benchmark your codebase continuously'
 inputs:
   token:
     description: 'The GitHub token to use'
-    required: true
+    default: ${{ github.token }}
   main_branch:
     description: 'The main branch of the repository. Will be used to compare data against.'
     required: true
