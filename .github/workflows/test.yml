@@ -38,6 +38,5 @@ jobs:
       run: pnpm run create-metrics
     - uses: ./
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
         main_branch: main
         input_file: tmp/metrics.json
