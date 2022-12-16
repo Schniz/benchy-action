@@ -41,7 +41,7 @@ jobs:
 
 | Name                      | Description                                                                                                    | Default                            | Required? |
 | ------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------- | --------- |
-| `token`                   | The GitHub token to use for the action                                                                         | `''`                               | ✅        |
+| `token`                   | The GitHub token to use for the action                                                                         | `${{github.token}}`                | ❌        |
 | `main_branch`             | The main branch of your repository. This is the ref that will be used as a comparison when running against PRs | -                                  | ✅        |
 | `artifact_name`           | The name of the artifact that will be created. This is the name of the file that will be uploaded to the PR.   | `benchy-stats-${platform}-${arch}` | ❌        |
 | `input_file`              | A json file to read the `Artifact[]` data from                                                                 | -                                  | 1⃣        |
