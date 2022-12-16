@@ -1,5 +1,13 @@
 # @benchy/action
 
+## 1.1.0
+
+### Minor Changes
+
+- [#22](https://github.com/Schniz/benchy-action/pull/22) [`cc82f19`](https://github.com/Schniz/benchy-action/commit/cc82f19a94d07931f3ccb682bbb95d066013bf16) Thanks [@Schniz](https://github.com/Schniz)! - use github.token by default
+
+- [#20](https://github.com/Schniz/benchy-action/pull/20) [`2c5ee26`](https://github.com/Schniz/benchy-action/commit/2c5ee266b2cc444f612c064b24b90777a664402c) Thanks [@Schniz](https://github.com/Schniz)! - allow using glob in input_file
+
 ## 1.0.0
 
 ### Major Changes
