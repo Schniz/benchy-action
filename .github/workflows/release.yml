@@ -25,6 +25,10 @@ jobs:
       uses: changesets/action@v1
       with:
         version: pnpm run version:prepare
-        publish: echo "nothing to publish right now"
+        publish: pnpm run version:publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Mention that it was published
+      if: steps.changesets.outputs.published == 'true'
+      # You can do something when a publish happens.
+      run: echo "Published successfuly"
