@@ -2,6 +2,7 @@ import os from "node:os";
 import z from "zod";
 import * as core from "@actions/core";
 import { readFile } from "node:fs/promises";
+import { create } from "@actions/glob";
 
 const StringToNumber = z.string().transform((x, ctx) => {
   const num = Number(x);
@@ -25,9 +26,11 @@ export const Metric = z.object({
 });
 export type Metric = z.infer<typeof Metric>;
 
-const ReadableFile = z.string().transform(async (x, ctx) => {
+const GlobbedFiles = z.string().transform(async (x, ctx) => {
   try {
-    return await readFile(x, "utf8");
+    const globber = await create(x, { matchDirectories: false });
+    const files = await globber.glob();
+    return Promise.all(files.map((f) => readFile(f, "utf-8")));
   } catch (e) {
     ctx.addIssue({
       code: "custom",
@@ -56,7 +59,9 @@ const BenchmarkInput = Metric.or(
 )
   .or(
     z.object({
-      input_file: ReadableFile.pipe(ParsedJson).pipe(z.array(Metric)),
+      input_file: GlobbedFiles.pipe(z.array(ParsedJson))
+        .pipe(z.array(z.array(Metric)))
+        .transform((x) => x.flat()),
     })
   )
   .transform((x): { input: z.infer<typeof Metric>[] } => {
