@@ -1,0 +1,15 @@
+name: "Benchy"
+description: "Benchy is a GitHub Action that runs a benchmark and reports the results to GitHub"
+inputs:
+  # one of [key,value], [json], or [input_file] must be provided
+  key:
+    description: "the key to use for the benchmark"
+  value:
+    description: "the value for the benchmark"
+  json:
+    description: "A json for an array of metrics"
+  input_file:
+    description: "A file containing a json for an array of metrics"
+runs:
+  using: "node16"
+  main: "dist/index.js"
