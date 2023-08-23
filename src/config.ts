@@ -50,17 +50,18 @@ const parseJson = (json: string) =>
 const Trend = Schema.literal("lower-is-better", "higher-is-better");
 type Trend = Schema.To<typeof Trend>;
 
+const Metric = Schema.struct({
+  key: pipe(Schema.string, Schema.maxLength(120)),
+  sortDate: pipe(Schema.string, Schema.dateFromString, Schema.optional),
+  value: Schema.number,
+  units: pipe(Schema.string, Schema.maxLength(32), Schema.optional),
+  trend: pipe(Trend, Schema.optional),
+});
+
+export type Metric = Schema.To<typeof Metric>;
+
 export const RequestBody = Schema.struct({
-  metrics: pipe(
-    Schema.struct({
-      key: pipe(Schema.string, Schema.maxLength(120)),
-      sortDate: pipe(Schema.string, Schema.dateFromString, Schema.optional),
-      value: Schema.number,
-      units: pipe(Schema.string, Schema.maxLength(32), Schema.optional),
-      trend: pipe(Trend, Schema.optional),
-    }),
-    Schema.array
-  ),
+  metrics: pipe(Metric, Schema.array),
 });
 
 const MetricSchema = Schema.struct({
@@ -87,7 +88,13 @@ const MetricSchema = Schema.struct({
   trend: pipe(Trend, Schema.optional),
 });
 
-const FileSchema = Schema.union(pipe(MetricSchema, Schema.array), MetricSchema);
+export type MetricSchema = Schema.To<typeof MetricSchema>;
+
+export const FileSchema = Schema.union(
+  pipe(MetricSchema, Schema.array),
+  MetricSchema
+);
+export const encodeFileSchema = Schema.encode(FileSchema);
 const parseFileSchema = (json: unknown) =>
   Schema.parse(FileSchema)(json).pipe(
     Effect.map((x) => [x].flat()),
@@ -136,6 +143,8 @@ const parseGlob = (glob: string) =>
 
     return jsons.flat();
   });
+
+export type FileSchema = Schema.To<typeof FileSchema>;
 
 export const readMetrics = pipe(
   Match.type<Input>(),

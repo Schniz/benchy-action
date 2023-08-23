@@ -3,6 +3,7 @@ import { Effect } from "effect";
 import { getIDToken, error } from "@actions/core";
 import { HttpClient } from "@actions/http-client";
 import { GenericError } from "./error";
+import { exhaustiveEffect } from "./util";
 
 const getHttpClient = Effect.gen(function* (_) {
   const idToken = yield* _(
@@ -22,10 +23,6 @@ const getHttpClient = Effect.gen(function* (_) {
   });
   return httpClient;
 });
-
-const exhaustiveEffect = <R, A>(_: Effect.Effect<R, never, A>): typeof _ => {
-  return _;
-};
 
 const main = Effect.gen(function* (_) {
   const input = yield* _(getInput);

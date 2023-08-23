@@ -5,15 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "#",
-    "build": "tsup"
+    "build": "tsup",
+    "create-metrics": "pnpm ts-node-esm ./scripts/create-metrics.ts",
+    "version:prepare": "changeset version && pnpm run build",
+    "version:publish": "changeset tag"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/cli": "^2.26.2",
+    "@effect/platform-node": "^0.13.6",
     "@effect/schema": "^0.33.0",
     "@types/node": "^20.4.8",
-    "effect": "2.0.0-next.24",
+    "effect": "2.0.0-next.28",
     "prettier": "^3.0.1",
     "tsup": "^7.2.0",
     "typescript": "^5.1.6"
