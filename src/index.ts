@@ -18,7 +18,7 @@ const getHttpClient = Effect.gen(function* (_) {
   );
   const httpClient = new HttpClient(`bnz-action`, [], {
     headers: {
-      Authorization: `token ${idToken}`,
+      Authorization: `Bearer ${idToken}`,
     },
   });
   return httpClient;
