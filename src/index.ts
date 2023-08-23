@@ -4,18 +4,45 @@ import { getIDToken, error } from "@actions/core";
 import { HttpClient } from "@actions/http-client";
 import { GenericError } from "./error";
 import { exhaustiveEffect } from "./util";
+import dedent from "dedent";
+import { Chalk } from "chalk";
+
+const chalk = new Chalk({ level: 2 });
+
+const ID_TOKEN_ERROR = dedent`
+  Failed to read GitHub Actions ID token.
+
+  This means you probably forgot to add permissions for \`id-token\` in your workflow/job definition.
+  The \`id-token\` permissions allows GitHub to sign your requests to the Benchy API. This does not
+  give GitHub access to your Benchy account: it's merely a way to prove that the request is coming
+  from your GitHub workflow.
+
+  An example of a workflow with the \`id-token\` permission:
+
+  \`\`\`yaml
+   jobs:
+     test:
+       runs-on: ubuntu-latest
+  ${chalk.green(`+    permissions:`)}
+  ${chalk.green(`+      id-token: write`)}
+       steps:
+         # ...
+  \`\`\`
+
+  For more information about the id-token permisison, see the [GitHub documentation](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#overview-of-openid-connect).
+`;
+
+const getIdToken = Effect.tryPromise({
+  try: () => getIDToken(),
+  catch: (error) =>
+    new GenericError({
+      message: ID_TOKEN_ERROR,
+      error,
+    }),
+});
 
 const getHttpClient = Effect.gen(function* (_) {
-  const idToken = yield* _(
-    Effect.tryPromise({
-      try: () => getIDToken(),
-      catch: (error) =>
-        new GenericError({
-          message: `Failed to get ID token, maybe you need to configure the permissions.`,
-          error,
-        }),
-    })
-  );
+  const idToken = yield* _(getIdToken);
   const httpClient = new HttpClient(`bnz-action`, [], {
     headers: {
       Authorization: `Bearer ${idToken}`,
