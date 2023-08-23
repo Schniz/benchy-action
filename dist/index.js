@@ -31,7 +31,7 @@ var __publicField = (obj, key2, value2) => {
   return value2;
 };
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Function.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Function.mjs
 var isFunction = (input) => typeof input === "function";
 var dual = function(arity, body) {
   if (typeof arity === "function") {
@@ -138,7 +138,7 @@ function pipe(a, ab, bc, cd, de, ef, fg, gh, hi) {
   }
 }
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Equivalence.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Equivalence.mjs
 var make = (isEquivalent) => (self, that) => self === that || isEquivalent(self, that);
 var mapInput = /* @__PURE__ */ dual(2, (self, f) => make((x, y) => self(f(x), f(y))));
 var array = (item) => make((self, that) => {
@@ -154,7 +154,7 @@ var array = (item) => make((self, that) => {
   return true;
 });
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Order.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Order.mjs
 var make2 = (compare) => (self, that) => self === that ? 0 : compare(self, that);
 var number = /* @__PURE__ */ make2((self, that) => self < that ? -1 : 1);
 var reverse = (O) => make2((self, that) => O(that, self));
@@ -180,7 +180,7 @@ var tuple = (...elements) => all(elements);
 var greaterThan = (O) => dual(2, (self, that) => O(self, that) === 1);
 var max = (O) => dual(2, (self, that) => self === that || O(self, that) > -1 ? self : that);
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Predicate.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Predicate.mjs
 var isString = (input) => typeof input === "string";
 var isNumber = (input) => typeof input === "number";
 var isBoolean = (input) => typeof input === "boolean";
@@ -197,10 +197,10 @@ var isDate = (input) => input instanceof Date;
 var isIterable = (input) => isObject(input) && Symbol.iterator in input;
 var isRecord = (input) => isObject(input) && !Array.isArray(input);
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Boolean.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Boolean.mjs
 var not = (self) => !self;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/DeterministicRandom.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/DeterministicRandom.mjs
 var defaultIncHi = 335903614;
 var defaultIncLo = 4150755663;
 var MUL_HI = 1481765933 >>> 0;
@@ -328,7 +328,7 @@ function add64(out, aHi, aLo, bHi, bLo) {
   out[1] = lo;
 }
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Global.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Global.mjs
 var globalStoreId = /* @__PURE__ */ Symbol.for("@effect/data/Global/globalStoreId");
 if (!(globalStoreId in globalThis)) {
   ;
@@ -342,7 +342,7 @@ var globalValue = (id, compute) => {
   return globalStore.get(id);
 };
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Hash.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Hash.mjs
 var randomHashCache = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("@effect/data/Hash/randomHashCache"), () => /* @__PURE__ */ new WeakMap());
 var pcgr = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("@effect/data/Hash/pcgr"), () => new PCGRandom());
 var symbol = /* @__PURE__ */ Symbol.for("@effect/data/Hash");
@@ -427,7 +427,7 @@ var array2 = (arr) => {
   return optimize(h);
 };
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Equal.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Equal.mjs
 var symbol2 = /* @__PURE__ */ Symbol.for("@effect/data/Equal");
 function equals() {
   if (arguments.length === 1) {
@@ -453,7 +453,7 @@ function compareBoth(self, that) {
 var isEqual = (u) => typeof u === "object" && u !== null && symbol2 in u;
 var equivalence = () => (self, that) => hash(self) === hash(that) && equals(self, that);
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/Effect.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/Effect.mjs
 var EffectTypeId = /* @__PURE__ */ Symbol.for("@effect/io/Effect");
 var effectVariance = {
   _R: (_) => _,
@@ -461,7 +461,7 @@ var effectVariance = {
   _A: (_) => _
 };
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Pipeable.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Pipeable.mjs
 var pipeArguments = (self, args) => {
   switch (args.length) {
     case 1:
@@ -492,7 +492,7 @@ var pipeArguments = (self, args) => {
   }
 };
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/Option.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/Option.mjs
 var _a;
 var _b;
 var TypeId = /* @__PURE__ */ Symbol.for("@effect/data/Option");
@@ -504,7 +504,7 @@ var Some = class {
     return hash(this.i0);
   }
   toString() {
-    return `some(${String(this.i0)})`;
+    return `Some(${String(this.i0)})`;
   }
   toJSON() {
     return {
@@ -551,7 +551,7 @@ var None = class {
     return hash(this._tag);
   }
   toString() {
-    return `none()`;
+    return `None()`;
   }
   toJSON() {
     return {
@@ -576,7 +576,7 @@ var isSome = (fa) => fa._tag === "Some";
 var none = /* @__PURE__ */ new None();
 var some = (a) => new Some(a);
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/Either.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/Either.mjs
 var _a2;
 var _b2;
 var TypeId2 = /* @__PURE__ */ Symbol.for("@effect/data/Either");
@@ -666,7 +666,7 @@ var isRight = (ma) => ma._tag === "Right";
 var left = (e) => new Left(e);
 var right = (a) => new Right(a);
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Either.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Either.mjs
 var TypeId3 = /* @__PURE__ */ Symbol.for("@effect/data/Either");
 var right2 = right;
 var left2 = left;
@@ -682,10 +682,10 @@ var merge = /* @__PURE__ */ match({
   onRight: identity
 });
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Number.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Number.mjs
 var Order = number;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Option.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Option.mjs
 var TypeId4 = /* @__PURE__ */ Symbol.for("@effect/data/Option");
 var none2 = () => none;
 var some2 = some;
@@ -714,10 +714,10 @@ var containsWith = (isEquivalent) => dual(2, (self, a) => isNone2(self) ? false 
 var _equivalence = /* @__PURE__ */ equivalence();
 var contains = /* @__PURE__ */ containsWith(_equivalence);
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/ReadonlyArray.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/ReadonlyArray.mjs
 var isNonEmptyArray = (self) => self.length > 0;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/ReadonlyArray.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/ReadonlyArray.mjs
 var makeBy = (n, f) => {
   const max5 = Math.max(1, Math.floor(n));
   const out = [f(0)];
@@ -828,7 +828,7 @@ var dedupeWith = /* @__PURE__ */ dual(2, (self, isEquivalent) => {
 var dedupe = /* @__PURE__ */ dedupeWith(/* @__PURE__ */ equivalence());
 var join = /* @__PURE__ */ dual(2, (self, sep) => fromIterable(self).join(sep));
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/Context.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/Context.mjs
 var _a3;
 var TagTypeId = /* @__PURE__ */ Symbol.for("@effect/data/Context/Tag");
 var TagImpl = class {
@@ -850,10 +850,17 @@ var TagImpl = class {
     this.i1 = void 0;
     this.i2 = void 0;
     this[_a3] = effectVariance;
+    const limit = Error.stackTraceLimit;
+    Error.stackTraceLimit = 3;
+    this.creationError = new Error();
+    Error.stackTraceLimit = limit;
     if (typeof identifier !== "undefined") {
       this.i0 = identifier;
       return globalValue(identifier, () => this);
     }
+  }
+  get stack() {
+    return this.creationError.stack;
   }
   toString() {
     return JSON.stringify(this);
@@ -861,7 +868,8 @@ var TagImpl = class {
   toJSON() {
     return {
       _tag: "Tag",
-      identifier: this.i0
+      identifier: this.i0,
+      stack: this.stack
     };
   }
   [Symbol.for("nodejs.util.inspect.custom")]() {
@@ -904,6 +912,24 @@ var ContextImpl = class {
     return pipeArguments(this, arguments);
   }
 };
+var serviceNotFoundError = (tag2) => {
+  const error2 = new Error(`Service not found${tag2.i0 ? `: ${String(tag2.i0)}` : ""}`);
+  if (tag2.stack) {
+    const lines = tag2.stack.split("\n");
+    if (lines.length > 2) {
+      const afterAt = lines[3].match(/at (.*)/);
+      if (afterAt) {
+        error2.message = error2.message + ` (defined at ${afterAt[1]})`;
+      }
+    }
+  }
+  if (error2.stack) {
+    const lines = error2.stack.split("\n");
+    lines.splice(1, 3);
+    error2.stack = lines.join("\n");
+  }
+  return error2;
+};
 var isContext = (u) => typeof u === "object" && u !== null && "_id" in u && u["_id"] === ContextTypeId;
 var empty2 = () => new ContextImpl(/* @__PURE__ */ new Map());
 var make3 = (tag2, service) => new ContextImpl(/* @__PURE__ */ new Map([[tag2, service]]));
@@ -912,18 +938,13 @@ var add = /* @__PURE__ */ dual(3, (self, tag2, service) => {
   map14.set(tag2, service);
   return new ContextImpl(map14);
 });
-var get2 = /* @__PURE__ */ dual(2, (self, tag2) => {
-  if (!self.unsafeMap.has(tag2)) {
-    throw new Error("Service not found");
-  }
-  return self.unsafeMap.get(tag2);
-});
 var unsafeGet2 = /* @__PURE__ */ dual(2, (self, tag2) => {
   if (!self.unsafeMap.has(tag2)) {
-    throw new Error("Service not found");
+    throw serviceNotFoundError(tag2);
   }
   return self.unsafeMap.get(tag2);
 });
+var get2 = unsafeGet2;
 var getOption = /* @__PURE__ */ dual(2, (self, tag2) => {
   if (!self.unsafeMap.has(tag2)) {
     return none2();
@@ -938,7 +959,7 @@ var merge2 = /* @__PURE__ */ dual(2, (self, that) => {
   return new ContextImpl(map14);
 });
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Context.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Context.mjs
 var Tag = (key2) => new TagImpl(key2);
 var empty3 = empty2;
 var make4 = make3;
@@ -948,7 +969,7 @@ var unsafeGet3 = unsafeGet2;
 var getOption2 = getOption;
 var merge3 = merge2;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Data.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Data.mjs
 var protoArr = /* @__PURE__ */ (() => {
   const proto6 = {
     [symbol]() {
@@ -1035,8 +1056,9 @@ var Class = /* @__PURE__ */ (() => {
   }
   return Base;
 })();
+var taggedEnum = () => tagged;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Duration.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Duration.mjs
 var TypeId5 = /* @__PURE__ */ Symbol.for("@effect/data/Duration");
 var bigint1e3 = /* @__PURE__ */ BigInt(1e3);
 var bigint1e9 = /* @__PURE__ */ BigInt(1e9);
@@ -1203,14 +1225,14 @@ var greaterThanOrEqualTo2 = /* @__PURE__ */ dual(2, (self, that) => matchWith(se
 }));
 var equals2 = /* @__PURE__ */ dual(2, (self, that) => Equivalence(decode(self), decode(that)));
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/HashMap/config.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/HashMap/config.mjs
 var SIZE = 5;
 var BUCKET_SIZE = /* @__PURE__ */ Math.pow(2, SIZE);
 var MASK = BUCKET_SIZE - 1;
 var MAX_INDEX_NODE = BUCKET_SIZE / 2;
 var MIN_ARRAY_NODE = BUCKET_SIZE / 4;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/HashMap/bitwise.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/HashMap/bitwise.mjs
 function popcount(x) {
   x -= x >> 1 & 1431655765;
   x = (x & 858993459) + (x >> 2 & 858993459);
@@ -1229,7 +1251,7 @@ function fromBitmap(bitmap, bit) {
   return popcount(bitmap & bit - 1);
 }
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/HashMap/array.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/HashMap/array.mjs
 function arrayUpdate(mutate3, at, v, arr) {
   let out = arr;
   if (!mutate3) {
@@ -1281,7 +1303,7 @@ function arraySpliceIn(mutate3, at, v, arr) {
   return out;
 }
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/Stack.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/Stack.mjs
 var Stack = class {
   constructor(value2, previous) {
     this.value = value2;
@@ -1289,7 +1311,7 @@ var Stack = class {
   }
 };
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/HashMap/node.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/HashMap/node.mjs
 var EmptyNode = class _EmptyNode {
   constructor() {
     this._tag = "EmptyNode";
@@ -1530,7 +1552,7 @@ function mergeLeaves(edit, shift2, h1, n1, h2, n2) {
   }
 }
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/HashMap.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/HashMap.mjs
 var HashMapTypeId = /* @__PURE__ */ Symbol.for("@effect/data/HashMap");
 var HashMapImpl = class {
   constructor(_editable, _edit, _root, _size) {
@@ -1753,7 +1775,7 @@ var reduce2 = /* @__PURE__ */ dual(3, (self, zero2, f) => {
   return zero2;
 });
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/HashSet.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/HashSet.mjs
 var HashSetTypeId = /* @__PURE__ */ Symbol.for("@effect/data/HashSet");
 var HashSetImpl = class {
   constructor(_keyMap) {
@@ -1833,7 +1855,7 @@ var union = /* @__PURE__ */ dual(2, (self, that) => mutate(empty5(), (set6) => {
 var forEach2 = /* @__PURE__ */ dual(2, (self, f) => forEach(self._keyMap, (_, k) => f(k)));
 var reduce3 = /* @__PURE__ */ dual(3, (self, zero2, f) => reduce2(self._keyMap, zero2, (z, _, a) => f(z, a)));
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/HashMap.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/HashMap.mjs
 var empty6 = empty4;
 var make7 = make5;
 var fromIterable4 = fromIterable2;
@@ -1847,7 +1869,7 @@ var map4 = map3;
 var forEach3 = forEach;
 var reduce4 = reduce2;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/MutableRef.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/MutableRef.mjs
 var TypeId6 = /* @__PURE__ */ Symbol.for("@effect/data/MutableRef");
 var MutableRefImpl = class {
   constructor(current) {
@@ -1892,7 +1914,7 @@ var setAndGet = /* @__PURE__ */ dual(2, (self, value2) => {
 var update = /* @__PURE__ */ dual(2, (self, f) => set3(self, f(get6(self))));
 var updateAndGet = /* @__PURE__ */ dual(2, (self, f) => setAndGet(self, f(get6(self))));
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/MutableHashMap.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/MutableHashMap.mjs
 var TypeId7 = /* @__PURE__ */ Symbol.for("@effect/data/MutableHashMap");
 var MutableHashMapImpl = class {
   constructor() {
@@ -1931,7 +1953,7 @@ var set4 = /* @__PURE__ */ dual(3, (self, key2, value2) => {
 });
 var size4 = (self) => size3(get6(self.backingMap));
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Chunk.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Chunk.mjs
 var TypeId8 = /* @__PURE__ */ Symbol.for("@effect/data/Chunk");
 function copy(src, srcPos, dest, destPos, len) {
   for (let i = srcPos; i < Math.min(src.length, srcPos + len); i++) {
@@ -2315,7 +2337,7 @@ var splitWhere = /* @__PURE__ */ dual(2, (self, predicate) => {
 var tailNonEmpty2 = (self) => drop(self, 1);
 var dedupe2 = (self) => unsafeFromArray(dedupe(toReadonlyArray(self)));
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/MutableList.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/MutableList.mjs
 var TypeId9 = /* @__PURE__ */ Symbol.for("@effect/data/MutableList");
 var MutableListImpl = class {
   constructor() {
@@ -2429,7 +2451,7 @@ var remove6 = (self, node) => {
   }
 };
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/MutableQueue.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/MutableQueue.mjs
 var TypeId10 = /* @__PURE__ */ Symbol.for("@effect/data/MutableQueue");
 var EmptyMutableQueue = /* @__PURE__ */ Symbol.for("@effect/data/mutable/MutableQueue/Empty");
 var MutableQueueImpl = class {
@@ -2474,7 +2496,7 @@ var poll = /* @__PURE__ */ dual(2, (self, def) => {
   return shift(self.queue);
 });
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/Differ/ContextPatch.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/Differ/ContextPatch.mjs
 var ContextPatchTypeId = /* @__PURE__ */ Symbol.for("@effect/data/Differ/ContextPatch");
 function variance(a) {
   return a;
@@ -2628,13 +2650,13 @@ var patch = /* @__PURE__ */ dual(2, (self, context4) => {
   return new ContextImpl(map14);
 });
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Differ/ContextPatch.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Differ/ContextPatch.mjs
 var empty11 = empty10;
 var diff2 = diff;
 var combine3 = combine2;
 var patch2 = patch;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/HashSet.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/HashSet.mjs
 var empty12 = empty5;
 var fromIterable6 = fromIterable3;
 var make9 = make6;
@@ -2646,7 +2668,7 @@ var difference2 = difference;
 var union4 = union;
 var reduce5 = reduce3;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/Differ/HashSetPatch.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/Differ/HashSetPatch.mjs
 var HashSetPatchTypeId = /* @__PURE__ */ Symbol.for("@effect/data/Differ/HashSetPatch");
 function variance2(a) {
   return a;
@@ -2747,13 +2769,13 @@ var patch3 = /* @__PURE__ */ dual(2, (self, oldValue) => {
   return set6;
 });
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Differ/HashSetPatch.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Differ/HashSetPatch.mjs
 var empty14 = empty13;
 var diff4 = diff3;
 var combine5 = combine4;
 var patch4 = patch3;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/internal/Differ.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/internal/Differ.mjs
 var DifferTypeId = /* @__PURE__ */ Symbol.for("@effect/data/Differ");
 var DifferImpl = class {
   constructor(params) {
@@ -2800,7 +2822,7 @@ var updateWith = (f) => make10({
   patch: (patch11, oldValue) => f(oldValue, patch11(oldValue))
 });
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/Differ.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/Differ.mjs
 var diff5 = /* @__PURE__ */ dual(3, (self, oldValue, newValue) => self.diff(oldValue, newValue));
 var combine6 = /* @__PURE__ */ dual(3, (self, first, second) => self.combine(first, second));
 var patch5 = /* @__PURE__ */ dual(3, (self, patch11, oldValue) => self.patch(patch11, oldValue));
@@ -2809,7 +2831,7 @@ var environment2 = environment;
 var hashSet2 = hashSet;
 var update3 = update2;
 
-// node_modules/.pnpm/@effect+data@0.17.1/node_modules/@effect/data/mjs/List.mjs
+// node_modules/.pnpm/@effect+data@0.17.6/node_modules/@effect/data/mjs/List.mjs
 var TypeId11 = /* @__PURE__ */ Symbol.for("@effect/data/List");
 var toReadonlyArray2 = (self) => Array.from(self);
 var getEquivalence3 = (isEquivalent) => mapInput(getEquivalence(isEquivalent), toReadonlyArray2);
@@ -2937,7 +2959,7 @@ var prependAll = /* @__PURE__ */ dual(2, (self, prefix) => {
     return result;
   }
 });
-var findFirst2 = /* @__PURE__ */ dual(2, (self, predicate) => {
+var findFirst3 = /* @__PURE__ */ dual(2, (self, predicate) => {
   let these = self;
   while (!isNil(these)) {
     if (predicate(these.head)) {
@@ -2967,7 +2989,7 @@ var reverse4 = (self) => {
   return result;
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/fiberId.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/fiberId.mjs
 var _a4;
 var _b3;
 var _c;
@@ -3053,13 +3075,13 @@ var unsafeMake = () => {
   return new Runtime(id, (/* @__PURE__ */ new Date()).getTime());
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Fiber/Id.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Fiber/Id.mjs
 var none4 = none3;
 var combine8 = combine7;
 var threadName2 = threadName;
 var unsafeMake2 = unsafeMake;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/opCodes/cause.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/opCodes/cause.mjs
 var OP_DIE = "Die";
 var OP_EMPTY = "Empty";
 var OP_FAIL = "Fail";
@@ -3068,7 +3090,7 @@ var OP_ANNOTATED = "Annotated";
 var OP_PARALLEL = "Parallel";
 var OP_SEQUENTIAL = "Sequential";
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/cause.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/cause.mjs
 var CauseSymbolKey = "@effect/io/Cause";
 var CauseTypeId = /* @__PURE__ */ Symbol.for(CauseSymbolKey);
 var variance3 = {
@@ -3604,6 +3626,9 @@ var NoSuchElementExceptionTypeId = /* @__PURE__ */ Symbol.for("@effect/io/Cause/
 var NoSuchElementException = /* @__PURE__ */ makeException({
   [NoSuchElementExceptionTypeId]: NoSuchElementExceptionTypeId
 }, "NoSuchElementException");
+var isNoSuchElementException = (u) => {
+  return typeof u === "object" && u != null && NoSuchElementExceptionTypeId in u;
+};
 var InvalidHubCapacityExceptionTypeId = /* @__PURE__ */ Symbol.for("@effect/io/Cause/errors/InvalidHubCapacityException");
 var InvalidHubCapacityException = /* @__PURE__ */ makeException({
   [InvalidHubCapacityExceptionTypeId]: InvalidHubCapacityExceptionTypeId
@@ -3710,10 +3735,10 @@ var prettyErrors = (cause3) => reduceWithContext(cause3, void 0, {
   })) : v
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Cause.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Cause.mjs
 var pretty2 = pretty;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/runtimeFlagsPatch.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/runtimeFlagsPatch.mjs
 var BIT_MASK = 255;
 var BIT_SHIFT = 8;
 var active = (patch11) => patch11 & BIT_MASK;
@@ -3726,7 +3751,7 @@ var exclude = /* @__PURE__ */ dual(2, (self, flag) => make13(active(self) & ~fla
 var andThen = /* @__PURE__ */ dual(2, (self, that) => self | that);
 var invert = (n) => ~n >>> 0 & BIT_MASK;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/runtimeFlags.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/runtimeFlags.mjs
 var None3 = 0;
 var Interruption = 1 << 0;
 var OpSupervision = 1 << 1;
@@ -3751,13 +3776,13 @@ var differ = /* @__PURE__ */ make11({
   patch: (_patch, oldValue) => patch6(oldValue, _patch)
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Fiber/Runtime/Flags/Patch.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Fiber/Runtime/Flags/Patch.mjs
 var empty18 = empty17;
 var enable3 = enable;
 var disable2 = disable;
 var exclude2 = exclude;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/blockedRequests.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/blockedRequests.mjs
 var _a5;
 var _b4;
 var _c2;
@@ -3925,11 +3950,11 @@ var sequentialCollectionCombine = (self, that) => new SequentialImpl(reduce4(tha
 var sequentialCollectionKeys = (self) => Array.from(keys2(self.map));
 var sequentialCollectionToChunk = (self) => Array.from(self.map);
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/opCodes/deferred.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/opCodes/deferred.mjs
 var OP_STATE_PENDING = "Pending";
 var OP_STATE_DONE = "Done";
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/deferred.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/deferred.mjs
 var DeferredSymbolKey = "@effect/io/Deferred";
 var DeferredTypeId = /* @__PURE__ */ Symbol.for(DeferredSymbolKey);
 var deferredVariance = {
@@ -3949,7 +3974,7 @@ var done = (effect) => {
   };
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/opCodes/effect.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/opCodes/effect.mjs
 var OP_ASYNC = "Async";
 var OP_COMMIT = "Commit";
 var OP_FAILURE = "Failure";
@@ -3965,7 +3990,7 @@ var OP_WITH_RUNTIME = "WithRuntime";
 var OP_YIELD = "Yield";
 var OP_REVERT_FLAGS = "RevertFlags";
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Scheduler.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Scheduler.mjs
 var PriorityBuckets = class {
   constructor() {
     this.buckets = [];
@@ -4075,7 +4100,7 @@ var SyncScheduler = class {
   }
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/core.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/core.mjs
 var _a6;
 var _b5;
 var _c3;
@@ -4963,17 +4988,17 @@ var deferredInterruptJoiner = (self, joiner) => sync(() => {
   }
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Deferred.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Deferred.mjs
 var _await = deferredAwait;
 var done2 = deferredDone;
 var interrupt3 = deferredInterrupt;
 var unsafeMake3 = deferredUnsafeMake;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Exit.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Exit.mjs
 var flatten6 = exitFlatten;
 var succeed2 = exitSucceed;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/clock.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/clock.mjs
 var _a7;
 var ClockSymbolKey = "@effect/io/Clock";
 var ClockTypeId = /* @__PURE__ */ Symbol.for(ClockSymbolKey);
@@ -5037,7 +5062,7 @@ var ClockImpl = class {
 _a7 = ClockTypeId;
 var make16 = () => new ClockImpl();
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/opCodes/configError.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/opCodes/configError.mjs
 var OP_AND = "And";
 var OP_OR = "Or";
 var OP_INVALID_DATA = "InvalidData";
@@ -5045,7 +5070,7 @@ var OP_MISSING_DATA = "MissingData";
 var OP_SOURCE_UNAVAILABLE = "SourceUnavailable";
 var OP_UNSUPPORTED = "Unsupported";
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/configError.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/configError.mjs
 var ConfigErrorSymbolKey = "@effect/io/Config/Error";
 var ConfigErrorTypeId = /* @__PURE__ */ Symbol.for(ConfigErrorSymbolKey);
 var proto2 = {
@@ -5248,10 +5273,10 @@ var reduceWithContext2 = /* @__PURE__ */ dual(3, (self, context4, reducer) => {
 });
 var isMissingDataOnly = (self) => reduceWithContext2(self, void 0, IsMissingDataOnlyReducer);
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Config/Error.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Config/Error.mjs
 var isMissingDataOnly2 = isMissingDataOnly;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/configSecret.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/configSecret.mjs
 var ConfigSecretSymbolKey = "@effect/io/Config/Secret";
 var ConfigSecretTypeId = /* @__PURE__ */ Symbol.for(ConfigSecretSymbolKey);
 var proto3 = {
@@ -5284,7 +5309,7 @@ var fromString = (text) => {
   return make17(text.split("").map((char) => char.charCodeAt(0)));
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/opCodes/config.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/opCodes/config.mjs
 var OP_CONSTANT = "Constant";
 var OP_FAIL2 = "Fail";
 var OP_FALLBACK = "Fallback";
@@ -5297,7 +5322,7 @@ var OP_SEQUENCE = "Sequence";
 var OP_HASHMAP = "HashMap";
 var OP_ZIP_WITH = "ZipWith";
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/config.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/config.mjs
 var ConfigSymbolKey = "@effect/io/Config";
 var ConfigTypeId = /* @__PURE__ */ Symbol.for(ConfigSymbolKey);
 var configVariance = {
@@ -5555,7 +5580,7 @@ var zipWith3 = /* @__PURE__ */ dual(3, (self, that, f) => {
   return zipWith6;
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/configProvider/pathPatch.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/configProvider/pathPatch.mjs
 var empty20 = {
   _tag: "Empty"
 };
@@ -5598,7 +5623,7 @@ var patch7 = /* @__PURE__ */ dual(2, (path, patch11) => {
   return right2(output);
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/configProvider.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/configProvider.mjs
 var concat = (l, r) => [...l, ...r];
 var ConfigProviderSymbolKey = "@effect/io/Config/Provider";
 var ConfigProviderTypeId = /* @__PURE__ */ Symbol.for(ConfigProviderSymbolKey);
@@ -5791,7 +5816,100 @@ var parseInteger = (str) => {
   return Number.isNaN(parsedIndex) ? none2() : some2(parsedIndex);
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/random.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/defaultServices/console.mjs
+var TypeId12 = /* @__PURE__ */ Symbol("@effect/io/Console");
+var consoleTag = /* @__PURE__ */ Tag(TypeId12);
+var defaultConsole = {
+  [TypeId12]: TypeId12,
+  assert(condition, ...args) {
+    return sync(() => {
+      console.assert(condition, ...args);
+    });
+  },
+  clear: /* @__PURE__ */ sync(() => {
+    console.clear();
+  }),
+  count(label) {
+    return sync(() => {
+      console.count(label);
+    });
+  },
+  countReset(label) {
+    return sync(() => {
+      console.countReset(label);
+    });
+  },
+  debug(...args) {
+    return sync(() => {
+      console.debug(...args);
+    });
+  },
+  dir(item, options) {
+    return sync(() => {
+      console.dir(item, options);
+    });
+  },
+  dirxml(...args) {
+    return sync(() => {
+      console.dirxml(...args);
+    });
+  },
+  error(...args) {
+    return sync(() => {
+      console.error(...args);
+    });
+  },
+  group(options) {
+    return options?.collapsed ? sync(() => console.groupCollapsed(options?.label)) : sync(() => console.group(options?.label));
+  },
+  groupEnd: /* @__PURE__ */ sync(() => {
+    console.groupEnd();
+  }),
+  info(...args) {
+    return sync(() => {
+      console.info(...args);
+    });
+  },
+  log(...args) {
+    return sync(() => {
+      console.log(...args);
+    });
+  },
+  table(tabularData, properties) {
+    return sync(() => {
+      console.table(tabularData, properties);
+    });
+  },
+  time(label) {
+    return sync(() => console.time(label));
+  },
+  timeEnd(label) {
+    return sync(() => console.timeEnd(label));
+  },
+  timeLog(label, ...args) {
+    return sync(() => {
+      console.timeLog(label, ...args);
+    });
+  },
+  trace(...args) {
+    return sync(() => {
+      console.trace(...args);
+    });
+  },
+  warn(...args) {
+    return sync(() => {
+      console.warn(...args);
+    });
+  },
+  withGroup(self, options) {
+    return acquireUseRelease(options?.collapsed ? sync(() => console.groupCollapsed(options?.label)) : sync(() => console.group(options?.label)), () => self, () => sync(() => console.groupEnd()));
+  },
+  withTime(self, label) {
+    return acquireUseRelease(sync(() => console.time(label)), () => self, () => sync(() => console.timeEnd(label)));
+  }
+};
+
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/random.mjs
 var _a8;
 var RandomSymbolKey = "@effect/io/Random";
 var RandomTypeId = /* @__PURE__ */ Symbol.for(RandomSymbolKey);
@@ -5839,7 +5957,7 @@ var swap = (buffer, index1, index2) => {
 };
 var make20 = (seed) => new RandomImpl(seed);
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/tracer.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/tracer.mjs
 var TracerTypeId = /* @__PURE__ */ Symbol.for("@effect/io/Tracer");
 var make21 = (options) => ({
   [TracerTypeId]: TracerTypeId,
@@ -5883,8 +6001,8 @@ var nativeTracer = /* @__PURE__ */ make21({
   span: (name, parent, context4, links, startTime) => new NativeSpan(name, parent, context4, links, startTime)
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/defaultServices.mjs
-var liveServices = /* @__PURE__ */ add2(tracerTag, nativeTracer)(/* @__PURE__ */ add2(configProviderTag, fromEnv())(/* @__PURE__ */ add2(randomTag, make20(Math.random() * 4294967296 >>> 0))(/* @__PURE__ */ add2(clockTag, make16())(/* @__PURE__ */ empty3()))));
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/defaultServices.mjs
+var liveServices = /* @__PURE__ */ add2(tracerTag, nativeTracer)(/* @__PURE__ */ add2(configProviderTag, fromEnv())(/* @__PURE__ */ add2(randomTag, make20(Math.random() * 4294967296 >>> 0))(/* @__PURE__ */ add2(consoleTag, defaultConsole)(/* @__PURE__ */ add2(clockTag, make16())(/* @__PURE__ */ empty3())))));
 var currentServices = /* @__PURE__ */ fiberRefUnsafeMakeContext(liveServices);
 var sleep = (duration) => {
   const decodedDuration = decode(duration);
@@ -5901,13 +6019,13 @@ var randomWith = (f) => fiberRefGetWith(currentServices, (services) => f(get3(se
 var tracerWith = (f) => fiberRefGetWith(currentServices, (services) => f(get3(services, tracerTag)));
 var withTracer = /* @__PURE__ */ dual(2, (effect, value2) => fiberRefLocallyWith(currentServices, add2(tracerTag, value2))(effect));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Clock.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Clock.mjs
 var sleep2 = sleep;
 var currentTimeMillis2 = currentTimeMillis;
 var currentTimeNanos2 = currentTimeNanos;
 var clockWith2 = clockWith;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/fiberRefs.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/fiberRefs.mjs
 var _a9;
 function unsafeMake4(fiberRefLocals) {
   return new FiberRefsImpl(fiberRefLocals);
@@ -6042,14 +6160,14 @@ var updatedAs = /* @__PURE__ */ dual(2, (self, {
   return new FiberRefsImpl(locals.set(fiberRef, newStack));
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/FiberRefs.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/FiberRefs.mjs
 var forkAs2 = forkAs;
 var joinAs2 = joinAs;
 var setAll2 = setAll;
 var updatedAs2 = updatedAs;
 var unsafeMake5 = unsafeMake4;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/fiberRefs/patch.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/fiberRefs/patch.mjs
 var OP_EMPTY2 = "Empty";
 var OP_ADD = "Add";
 var OP_REMOVE = "Remove";
@@ -6139,7 +6257,7 @@ var patch8 = /* @__PURE__ */ dual(3, (self, fiberId3, oldValue) => {
   return fiberRefs2;
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/metric/label.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/metric/label.mjs
 var _a10;
 var MetricLabelSymbolKey = "@effect/io/Metric/Label";
 var MetricLabelTypeId = /* @__PURE__ */ Symbol.for(MetricLabelSymbolKey);
@@ -6166,7 +6284,7 @@ var isMetricLabel = (u) => {
   return typeof u === "object" && u != null && MetricLabelTypeId in u;
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/singleShotGen.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/singleShotGen.mjs
 var SingleShotGen = class _SingleShotGen {
   constructor(self) {
     this.self = self;
@@ -6195,7 +6313,7 @@ var SingleShotGen = class _SingleShotGen {
   }
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Logger/Level.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Logger/Level.mjs
 var All = logLevelAll;
 var Fatal = logLevelFatal;
 var Error2 = logLevelError;
@@ -6235,7 +6353,7 @@ var fromLiteral = (_) => {
   }
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/logSpan.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/logSpan.mjs
 var make23 = (label, startTime) => ({
   label,
   startTime
@@ -6247,11 +6365,11 @@ var render = (now) => {
   };
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Logger/Span.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Logger/Span.mjs
 var make24 = make23;
 var render2 = render;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/ref.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/ref.mjs
 var _a11;
 var RefTypeId = /* @__PURE__ */ Symbol.for("@effect/io/Ref");
 var refVariance = {
@@ -6285,17 +6403,17 @@ var getAndSet = /* @__PURE__ */ dual(2, (self, value2) => self.modify((a) => [a,
 var modify3 = /* @__PURE__ */ dual(2, (self, f) => self.modify(f));
 var update4 = /* @__PURE__ */ dual(2, (self, f) => self.modify((a) => [void 0, f(a)]));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Ref.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Ref.mjs
 var make26 = make25;
 var get11 = get10;
 var getAndSet2 = getAndSet;
 var modify4 = modify3;
 var update5 = update4;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Tracer.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Tracer.mjs
 var tracerWith2 = tracerWith;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/effect.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/effect.mjs
 var annotateLogs = /* @__PURE__ */ dual((args) => isEffect(args[0]), function() {
   const args = arguments;
   return fiberRefLocallyWith(args[0], currentLogAnnotations, typeof args[1] === "string" ? set2(args[1], args[2]) : (annotations) => Object.entries(args[1]).reduce((acc, [key2, value2]) => set2(acc, key2, value2), annotations));
@@ -6378,14 +6496,14 @@ var catchSomeDefect = /* @__PURE__ */ dual(2, (self, pf) => catchAllCause(self, 
   }
 })));
 var catchTag = /* @__PURE__ */ dual(3, (self, k, f) => catchAll(self, (e) => {
-  if ("_tag" in e && e["_tag"] === k) {
+  if (isObject(e) && "_tag" in e && e["_tag"] === k) {
     return f(e);
   }
   return fail2(e);
 }));
 var catchTags = /* @__PURE__ */ dual(2, (self, cases) => catchAll(self, (e) => {
   const keys3 = Object.keys(cases);
-  if ("_tag" in e && keys3.includes(e["_tag"])) {
+  if (isObject(e) && "_tag" in e && keys3.includes(e["_tag"])) {
     return cases[e["_tag"]](e);
   }
   return fail2(e);
@@ -6460,7 +6578,7 @@ var filterOrDie = /* @__PURE__ */ dual(3, (self, filter7, orDieWith3) => filterO
 var filterOrDieMessage = /* @__PURE__ */ dual(3, (self, filter7, message) => filterOrElse(self, filter7, () => dieMessage(message)));
 var filterOrElse = /* @__PURE__ */ dual(3, (self, filter7, orElse7) => flatMap7(self, (a) => filter7(a) ? succeed(a) : orElse7(a)));
 var filterOrFail = /* @__PURE__ */ dual(3, (self, filter7, orFailWith) => filterOrElse(self, filter7, (a) => failSync(() => orFailWith(a))));
-var findFirst3 = /* @__PURE__ */ dual(2, (elements, f) => suspend(() => {
+var findFirst4 = /* @__PURE__ */ dual(2, (elements, f) => suspend(() => {
   const iterator = elements[Symbol.iterator]();
   const next = iterator.next();
   if (!next.done) {
@@ -6757,6 +6875,12 @@ var tapError = /* @__PURE__ */ dual(2, (self, f) => matchCauseEffect(self, {
   },
   onSuccess: succeed
 }));
+var tapErrorTag = /* @__PURE__ */ dual(3, (self, k, f) => tapError(self, (e) => {
+  if (isObject(e) && "_tag" in e && e["_tag"] === k) {
+    return f(e);
+  }
+  return unit;
+}));
 var tapErrorCause = /* @__PURE__ */ dual(2, (self, f) => matchCauseEffect(self, {
   onFailure: (cause3) => zipRight(f(cause3), failCause(cause3)),
   onSuccess: succeed
@@ -6809,6 +6933,20 @@ var whenRef = /* @__PURE__ */ dual(3, (self, ref, predicate) => flatMap7(get11(r
 var withMetric = /* @__PURE__ */ dual(2, (self, metric) => metric(self));
 var serviceFunctionEffect = (service, f) => (...args) => flatMap7(service, (a) => f(a)(...args));
 var serviceFunction = (service, f) => (...args) => map9(service, (a) => f(a)(...args));
+var serviceFunctions = (tag2) => new Proxy({}, {
+  get(_target, prop, _receiver) {
+    return (...args) => flatMap7(tag2, (s) => s[prop](...args));
+  }
+});
+var serviceConstants = (tag2) => new Proxy({}, {
+  get(_target, prop, _receiver) {
+    return flatMap7(tag2, (s) => s[prop]);
+  }
+});
+var serviceMembers = (tag2) => ({
+  functions: serviceFunctions(tag2),
+  constants: serviceConstants(tag2)
+});
 var annotateCurrentSpan = function() {
   const args = arguments;
   return flatMap7(currentSpan, (span) => span._tag === "Some" ? sync(() => {
@@ -6826,7 +6964,7 @@ var annotateSpans = /* @__PURE__ */ dual((args) => isEffect(args[0]), function()
   return fiberRefLocallyWith(args[0], currentTracerSpanAnnotations, typeof args[1] === "string" ? set2(args[1], args[2]) : (annotations) => Object.entries(args[1]).reduce((acc, [key2, value2]) => set2(acc, key2, value2), annotations));
 });
 var currentParentSpan = /* @__PURE__ */ map9(/* @__PURE__ */ fiberRefGet(currentTracerSpan), head3);
-var currentSpan = /* @__PURE__ */ map9(/* @__PURE__ */ fiberRefGet(currentTracerSpan), /* @__PURE__ */ findFirst2((span) => span._tag === "Span"));
+var currentSpan = /* @__PURE__ */ map9(/* @__PURE__ */ fiberRefGet(currentTracerSpan), /* @__PURE__ */ findFirst3((span) => span._tag === "Span"));
 var bigint0 = /* @__PURE__ */ BigInt(0);
 var currentTimeNanosTracing = /* @__PURE__ */ fiberRefGetWith(currentTracerTimingEnabled, (enabled2) => enabled2 ? currentTimeNanos2 : succeed(bigint0));
 var linkSpans = /* @__PURE__ */ dual((args) => isEffect(args[0]), (self, span, attributes) => fiberRefLocallyWith(self, currentTracerSpanLinks, append2({
@@ -6850,8 +6988,16 @@ var useSpan = (name, ...args) => {
 };
 var withParentSpan = /* @__PURE__ */ dual(2, (self, span) => fiberRefLocallyWith(self, currentTracerSpan, prepend3(span)));
 var withSpan = /* @__PURE__ */ dual((args) => typeof args[0] !== "string", (self, name, options) => useSpan(name, options ?? {}, (span) => withParentSpan(self, span)));
+var fromNullable2 = (evaluate) => suspend(() => {
+  const a = evaluate();
+  if (a === null || a === void 0) {
+    return fail2(NoSuchElementException());
+  }
+  return succeed(a);
+});
+var optionFromOptional = (self) => catchAll(map9(self, some2), (error2) => isNoSuchElementException(error2) ? succeedNone : fail2(error2));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/fiberStatus.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/fiberStatus.mjs
 var _a12;
 var _b6;
 var _c4;
@@ -6905,20 +7051,20 @@ var suspended = (runtimeFlags3, blockingOn) => new Suspended(runtimeFlags3, bloc
 var isFiberStatus = (u) => typeof u === "object" && u != null && FiberStatusTypeId in u;
 var isDone = (self) => self._tag === OP_DONE;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Fiber/Status.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Fiber/Status.mjs
 var done4 = done3;
 var running2 = running;
 var suspended2 = suspended;
 var isDone2 = isDone;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/FiberRefs/Patch.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/FiberRefs/Patch.mjs
 var diff8 = diff7;
 var patch9 = patch8;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/completedRequestMap.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/completedRequestMap.mjs
 var currentRequestMap = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("@effect/io/FiberRef/currentRequestMap"), () => fiberRefUnsafeMake(/* @__PURE__ */ new Map()));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/concurrency.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/concurrency.mjs
 var match5 = (options, sequential3, unbounded2, bounded) => {
   switch (options?.concurrency) {
     case void 0: {
@@ -6952,7 +7098,7 @@ var matchSimple = (options, sequential3, concurrent) => {
   }
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/executionStrategy.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/executionStrategy.mjs
 var OP_SEQUENTIAL2 = "Sequential";
 var OP_PARALLEL2 = "Parallel";
 var sequential2 = {
@@ -6964,7 +7110,7 @@ var parallel2 = {
 var isSequential = (self) => self._tag === OP_SEQUENTIAL2;
 var isParallel = (self) => self._tag === OP_PARALLEL2;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/fiberMessage.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/fiberMessage.mjs
 var OP_INTERRUPT_SIGNAL = "InterruptSignal";
 var OP_STATEFUL = "Stateful";
 var OP_RESUME = "Resume";
@@ -6985,7 +7131,7 @@ var yieldNow2 = () => ({
   _tag: OP_YIELD_NOW
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/fiberScope.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/fiberScope.mjs
 var _a13;
 var _b7;
 var FiberScopeSymbolKey = "@effect/io/Fiber/Scope";
@@ -7025,7 +7171,7 @@ var unsafeMake7 = (fiber) => {
 };
 var globalScope = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("@effect/io/FiberScope/Global"), () => new Global());
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/fiber.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/fiber.mjs
 var FiberSymbolKey = "@effect/io/Fiber";
 var FiberTypeId = /* @__PURE__ */ Symbol.for(FiberSymbolKey);
 var fiberVariance = {
@@ -7055,7 +7201,7 @@ var never2 = {
 };
 var currentFiberURI = "@effect/io/Fiber/Current";
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/logger.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/logger.mjs
 var LoggerSymbolKey = "@effect/io/Logger";
 var LoggerTypeId = /* @__PURE__ */ Symbol.for(LoggerSymbolKey);
 var loggerVariance = {
@@ -7137,7 +7283,7 @@ var textOnly = /^[^\s"=]+$/;
 var appendQuoted = (label, output) => output + (label.match(textOnly) ? label : escapeDoubleQuotes(label));
 var filterKeyName = (key2) => key2.replace(/[\s="]/g, "_");
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/metric/boundaries.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/metric/boundaries.mjs
 var _a14;
 var MetricBoundariesSymbolKey = "@effect/io/Metric/Boundaries";
 var MetricBoundariesTypeId = /* @__PURE__ */ Symbol.for(MetricBoundariesSymbolKey);
@@ -7165,7 +7311,7 @@ var fromChunk = (chunk4) => {
 };
 var exponential = (options) => fromChunk(unsafeFromArray(makeBy(options.count - 1, (i) => options.start * Math.pow(options.factor, i))));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/metric/keyType.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/metric/keyType.mjs
 var _a15;
 var _b8;
 var _c5;
@@ -7292,7 +7438,7 @@ var isSummaryKey = (u) => {
   return typeof u === "object" && u != null && SummaryKeyTypeTypeId in u;
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/metric/key.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/metric/key.mjs
 var _a16;
 var MetricKeySymbolKey = "@effect/io/Metric/Key";
 var MetricKeyTypeId = /* @__PURE__ */ Symbol.for(MetricKeySymbolKey);
@@ -7322,7 +7468,7 @@ var counter2 = (name, description2) => new MetricKeyImpl(name, counter, fromNull
 var histogram2 = (name, boundaries, description2) => new MetricKeyImpl(name, histogram(boundaries), fromNullable(description2));
 var taggedWithLabelSet = /* @__PURE__ */ dual(2, (self, extraTags) => size5(extraTags) === 0 ? self : new MetricKeyImpl(self.name, self.keyType, self.description, union4(extraTags)(self.tags)));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/metric/state.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/metric/state.mjs
 var _a17;
 var _b9;
 var _c6;
@@ -7464,7 +7610,7 @@ var isSummaryState = (u) => {
   return typeof u === "object" && u != null && SummaryStateTypeId in u;
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/metric/hook.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/metric/hook.mjs
 var MetricHookSymbolKey = "@effect/io/Metric/Hook";
 var MetricHookTypeId = /* @__PURE__ */ Symbol.for(MetricHookSymbolKey);
 var metricHookVariance = {
@@ -7746,7 +7892,7 @@ var resolveQuantile = (error2, sampleCount, current, consumed, quantile, rest) =
   throw new Error("BUG: MetricHook.resolveQuantiles - please report an issue at https://github.com/Effect-TS/io/issues");
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/metric/pair.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/metric/pair.mjs
 var MetricPairSymbolKey = "@effect/io/Metric/Pair";
 var MetricPairTypeId = /* @__PURE__ */ Symbol.for(MetricPairSymbolKey);
 var metricPairVariance = {
@@ -7763,7 +7909,7 @@ var unsafeMake8 = (metricKey, metricState) => {
   };
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/metric/registry.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/metric/registry.mjs
 var _a18;
 var MetricRegistrySymbolKey = "@effect/io/Metric/Registry";
 var MetricRegistryTypeId = /* @__PURE__ */ Symbol.for(MetricRegistrySymbolKey);
@@ -7863,7 +8009,7 @@ var make28 = () => {
   return new MetricRegistryImpl();
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/metric.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/metric.mjs
 var MetricSymbolKey = "@effect/io/Metric";
 var MetricTypeId = /* @__PURE__ */ Symbol.for(MetricSymbolKey);
 var metricVariance = {
@@ -7894,7 +8040,7 @@ var fromMetricKey = (key2) => {
 };
 var histogram5 = (name, boundaries, description2) => fromMetricKey(histogram2(name, boundaries, description2));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/request.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/request.mjs
 var complete = /* @__PURE__ */ dual(2, (self, result) => fiberRefGetWith(currentRequestMap, (map14) => sync(() => {
   if (map14.has(self)) {
     const entry = map14.get(self);
@@ -7925,7 +8071,7 @@ var Listeners = class {
   }
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/supervisor.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/supervisor.mjs
 var _a19;
 var _b10;
 var _c7;
@@ -8081,7 +8227,7 @@ var fromEffect = (effect) => {
 };
 var none8 = /* @__PURE__ */ fromEffect(unit);
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/supervisor/patch.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/supervisor/patch.mjs
 var OP_EMPTY3 = "Empty";
 var OP_ADD_SUPERVISOR = "AddSupervisor";
 var OP_REMOVE_SUPERVISOR = "RemoveSupervisor";
@@ -8172,7 +8318,7 @@ var differ2 = /* @__PURE__ */ make11({
   diff: diff9
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/fiberRuntime.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/fiberRuntime.mjs
 var _a20;
 var _b11;
 var fiberStarted = /* @__PURE__ */ counter5("effect_fiber_started");
@@ -9744,7 +9890,7 @@ var withSpanScoped = (name, options) => flatMap7(makeSpan(name, options), (span)
 var withTracerScoped = (value2) => fiberRefLocallyScopedWith(currentServices, add2(tracerTag, value2));
 var withParentSpanScoped = (span) => fiberRefLocallyScopedWith(currentTracerSpan, prepend3(span));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/cache.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/cache.mjs
 var _a21;
 var _b12;
 var complete2 = (key2, exit3, entryStats, timeToLiveMillis) => struct({
@@ -10146,7 +10292,7 @@ var CacheImpl = class {
 _b12 = CacheTypeId;
 var unsafeMakeWith = (capacity, lookup, timeToLive) => new CacheImpl(capacity, empty3(), none3, lookup, (exit3) => decode(timeToLive(exit3)));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/schedule/interval.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/schedule/interval.mjs
 var IntervalSymbolKey = "@effect/io/Schedule/Interval";
 var IntervalTypeId = /* @__PURE__ */ Symbol.for(IntervalSymbolKey);
 var empty23 = {
@@ -10155,27 +10301,27 @@ var empty23 = {
   endMillis: 0
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Schedule/Interval.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Schedule/Interval.mjs
 var empty24 = empty23;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/schedule/intervals.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/schedule/intervals.mjs
 var start = (self) => {
   return getOrElse(() => empty24)(head2(self.intervals)).startMillis;
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Schedule/Intervals.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Schedule/Intervals.mjs
 var start2 = start;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/schedule/decision.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/schedule/decision.mjs
 var OP_DONE2 = "Done";
 var isDone3 = (self) => {
   return self._tag === OP_DONE2;
 };
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Schedule/Decision.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Schedule/Decision.mjs
 var isDone4 = isDone3;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/schedule.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/schedule.mjs
 var _a22;
 var _b13;
 var ScheduleSymbolKey = "@effect/io/Schedule";
@@ -10259,7 +10405,7 @@ var scheduleFrom_EffectLoop = (self, initial, driver2) => matchEffect(driver2.ne
   onSuccess: () => flatMap7(self, (a) => scheduleFrom_EffectLoop(self, a, driver2))
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/effect/circular.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/effect/circular.mjs
 var _a23;
 var _b14;
 var _c8;
@@ -10456,17 +10602,17 @@ var updateSomeAndGetEffectSynchronized = /* @__PURE__ */ dual(2, (self, pf) => s
   }
 }));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/opCodes/layer.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/opCodes/layer.mjs
 var OP_FRESH = "Fresh";
 var OP_FROM_EFFECT = "FromEffect";
 var OP_SCOPED = "Scoped";
 var OP_SUSPEND = "Suspend";
 var OP_ZIP_WITH_PAR = "ZipWithPar";
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Fiber.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Fiber.mjs
 var interruptAs = interruptAsFiber;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/runtime.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/runtime.mjs
 var unsafeFork2 = (runtime4) => (self, options) => {
   const fiberId3 = unsafeMake2();
   const effect = self;
@@ -10649,10 +10795,10 @@ var unsafeRunSyncEffect = /* @__PURE__ */ unsafeRunSync(defaultRuntime);
 var unsafeRunSyncExitEffect = /* @__PURE__ */ unsafeRunSyncExit(defaultRuntime);
 var asyncEffect = (register) => flatMap7(deferredMake(), (deferred) => flatMap7(runtime2(), (runtime4) => uninterruptibleMask((restore) => zipRight(fork(restore(catchAllCause(register((cb) => unsafeRunCallback(runtime4)(intoDeferred(cb, deferred))), (cause3) => deferredFailCause(deferred, cause3)))), restore(deferredAwait(deferred))))));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/synchronizedRef.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/synchronizedRef.mjs
 var modifyEffect = /* @__PURE__ */ dual(2, (self, f) => self.modifyEffect(f));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/layer.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/layer.mjs
 var LayerSymbolKey = "@effect/io/Layer";
 var LayerTypeId = /* @__PURE__ */ Symbol.for(LayerSymbolKey);
 var layerVariance = {
@@ -10785,16 +10931,16 @@ var zipWithPar = /* @__PURE__ */ dual(3, (self, that, f) => suspend3(() => {
 var provideLayer = /* @__PURE__ */ dual(2, (self, layer) => acquireUseRelease(scopeMake(), (scope3) => flatMap7(buildWithScope(layer, scope3), (context4) => provideContext(self, context4)), (scope3, exit3) => scopeClose(scope3, exit3)));
 var provideSomeLayer = /* @__PURE__ */ dual(2, (self, layer) => provideLayer(self, merge6(context2(), layer)));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/layer/circular.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/layer/circular.mjs
 var setConfigProvider = (configProvider) => scopedDiscard(withConfigProviderScoped(configProvider));
 var setParentSpan = (span) => scopedDiscard(withParentSpanScoped(span));
 var setSpan = (name, options) => scopedDiscard(withSpanScoped(name, options));
 var setTracer = (tracer3) => scopedDiscard(withTracerScoped(tracer3));
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Fiber/Runtime/Flags.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Fiber/Runtime/Flags.mjs
 var diff10 = diff6;
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/internal/query.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/internal/query.mjs
 var currentCache = /* @__PURE__ */ fiberRefUnsafeMake(/* @__PURE__ */ unsafeMakeWith(65536, () => map9(deferredMake(), (handle) => ({
   listeners: new Listeners(),
   handle
@@ -10871,7 +11017,7 @@ var withRequestCache = /* @__PURE__ */ dual(
   (self, cache) => fiberRefLocally(self, currentCache, cache)
 );
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Effect.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Effect.mjs
 var EffectTypeId3 = EffectTypeId2;
 var isEffect2 = isEffect;
 var cachedWithTTL = cached;
@@ -10887,7 +11033,7 @@ var dropWhile2 = dropWhile;
 var every4 = every3;
 var exists2 = exists;
 var filter5 = filter4;
-var findFirst4 = findFirst3;
+var findFirst5 = findFirst4;
 var firstSuccessOf2 = firstSuccessOf;
 var forEach4 = forEachOptions;
 var head5 = head4;
@@ -11050,6 +11196,9 @@ var provideServiceEffect2 = provideServiceEffect;
 var provideSomeLayer2 = provideSomeLayer;
 var serviceFunction2 = serviceFunction;
 var serviceFunctionEffect2 = serviceFunctionEffect;
+var serviceFunctions2 = serviceFunctions;
+var serviceConstants2 = serviceConstants;
+var serviceMembers2 = serviceMembers;
 var serviceOption = (tag2) => contextWith2((_) => getOption2(_, tag2));
 var updateService2 = updateService;
 var Do2 = Do;
@@ -11084,6 +11233,7 @@ var tap2 = tap;
 var tapBoth2 = tapBoth;
 var tapDefect2 = tapDefect;
 var tapError2 = tapError;
+var tapErrorTag2 = tapErrorTag;
 var tapErrorCause2 = tapErrorCause;
 var forever2 = forever;
 var iterate2 = iterate;
@@ -11197,8 +11347,10 @@ var withSpan2 = withSpan;
 var withSpanScoped2 = withSpanScoped;
 var withParentSpan2 = withParentSpan;
 var withParentSpanScoped2 = withParentSpanScoped;
+var fromNullable3 = fromNullable2;
+var optionFromOptional2 = optionFromOptional;
 
-// node_modules/.pnpm/effect@2.0.0-next.24_@effect+data@0.17.1_@effect+io@0.38.0_@effect+match@0.32.0_@effect+stm@0.22.0_@effect+stream@0.34.0/node_modules/effect/mjs/Config.mjs
+// node_modules/.pnpm/effect@2.0.0-next.28_@effect+data@0.17.6_@effect+io@0.38.2_@effect+match@0.34.0_@effect+stm@0.22.0_@effect+stream@0.34.0/node_modules/effect/mjs/Config.mjs
 var Config_exports = {};
 __export(Config_exports, {
   ConfigTypeId: () => ConfigTypeId2,
@@ -11236,7 +11388,7 @@ __export(Config_exports, {
   zipWith: () => zipWith5
 });
 
-// node_modules/.pnpm/@effect+io@0.38.0_@effect+data@0.17.1/node_modules/@effect/io/mjs/Config.mjs
+// node_modules/.pnpm/@effect+io@0.38.2_@effect+data@0.17.6/node_modules/@effect/io/mjs/Config.mjs
 var ConfigTypeId2 = ConfigTypeId;
 var all6 = all2;
 var array5 = array4;
@@ -11271,7 +11423,7 @@ var withDescription2 = withDescription;
 var zip6 = zip4;
 var zipWith5 = zipWith3;
 
-// node_modules/.pnpm/effect@2.0.0-next.24_@effect+data@0.17.1_@effect+io@0.38.0_@effect+match@0.32.0_@effect+stm@0.22.0_@effect+stream@0.34.0/node_modules/effect/mjs/Data.mjs
+// node_modules/.pnpm/effect@2.0.0-next.28_@effect+data@0.17.6_@effect+io@0.38.2_@effect+match@0.34.0_@effect+stm@0.22.0_@effect+stream@0.34.0/node_modules/effect/mjs/Data.mjs
 var Data_exports2 = {};
 __export(Data_exports2, {
   Class: () => Class,
@@ -11280,12 +11432,13 @@ __export(Data_exports2, {
   case: () => _case,
   struct: () => struct,
   tagged: () => tagged,
+  taggedEnum: () => taggedEnum,
   tuple: () => tuple2,
   unsafeArray: () => unsafeArray,
   unsafeStruct: () => unsafeStruct
 });
 
-// node_modules/.pnpm/effect@2.0.0-next.24_@effect+data@0.17.1_@effect+io@0.38.0_@effect+match@0.32.0_@effect+stm@0.22.0_@effect+stream@0.34.0/node_modules/effect/mjs/Effect.mjs
+// node_modules/.pnpm/effect@2.0.0-next.28_@effect+data@0.17.6_@effect+io@0.38.2_@effect+match@0.34.0_@effect+stm@0.22.0_@effect+stream@0.34.0/node_modules/effect/mjs/Effect.mjs
 var Effect_exports = {};
 __export(Effect_exports, {
   Do: () => Do2,
@@ -11368,7 +11521,7 @@ __export(Effect_exports, {
   filterOrDieMessage: () => filterOrDieMessage2,
   filterOrElse: () => filterOrElse2,
   filterOrFail: () => filterOrFail2,
-  findFirst: () => findFirst4,
+  findFirst: () => findFirst5,
   firstSuccessOf: () => firstSuccessOf2,
   flatMap: () => flatMap9,
   flatMapStep: () => flatMapStep2,
@@ -11385,6 +11538,7 @@ __export(Effect_exports, {
   forkWithErrorHandler: () => forkWithErrorHandler2,
   fromFiber: () => fromFiber2,
   fromFiberEffect: () => fromFiberEffect2,
+  fromNullable: () => fromNullable3,
   gen: () => gen2,
   getFiberRefs: () => getFiberRefs2,
   head: () => head5,
@@ -11443,6 +11597,7 @@ __export(Effect_exports, {
   onInterrupt: () => onInterrupt2,
   once: () => once2,
   option: () => option3,
+  optionFromOptional: () => optionFromOptional2,
   orDie: () => orDie2,
   orDieWith: () => orDieWith2,
   orElse: () => orElse4,
@@ -11504,8 +11659,11 @@ __export(Effect_exports, {
   scopeWith: () => scopeWith2,
   scoped: () => scoped,
   sequentialFinalizers: () => sequentialFinalizers2,
+  serviceConstants: () => serviceConstants2,
   serviceFunction: () => serviceFunction2,
   serviceFunctionEffect: () => serviceFunctionEffect2,
+  serviceFunctions: () => serviceFunctions2,
+  serviceMembers: () => serviceMembers2,
   serviceOption: () => serviceOption,
   setClock: () => setClock,
   setConfigProvider: () => setConfigProvider2,
@@ -11540,6 +11698,7 @@ __export(Effect_exports, {
   tapDefect: () => tapDefect2,
   tapError: () => tapError2,
   tapErrorCause: () => tapErrorCause2,
+  tapErrorTag: () => tapErrorTag2,
   timed: () => timed2,
   timedWith: () => timedWith2,
   timeout: () => timeout2,
@@ -11609,10 +11768,10 @@ __export(Effect_exports, {
   zipWith: () => zipWith4
 });
 
-// node_modules/.pnpm/effect@2.0.0-next.24_@effect+data@0.17.1_@effect+io@0.38.0_@effect+match@0.32.0_@effect+stm@0.22.0_@effect+stream@0.34.0/node_modules/effect/mjs/Match.mjs
+// node_modules/.pnpm/effect@2.0.0-next.28_@effect+data@0.17.6_@effect+io@0.38.2_@effect+match@0.34.0_@effect+stm@0.22.0_@effect+stream@0.34.0/node_modules/effect/mjs/Match.mjs
 var Match_exports = {};
 __export(Match_exports, {
-  SafeSchemaId: () => SafeSchemaId,
+  SafeRefinementId: () => SafeRefinementId,
   any: () => any,
   bigint: () => bigint,
   boolean: () => boolean3,
@@ -11625,24 +11784,22 @@ __export(Match_exports, {
   exhaustive: () => exhaustive,
   instanceOf: () => instanceOf,
   instanceOfUnsafe: () => instanceOfUnsafe,
-  is: () => is2,
+  is: () => is,
   nonEmptyString: () => nonEmptyString,
   not: () => not2,
   null: () => _null,
-  number: () => number6,
+  number: () => number5,
   option: () => option5,
   orElse: () => orElse6,
   orElseAbsurd: () => orElseAbsurd,
   record: () => record,
-  safe: () => safe,
-  string: () => string5,
+  string: () => string4,
   tag: () => tag,
   tags: () => tags,
   tagsExhaustive: () => tagsExhaustive,
-  type: () => type2,
+  type: () => type,
   typeTags: () => typeTags,
   undefined: () => _undefined,
-  unsafe: () => unsafe,
   value: () => value,
   valueTags: () => valueTags,
   when: () => when3,
@@ -11650,7 +11807,259 @@ __export(Match_exports, {
   whenOr: () => whenOr
 });
 
-// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.1_@effect+io@0.38.0/node_modules/@effect/schema/mjs/internal/common.mjs
+// node_modules/.pnpm/@effect+match@0.34.0_@effect+data@0.17.6/node_modules/@effect/match/mjs/index.mjs
+var TypeMatcherImpl = class _TypeMatcherImpl {
+  constructor(cases) {
+    this.cases = cases;
+    this._tag = "TypeMatcher";
+    this._input = identity;
+    this._filters = identity;
+    this._remaining = identity;
+    this._result = identity;
+  }
+  add(_case2) {
+    return new _TypeMatcherImpl([...this.cases, _case2]);
+  }
+  pipe() {
+    return pipeArguments(this, arguments);
+  }
+};
+var ValueMatcherImpl = class _ValueMatcherImpl {
+  constructor(provided, value2) {
+    this.provided = provided;
+    this.value = value2;
+    this._tag = "ValueMatcher";
+    this._input = identity;
+    this._filters = identity;
+    this._result = identity;
+  }
+  add(_case2) {
+    if (this.value._tag === "Right") {
+      return this;
+    }
+    if (_case2._tag === "When" && _case2.guard(this.provided) === true) {
+      return new _ValueMatcherImpl(this.provided, right2(_case2.evaluate(this.provided)));
+    } else if (_case2._tag === "Not" && _case2.guard(this.provided) === false) {
+      return new _ValueMatcherImpl(this.provided, right2(_case2.evaluate(this.provided)));
+    }
+    return this;
+  }
+  pipe() {
+    return pipeArguments(this, arguments);
+  }
+};
+var When = class {
+  constructor(guard, evaluate) {
+    this.guard = guard;
+    this.evaluate = evaluate;
+    this._tag = "When";
+  }
+};
+var Not = class {
+  constructor(guard, evaluate) {
+    this.guard = guard;
+    this.evaluate = evaluate;
+    this._tag = "Not";
+  }
+};
+var makePredicate = (pattern) => {
+  if (typeof pattern === "function") {
+    return pattern;
+  } else if (Array.isArray(pattern)) {
+    const predicates = pattern.map(makePredicate);
+    const len = predicates.length;
+    return (u) => {
+      if (!Array.isArray(u)) {
+        return false;
+      }
+      for (let i = 0; i < len; i++) {
+        if (predicates[i](u[i]) === false) {
+          return false;
+        }
+      }
+      return true;
+    };
+  } else if (pattern !== null && typeof pattern === "object") {
+    const keysAndPredicates = Object.entries(pattern).map(([k, p]) => [k, makePredicate(p)]);
+    const len = keysAndPredicates.length;
+    return (u) => {
+      if (typeof u !== "object" || u === null) {
+        return false;
+      }
+      for (let i = 0; i < len; i++) {
+        const [key2, predicate] = keysAndPredicates[i];
+        if (!(key2 in u) || predicate(u[key2]) === false) {
+          return false;
+        }
+      }
+      return true;
+    };
+  }
+  return (u) => u === pattern;
+};
+var makeOrPredicate = (patterns) => {
+  const predicates = patterns.map(makePredicate);
+  const len = predicates.length;
+  return (u) => {
+    for (let i = 0; i < len; i++) {
+      if (predicates[i](u) === true) {
+        return true;
+      }
+    }
+    return false;
+  };
+};
+var makeAndPredicate = (patterns) => {
+  const predicates = patterns.map(makePredicate);
+  const len = predicates.length;
+  return (u) => {
+    for (let i = 0; i < len; i++) {
+      if (predicates[i](u) === false) {
+        return false;
+      }
+    }
+    return true;
+  };
+};
+var type = () => new TypeMatcherImpl([]);
+var value = (i) => new ValueMatcherImpl(i, left2(i));
+var valueTags = (fields) => {
+  const match7 = tagsExhaustive(fields)(new TypeMatcherImpl([]));
+  return (input) => match7(input);
+};
+var typeTags = () => (fields) => {
+  const match7 = tagsExhaustive(fields)(new TypeMatcherImpl([]));
+  return (input) => match7(input);
+};
+var when3 = (pattern, f) => (self) => self.add(new When(makePredicate(pattern), f));
+var whenOr = (...args) => (self) => {
+  const onMatch = args[args.length - 1];
+  const patterns = args.slice(0, -1);
+  return self.add(new When(makeOrPredicate(patterns), onMatch));
+};
+var whenAnd = (...args) => (self) => {
+  const onMatch = args[args.length - 1];
+  const patterns = args.slice(0, -1);
+  return self.add(new When(makeAndPredicate(patterns), onMatch));
+};
+var discriminator = (field) => (...pattern) => {
+  const f = pattern[pattern.length - 1];
+  const values3 = pattern.slice(0, -1);
+  const pred = values3.length === 1 ? (_) => _[field] === values3[0] : (_) => values3.includes(_[field]);
+  return (self) => self.add(new When(pred, f));
+};
+var discriminators = (field) => (fields) => {
+  const predicates = [];
+  for (const key2 in fields) {
+    const pred = (_) => _[field] === key2;
+    const f = fields[key2];
+    if (f) {
+      predicates.push(new When(pred, f));
+    }
+  }
+  const len = predicates.length;
+  return (self) => {
+    let matcher = self;
+    for (let i = 0; i < len; i++) {
+      matcher = matcher.add(predicates[i]);
+    }
+    return matcher;
+  };
+};
+var discriminatorsExhaustive = (field) => (fields) => {
+  const addCases = discriminators(field)(fields);
+  return (matcher) => exhaustive(addCases(matcher));
+};
+var tag = /* @__PURE__ */ discriminator("_tag");
+var tags = /* @__PURE__ */ discriminators("_tag");
+var tagsExhaustive = /* @__PURE__ */ discriminatorsExhaustive("_tag");
+var not2 = (pattern, f) => (self) => self.add(new Not(makePredicate(pattern), f));
+var SafeRefinementId = /* @__PURE__ */ Symbol.for("@effect/match/SafeRefinementId");
+var nonEmptyString = (u) => typeof u === "string" && u.length > 0;
+var is = (...literals) => {
+  const len = literals.length;
+  return (u) => {
+    for (let i = 0; i < len; i++) {
+      if (u === literals[i]) {
+        return true;
+      }
+    }
+    return false;
+  };
+};
+var string4 = isString;
+var number5 = isNumber;
+var any = () => true;
+var defined = (u) => u !== void 0 && u !== null;
+var boolean3 = isBoolean;
+var _undefined = isUndefined;
+var _null = isNull;
+var bigint = isBigint;
+var date3 = isDate;
+var record = isRecord;
+var instanceOf = (constructor) => (u) => u instanceof constructor;
+var instanceOfUnsafe = instanceOf;
+var orElse6 = (f) => (self) => {
+  const result = either4(self);
+  if (isEither2(result)) {
+    return result._tag === "Right" ? result.right : f(result.left);
+  }
+  return (input) => {
+    const a = result(input);
+    return a._tag === "Right" ? a.right : f(a.left);
+  };
+};
+var orElseAbsurd = (self) => orElse6(() => {
+  throw new Error("absurd");
+})(self);
+var either4 = (self) => {
+  if (self._tag === "ValueMatcher") {
+    return self.value;
+  }
+  const len = self.cases.length;
+  return (input) => {
+    for (let i = 0; i < len; i++) {
+      const _case2 = self.cases[i];
+      if (_case2._tag === "When" && _case2.guard(input) === true) {
+        return right2(_case2.evaluate(input));
+      } else if (_case2._tag === "Not" && _case2.guard(input) === false) {
+        return right2(_case2.evaluate(input));
+      }
+    }
+    return left2(input);
+  };
+};
+var option5 = (self) => {
+  const toEither = either4(self);
+  if (isEither2(toEither)) {
+    return match(toEither, {
+      onLeft: () => none2(),
+      onRight: some2
+    });
+  }
+  return (input) => match(toEither(input), {
+    onLeft: () => none2(),
+    onRight: (_) => some2(_)
+  });
+};
+var exhaustive = (self) => {
+  const toEither = either4(self);
+  if (isEither2(toEither)) {
+    if (toEither._tag === "Right") {
+      return toEither.right;
+    }
+    throw new Error("@effect/match: exhaustive absurd");
+  }
+  return (u) => {
+    const result = toEither(u);
+    if (result._tag === "Right") {
+      return result.right;
+    }
+    throw new Error("@effect/match: exhaustive absurd");
+  };
+};
+
+// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.6_@effect+io@0.38.2/node_modules/@effect/schema/mjs/internal/common.mjs
 var ArbitraryHookId = "@effect/schema/ArbitraryHookId";
 var PrettyHookId = "@effect/schema/PrettyHookId";
 var getKeysForIndexSignature = (input, parameter) => {
@@ -11678,12 +12087,12 @@ var memoizeThunk = (f) => {
   };
 };
 
-// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.1_@effect+io@0.38.0/node_modules/@effect/schema/mjs/ParseResult.mjs
+// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.6_@effect+io@0.38.2/node_modules/@effect/schema/mjs/ParseResult.mjs
 var parseError = (errors) => ({
   _tag: "ParseError",
   errors
 });
-var type = (expected, actual, message) => ({
+var type2 = (expected, actual, message) => ({
   _tag: "Type",
   expected,
   actual,
@@ -11743,7 +12152,7 @@ var map13 = (self, f) => {
   return map11(self, f);
 };
 
-// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.1_@effect+io@0.38.0/node_modules/@effect/schema/mjs/AST.mjs
+// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.6_@effect+io@0.38.2/node_modules/@effect/schema/mjs/AST.mjs
 var TypeAnnotationId = "@effect/schema/TypeAnnotationId";
 var MessageAnnotationId = "@effect/schema/MessageAnnotationId";
 var IdentifierAnnotationId = "@effect/schema/IdentifierAnnotationId";
@@ -12144,7 +12553,7 @@ var getParameterBase = (ast) => {
   }
 };
 
-// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.1_@effect+io@0.38.0/node_modules/@effect/schema/mjs/TreeFormatter.mjs
+// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.6_@effect+io@0.38.2/node_modules/@effect/schema/mjs/TreeFormatter.mjs
 var make34 = (value2, forest = []) => ({
   value: value2,
   forest
@@ -12257,11 +12666,7 @@ var go = (e) => {
   }
 };
 
-// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.1_@effect+io@0.38.0/node_modules/@effect/schema/mjs/Parser.mjs
-var getEither = (ast) => {
-  const parser = go2(ast);
-  return (input, options) => parser(input, options);
-};
+// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.6_@effect+io@0.38.2/node_modules/@effect/schema/mjs/Parser.mjs
 var getEffect = (ast) => {
   const parser = go2(ast);
   return (input, options) => parser(input, {
@@ -12271,7 +12676,7 @@ var getEffect = (ast) => {
 };
 var parseResult = (schema) => go2(schema.ast);
 var parse = (schema) => getEffect(schema.ast);
-var validateEither = (schema) => getEither(to(schema.ast));
+var encode = (schema) => getEffect(reverse5(schema.ast));
 var go2 = (ast, isBoundary = true) => {
   switch (ast._tag) {
     case "Refinement": {
@@ -12337,7 +12742,7 @@ var go2 = (ast, isBoundary = true) => {
       }
       return (input, options) => {
         if (!Array.isArray(input)) {
-          return failure(type(unknownArray, input));
+          return failure(type2(unknownArray, input));
         }
         const allErrors = options?.errors === "all";
         const es = [];
@@ -12534,7 +12939,7 @@ var go2 = (ast, isBoundary = true) => {
       }
       return (input, options) => {
         if (!isRecord(input)) {
-          return failure(type(unknownRecord, input));
+          return failure(type2(unknownRecord, input));
         }
         const allErrors = options?.errors === "all";
         const es = [];
@@ -12717,14 +13122,14 @@ var go2 = (ast, isBoundary = true) => {
                 if (Object.prototype.hasOwnProperty.call(buckets, literal2)) {
                   candidates = candidates.concat(buckets[literal2]);
                 } else {
-                  es.push([stepKey++, key(name, [type(searchTree.keys[name].ast, input[name])])]);
+                  es.push([stepKey++, key(name, [type2(searchTree.keys[name].ast, input[name])])]);
                 }
               } else {
                 es.push([stepKey++, key(name, [missing])]);
               }
             }
           } else {
-            es.push([stepKey++, type(unknownRecord, input)]);
+            es.push([stepKey++, type2(unknownRecord, input)]);
           }
         }
         if (searchTree.otherwise.length > 0) {
@@ -12763,7 +13168,7 @@ var go2 = (ast, isBoundary = true) => {
         }
         const computeResult = (es2) => isNonEmptyArray2(es2) ? failures2(sortByIndex(es2)) : (
           // this should never happen
-          failure(type(neverKeyword, input))
+          failure(type2(neverKeyword, input))
         );
         if (queue && queue.length > 0) {
           const cqueue = queue;
@@ -12791,7 +13196,7 @@ var go2 = (ast, isBoundary = true) => {
     }
   }
 };
-var fromRefinement = (ast, refinement) => (u) => refinement(u) ? success(u) : failure(type(ast, u));
+var fromRefinement = (ast, refinement) => (u) => refinement(u) ? success(u) : failure(type2(ast, u));
 var _getLiterals = (ast) => {
   switch (ast._tag) {
     case "Declaration":
@@ -12900,12 +13305,12 @@ var reverse5 = (ast) => {
   return ast;
 };
 
-// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.1_@effect+io@0.38.0/node_modules/@effect/schema/mjs/Schema.mjs
-var TypeId12 = /* @__PURE__ */ Symbol.for("@effect/schema/Schema");
+// node_modules/.pnpm/@effect+schema@0.33.0_@effect+data@0.17.6_@effect+io@0.38.2/node_modules/@effect/schema/mjs/Schema.mjs
+var TypeId13 = /* @__PURE__ */ Symbol.for("@effect/schema/Schema");
 var SchemaImpl = class {
   constructor(ast) {
     __publicField(this, "ast");
-    __publicField(this, "_id", TypeId12);
+    __publicField(this, "_id", TypeId13);
     __publicField(this, "From");
     __publicField(this, "To");
     this.ast = ast;
@@ -12915,7 +13320,6 @@ var SchemaImpl = class {
   }
 };
 var make35 = (ast) => new SchemaImpl(ast);
-var isSchema = (input) => isObject(input) && "_id" in input && input["_id"] === TypeId12;
 var makeLiteral = (value2) => make35(createLiteral(value2));
 var literal = (...literals) => union8(...literals.map((literal2) => makeLiteral(literal2)));
 var declare = (typeParameters, type3, decode3, annotations) => make35(createDeclaration(typeParameters.map((tp) => tp.ast), type3.ast, (...typeParameters2) => decode3(...typeParameters2.map(make35)), annotations));
@@ -13050,18 +13454,18 @@ var toAnnotations = (options) => {
 };
 function filter6(predicate, options) {
   return (self) => {
-    const decode3 = (a) => predicate(a) ? success(a) : failure(type(ast, a));
+    const decode3 = (a) => predicate(a) ? success(a) : failure(type2(ast, a));
     const ast = createRefinement(self.ast, decode3, false, toAnnotations(options));
     return make35(ast);
   };
 }
 var transformResult = /* @__PURE__ */ dual(4, (from2, to2, decode3, encode2) => make35(createTransform(from2.ast, to2.ast, decode3, encode2)));
 var description = (description2) => (self) => make35(setAnnotation(self.ast, DescriptionAnnotationId, description2));
-var string4 = /* @__PURE__ */ make35(stringKeyword);
-var number5 = /* @__PURE__ */ make35(numberKeyword);
+var string5 = /* @__PURE__ */ make35(stringKeyword);
+var number6 = /* @__PURE__ */ make35(numberKeyword);
 var dateArbitrary = () => (fc) => fc.date();
 var datePretty = () => (date4) => `new Date(${JSON.stringify(date4)})`;
-var DateFromSelf = /* @__PURE__ */ declare([], /* @__PURE__ */ struct3({}), () => (u) => !isDate(u) ? failure(type(DateFromSelf.ast, u)) : success(u), {
+var DateFromSelf = /* @__PURE__ */ declare([], /* @__PURE__ */ struct3({}), () => (u) => !isDate(u) ? failure(type2(DateFromSelf.ast, u)) : success(u), {
   [IdentifierAnnotationId]: "Date",
   [PrettyHookId]: datePretty,
   [ArbitraryHookId]: dateArbitrary
@@ -13097,7 +13501,7 @@ var optionInline = (value2) => union8(struct3({
 var optionFromSelf = (value2) => {
   const schema = declare([value2], optionInline(value2), (value3) => {
     const parse2 = parseResult(value3);
-    return (u, options) => !isOption2(u) ? failure(type(schema.ast, u)) : isNone2(u) ? success(none2()) : map13(parse2(u.value, options), some2);
+    return (u, options) => !isOption2(u) ? failure(type2(schema.ast, u)) : isNone2(u) ? success(none2()) : map13(parse2(u.value, options), some2);
   }, {
     [IdentifierAnnotationId]: "Option",
     [PrettyHookId]: optionPretty,
@@ -13114,266 +13518,6 @@ var maxLength = (maxLength2, options) => (self) => self.pipe(filter6((a) => a.le
   },
   ...options
 }));
-
-// node_modules/.pnpm/@effect+match@0.32.0_@effect+data@0.17.1_@effect+schema@0.33.0/node_modules/@effect/match/mjs/index.mjs
-var TypeMatcherImpl = class _TypeMatcherImpl {
-  constructor(cases) {
-    this.cases = cases;
-    this._tag = "TypeMatcher";
-    this._input = identity;
-    this._filters = identity;
-    this._remaining = identity;
-    this._result = identity;
-  }
-  add(_case2) {
-    return new _TypeMatcherImpl([...this.cases, _case2]);
-  }
-  pipe() {
-    return pipeArguments(this, arguments);
-  }
-};
-var ValueMatcherImpl = class _ValueMatcherImpl {
-  constructor(provided, value2) {
-    this.provided = provided;
-    this.value = value2;
-    this._tag = "ValueMatcher";
-    this._input = identity;
-    this._filters = identity;
-    this._result = identity;
-  }
-  add(_case2) {
-    if (this.value._tag === "Right") {
-      return this;
-    }
-    if (_case2._tag === "When" && _case2.guard(this.provided) === true) {
-      return new _ValueMatcherImpl(this.provided, right2(_case2.evaluate(this.provided)));
-    } else if (_case2._tag === "Not" && _case2.guard(this.provided) === false) {
-      return new _ValueMatcherImpl(this.provided, right2(_case2.evaluate(this.provided)));
-    }
-    return this;
-  }
-  pipe() {
-    return pipeArguments(this, arguments);
-  }
-};
-var When = class {
-  constructor(guard, evaluate) {
-    this.guard = guard;
-    this.evaluate = evaluate;
-    this._tag = "When";
-  }
-};
-var Not = class {
-  constructor(guard, evaluate) {
-    this.guard = guard;
-    this.evaluate = evaluate;
-    this._tag = "Not";
-  }
-};
-var makePredicate = (pattern) => {
-  if (typeof pattern === "function") {
-    return pattern;
-  } else if (Array.isArray(pattern)) {
-    const predicates = pattern.map(makePredicate);
-    const len = predicates.length;
-    return (u) => {
-      if (!Array.isArray(u)) {
-        return false;
-      }
-      for (let i = 0; i < len; i++) {
-        if (predicates[i](u[i]) === false) {
-          return false;
-        }
-      }
-      return true;
-    };
-  } else if (pattern !== null && typeof pattern === "object") {
-    if (isSchema(pattern)) {
-      const validate6 = validateEither(pattern);
-      return (u) => validate6(u, {
-        onExcessProperty: "ignore"
-      })._tag === "Right";
-    }
-    const keysAndPredicates = Object.entries(pattern).map(([k, p]) => [k, makePredicate(p)]);
-    const len = keysAndPredicates.length;
-    return (u) => {
-      if (typeof u !== "object" || u === null) {
-        return false;
-      }
-      for (let i = 0; i < len; i++) {
-        const [key2, predicate] = keysAndPredicates[i];
-        if (!(key2 in u) || predicate(u[key2]) === false) {
-          return false;
-        }
-      }
-      return true;
-    };
-  }
-  return (u) => u === pattern;
-};
-var makeOrPredicate = (patterns) => {
-  const predicates = patterns.map(makePredicate);
-  const len = predicates.length;
-  return (u) => {
-    for (let i = 0; i < len; i++) {
-      if (predicates[i](u) === true) {
-        return true;
-      }
-    }
-    return false;
-  };
-};
-var makeAndPredicate = (patterns) => {
-  const predicates = patterns.map(makePredicate);
-  const len = predicates.length;
-  return (u) => {
-    for (let i = 0; i < len; i++) {
-      if (predicates[i](u) === false) {
-        return false;
-      }
-    }
-    return true;
-  };
-};
-var type2 = () => new TypeMatcherImpl([]);
-var value = (i) => new ValueMatcherImpl(i, left2(i));
-var valueTags = (fields) => {
-  const match7 = tagsExhaustive(fields)(new TypeMatcherImpl([]));
-  return (input) => match7(input);
-};
-var typeTags = () => (fields) => {
-  const match7 = tagsExhaustive(fields)(new TypeMatcherImpl([]));
-  return (input) => match7(input);
-};
-var when3 = (pattern, f) => (self) => self.add(new When(makePredicate(pattern), f));
-var whenOr = (...args) => (self) => {
-  const onMatch = args[args.length - 1];
-  const patterns = args.slice(0, -1);
-  return self.add(new When(makeOrPredicate(patterns), onMatch));
-};
-var whenAnd = (...args) => (self) => {
-  const onMatch = args[args.length - 1];
-  const patterns = args.slice(0, -1);
-  return self.add(new When(makeAndPredicate(patterns), onMatch));
-};
-var discriminator = (field) => (...pattern) => {
-  const f = pattern[pattern.length - 1];
-  const values3 = pattern.slice(0, -1);
-  const pred = values3.length === 1 ? (_) => _[field] === values3[0] : (_) => values3.includes(_[field]);
-  return (self) => self.add(new When(pred, f));
-};
-var discriminators = (field) => (fields) => {
-  const predicates = [];
-  for (const key2 in fields) {
-    const pred = (_) => _[field] === key2;
-    const f = fields[key2];
-    if (f) {
-      predicates.push(new When(pred, f));
-    }
-  }
-  const len = predicates.length;
-  return (self) => {
-    let matcher = self;
-    for (let i = 0; i < len; i++) {
-      matcher = matcher.add(predicates[i]);
-    }
-    return matcher;
-  };
-};
-var discriminatorsExhaustive = (field) => (fields) => {
-  const addCases = discriminators(field)(fields);
-  return (matcher) => exhaustive(addCases(matcher));
-};
-var tag = /* @__PURE__ */ discriminator("_tag");
-var tags = /* @__PURE__ */ discriminators("_tag");
-var tagsExhaustive = /* @__PURE__ */ discriminatorsExhaustive("_tag");
-var not2 = (pattern, f) => (self) => self.add(new Not(makePredicate(pattern), f));
-var SafeSchemaId = /* @__PURE__ */ Symbol.for("@effect/match/SafeSchema");
-var unsafe = (schema) => schema;
-var safe = (schema) => schema;
-var nonEmptyString = (u) => typeof u === "string" && u.length > 0;
-var is2 = (...literals) => {
-  const len = literals.length;
-  return (u) => {
-    for (let i = 0; i < len; i++) {
-      if (u === literals[i]) {
-        return true;
-      }
-    }
-    return false;
-  };
-};
-var string5 = isString;
-var number6 = isNumber;
-var any = () => true;
-var defined = (u) => u !== void 0 && u !== null;
-var boolean3 = isBoolean;
-var _undefined = isUndefined;
-var _null = isNull;
-var bigint = isBigint;
-var date3 = isDate;
-var record = isRecord;
-var instanceOf = (constructor) => (u) => u instanceof constructor;
-var instanceOfUnsafe = instanceOf;
-var orElse6 = (f) => (self) => {
-  const result = either4(self);
-  if (isEither2(result)) {
-    return result._tag === "Right" ? result.right : f(result.left);
-  }
-  return (input) => {
-    const a = result(input);
-    return a._tag === "Right" ? a.right : f(a.left);
-  };
-};
-var orElseAbsurd = (self) => orElse6(() => {
-  throw new Error("absurd");
-})(self);
-var either4 = (self) => {
-  if (self._tag === "ValueMatcher") {
-    return self.value;
-  }
-  const len = self.cases.length;
-  return (input) => {
-    for (let i = 0; i < len; i++) {
-      const _case2 = self.cases[i];
-      if (_case2._tag === "When" && _case2.guard(input) === true) {
-        return right2(_case2.evaluate(input));
-      } else if (_case2._tag === "Not" && _case2.guard(input) === false) {
-        return right2(_case2.evaluate(input));
-      }
-    }
-    return left2(input);
-  };
-};
-var option5 = (self) => {
-  const toEither = either4(self);
-  if (isEither2(toEither)) {
-    return match(toEither, {
-      onLeft: () => none2(),
-      onRight: some2
-    });
-  }
-  return (input) => match(toEither(input), {
-    onLeft: () => none2(),
-    onRight: (_) => some2(_)
-  });
-};
-var exhaustive = (self) => {
-  const toEither = either4(self);
-  if (isEither2(toEither)) {
-    if (toEither._tag === "Right") {
-      return toEither.right;
-    }
-    throw new Error("@effect/match: exhaustive absurd");
-  }
-  return (u) => {
-    const result = toEither(u);
-    if (result._tag === "Right") {
-      return result.right;
-    }
-    throw new Error("@effect/match: exhaustive absurd");
-  };
-};
 
 // src/config.ts
 var import_promises = __toESM(require("fs/promises"));
@@ -13419,27 +13563,25 @@ var parseJson = (json) => Effect_exports.try({
   catch: (error2) => new GenericError({ message: `Failed to parse JSON`, error: error2 })
 });
 var Trend = literal("lower-is-better", "higher-is-better");
+var Metric = struct3({
+  key: pipe(string5, maxLength(120)),
+  sortDate: pipe(string5, dateFromString, optional),
+  value: number6,
+  units: pipe(string5, maxLength(32), optional),
+  trend: pipe(Trend, optional)
+});
 var RequestBody = struct3({
-  metrics: pipe(
-    struct3({
-      key: pipe(string4, maxLength(120)),
-      sortDate: pipe(string4, dateFromString, optional),
-      value: number5,
-      units: pipe(string4, maxLength(32), optional),
-      trend: pipe(Trend, optional)
-    }),
-    array6
-  )
+  metrics: pipe(Metric, array6)
 });
 var MetricSchema = struct3({
   key: pipe(
-    string4,
+    string5,
     maxLength(120),
     description("a key to identify the metric across runs")
   ),
-  value: pipe(number5, description("the value of the metric")),
+  value: pipe(number6, description("the value of the metric")),
   sortDate: pipe(
-    string4,
+    string5,
     dateFromString,
     description(
       "the date to apply sorting by. defaults to the commit time"
@@ -13447,14 +13589,18 @@ var MetricSchema = struct3({
     optional
   ),
   units: pipe(
-    string4,
+    string5,
     maxLength(32),
     description("the units of the metric. example: ms, MiB"),
     optional
   ),
   trend: pipe(Trend, optional)
 });
-var FileSchema = union8(pipe(MetricSchema, array6), MetricSchema);
+var FileSchema = union8(
+  pipe(MetricSchema, array6),
+  MetricSchema
+);
+var encodeFileSchema = encode(FileSchema);
 var parseFileSchema = (json) => parse(FileSchema)(json).pipe(
   Effect_exports.map((x) => [x].flat()),
   Effect_exports.mapError(
@@ -13504,6 +13650,13 @@ var readMetrics = pipe(
 // src/index.ts
 var import_core2 = require("@actions/core");
 var import_http_client = require("@actions/http-client");
+
+// src/util.ts
+var exhaustiveEffect = (_) => {
+  return _;
+};
+
+// src/index.ts
 var getHttpClient = Effect_exports.gen(function* (_) {
   const idToken = yield* _(
     Effect_exports.tryPromise({
@@ -13521,9 +13674,6 @@ var getHttpClient = Effect_exports.gen(function* (_) {
   });
   return httpClient;
 });
-var exhaustiveEffect = (_) => {
-  return _;
-};
 var main = Effect_exports.gen(function* (_) {
   const input = yield* _(getInput);
   const metrics = yield* _(readMetrics(input));
@@ -13540,12 +13690,13 @@ var main = Effect_exports.gen(function* (_) {
     })
   );
   console.log(`received`, response);
-}).pipe(
+});
+main.pipe(
   Effect_exports.catchTag("GenericError", (err) => {
     (0, import_core2.error)(err.message);
     process.exitCode = 1;
     return Effect_exports.unit;
   }),
-  exhaustiveEffect
+  exhaustiveEffect,
+  Effect_exports.runPromise
 );
-Effect_exports.runPromise(main);
