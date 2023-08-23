@@ -8,6 +8,7 @@ import * as Fs from "@effect/platform-node/FileSystem";
 import { Effect, pipe } from "effect";
 import { GenericError } from "../src/error";
 import { exhaustiveEffect } from "../src/util";
+import path from "node:path";
 
 const createGlob = (...parameters: Parameters<typeof create>) =>
   Effect.tryPromise({
@@ -37,7 +38,7 @@ const program = Effect.gen(function* (_) {
       matchDirectories: false,
     })
   );
-  const distDir = new URL("../dist", import.meta.url);
+  const distDir = path.resolve(__dirname, "../dist");
   const paths = yield* _(runGlob(globber));
   const metrics$ = paths.map((url) =>
     Effect.gen(function* (_) {
@@ -52,7 +53,7 @@ const program = Effect.gen(function* (_) {
         )
       );
       return {
-        key: relative(distDir.pathname, url),
+        key: relative(distDir, url),
         value: Number(size.valueOf() / 1024n), // in KB
         units: "KB",
         trend: "lower-is-better",
