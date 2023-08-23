@@ -21,17 +21,17 @@ const ID_TOKEN_ERROR = dedent`
 
   An example of a workflow with the ${ID_TOKEN_COLORED} permission:
 
-  ${chalk.dim.yellow("```yaml")}
+  \`\`\`yaml
    jobs:
      test:
        runs-on: ubuntu-latest
   ${chalk.green(`+    permissions:`)}
   ${chalk.green(`+      id-token: write`)}
        steps:
-         ${chalk.dim.white("# ...")}
-  ${chalk.dim.yellow("```")}
+         # ...
+  \`\`\`
 
-  For more information about the id-token permisison, see the [GitHub documentation](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#overview-of-openid-connect).
+  For more information about the ${ID_TOKEN_COLORED} permisison, see the GitHub documentation on OpenID Connect: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#overview-of-openid-connect
 `;
 
 const getIdToken = Effect.tryPromise({
