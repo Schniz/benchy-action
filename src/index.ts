@@ -1,6 +1,6 @@
 import { readMetrics, getInput } from "./config";
 import { Effect } from "effect";
-import { getIDToken, error } from "@actions/core";
+import { getIDToken, error, debug } from "@actions/core";
 import { HttpClient } from "@actions/http-client";
 import { GenericError } from "./error";
 import { exhaustiveEffect } from "./util";
@@ -77,7 +77,8 @@ const main = Effect.gen(function* (_) {
 
 main.pipe(
   Effect.catchTag("GenericError", (err) => {
-    error(err.message + "\n" + String(err.error));
+    error(err.message);
+    debug(`cause: ${err.error}`);
     process.exitCode = 1;
     return Effect.unit;
   }),
