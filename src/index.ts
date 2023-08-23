@@ -9,25 +9,27 @@ import { Chalk } from "chalk";
 
 const chalk = new Chalk({ level: 2 });
 
+const ID_TOKEN_COLORED = chalk.cyan("`id-token`");
+
 const ID_TOKEN_ERROR = dedent`
   Failed to read GitHub Actions ID token.
 
-  This means you probably forgot to add permissions for \`id-token\` in your workflow/job definition.
-  The \`id-token\` permissions allows GitHub to sign your requests to the Benchy API. This does not
+  This means you probably forgot to add permissions for ${ID_TOKEN_COLORED} in your workflow/job definition.
+  The ${ID_TOKEN_COLORED} permissions allows GitHub to sign your requests to the Benchy API. This does not
   give GitHub access to your Benchy account: it's merely a way to prove that the request is coming
   from your GitHub workflow.
 
-  An example of a workflow with the \`id-token\` permission:
+  An example of a workflow with the ${ID_TOKEN_COLORED} permission:
 
-  \`\`\`yaml
+  ${chalk.dim.yellow("```yaml")}
    jobs:
      test:
        runs-on: ubuntu-latest
   ${chalk.green(`+    permissions:`)}
   ${chalk.green(`+      id-token: write`)}
        steps:
-         # ...
-  \`\`\`
+         ${chalk.dim.white("# ...")}
+  ${chalk.dim.yellow("```")}
 
   For more information about the id-token permisison, see the [GitHub documentation](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#overview-of-openid-connect).
 `;
