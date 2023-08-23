@@ -48,7 +48,7 @@ const main = Effect.gen(function* (_) {
 
 main.pipe(
   Effect.catchTag("GenericError", (err) => {
-    error(err.message);
+    error(err.message + "\n" + String(err.error));
     process.exitCode = 1;
     return Effect.unit;
   }),
