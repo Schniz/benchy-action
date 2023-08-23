@@ -13669,7 +13669,7 @@ var getHttpClient = Effect_exports.gen(function* (_) {
   );
   const httpClient = new import_http_client.HttpClient(`bnz-action`, [], {
     headers: {
-      Authorization: `token ${idToken}`
+      Authorization: `Bearer ${idToken}`
     }
   });
   return httpClient;
