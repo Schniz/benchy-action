@@ -44,13 +44,14 @@ const main = Effect.gen(function* (_) {
   );
 
   console.log(`received`, response);
-}).pipe(
+});
+
+main.pipe(
   Effect.catchTag("GenericError", (err) => {
     error(err.message);
     process.exitCode = 1;
     return Effect.unit;
   }),
-  exhaustiveEffect
+  exhaustiveEffect,
+  Effect.runPromise
 );
-
-Effect.runPromise(main);

@@ -10,6 +10,7 @@
     "version:prepare": "changeset version && pnpm run build",
     "version:publish": "changeset tag"
   },
+  "packageManager": "pnpm@8.6.2",
   "keywords": [],
   "author": "",
   "license": "ISC",
