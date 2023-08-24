@@ -1,50 +1,13 @@
 import { readMetrics, getInput } from "./config";
 import { Effect } from "effect";
-import { getIDToken, error, debug } from "@actions/core";
 import { HttpClient } from "@actions/http-client";
-import { GenericError } from "./error";
+import * as GenericError from "./error";
 import { exhaustiveEffect } from "./util";
-import dedent from "dedent";
-import { Chalk } from "chalk";
-
-const chalk = new Chalk({ level: 2 });
-
-const ID_TOKEN_COLORED = chalk.cyan("`id-token`");
-
-const ID_TOKEN_ERROR = dedent`
-  Failed to read GitHub Actions ID token.
-
-  This means you probably forgot to add permissions for ${ID_TOKEN_COLORED} in your workflow/job definition.
-  The ${ID_TOKEN_COLORED} permissions allows GitHub to sign your requests to the Benchy API. This does not
-  give GitHub access to your Benchy account: it's merely a way to prove that the request is coming
-  from your GitHub workflow.
-
-  An example of a workflow with the ${ID_TOKEN_COLORED} permission:
-
-  \`\`\`yaml
-   jobs:
-     test:
-       runs-on: ubuntu-latest
-  ${chalk.green(`+    permissions:`)}
-  ${chalk.green(`+      id-token: write`)}
-       steps:
-         # ...
-  \`\`\`
-
-  For more information about the ${ID_TOKEN_COLORED} permisison, see the GitHub documentation on OpenID Connect: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#overview-of-openid-connect
-`;
-
-const getIdToken = Effect.tryPromise({
-  try: () => getIDToken(),
-  catch: (error) =>
-    new GenericError({
-      message: ID_TOKEN_ERROR,
-      error,
-    }),
-});
+import * as Chalk from "./chalk";
+import * as IdToken from "./id-token";
 
 const getHttpClient = Effect.gen(function* (_) {
-  const idToken = yield* _(getIdToken);
+  const idToken = yield* _(IdToken.read);
   const httpClient = new HttpClient(`bnz-action`, [], {
     headers: {
       Authorization: `Bearer ${idToken}`,
@@ -65,7 +28,7 @@ const main = Effect.gen(function* (_) {
           metrics,
         }),
       catch: (error) =>
-        new GenericError({
+        new GenericError.GenericError({
           message: `Failed to send metrics`,
           error,
         }),
@@ -76,12 +39,9 @@ const main = Effect.gen(function* (_) {
 });
 
 main.pipe(
-  Effect.catchTag("GenericError", (err) => {
-    error(err.message);
-    debug(`cause: ${err.error}`);
-    process.exitCode = 1;
-    return Effect.unit;
-  }),
+  Effect.catchTag("IdTokenError", (err) => IdToken.intoGenericError(err)),
+  Effect.catchTag("GenericError", (err) => GenericError.handleInCli(err)),
   exhaustiveEffect,
+  Effect.provideServiceEffect(Chalk.tag, Chalk.withForcedAnsiColors),
   Effect.runPromise
 );
