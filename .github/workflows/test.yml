@@ -27,7 +27,7 @@ jobs:
   test:
     permissions:
       contents: read
-      # id-token: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -41,5 +41,4 @@ jobs:
         run: pnpm run create-metrics
       - uses: ./
         with:
-          main_branch: main
           input_file: tmp/metrics.json
