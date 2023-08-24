@@ -1,4 +1,4 @@
-import { Config, Data, Effect, Match, pipe } from "effect";
+import { Config, Effect, Match, pipe } from "effect";
 import * as Schema from "@effect/schema/Schema";
 import { formatErrors as formatSchemaErrors } from "@effect/schema/TreeFormatter";
 import fs from "fs/promises";
@@ -27,7 +27,7 @@ const actionInput = Config.string("INPUT_FILE").pipe(
   Config.nested("INPUT")
 );
 
-export const getInput = pipe(
+export const read = pipe(
   Effect.config(actionInput),
   Effect.mapError(
     (error) =>
@@ -146,7 +146,7 @@ const parseGlob = (glob: string) =>
 
 export type FileSchema = Schema.To<typeof FileSchema>;
 
-export const readMetrics = pipe(
+export const normalize = pipe(
   Match.type<Input>(),
   Match.tagsExhaustive({
     File: ({ path }) => parseGlob(path),
