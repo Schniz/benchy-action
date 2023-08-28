@@ -1,3 +1,3 @@
-bnz-action
+benchy-action
 
 a continous benchmarking action

@@ -24,7 +24,7 @@ const parseResponse = Schema.parse(ResponseSchema);
  */
 export const create = Effect.gen(function* (_) {
   const idToken = yield* _(IdToken.read);
-  const httpClient = new HttpClient(`bnz-action`, [], {
+  const httpClient = new HttpClient(`benchy-action`, [], {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
