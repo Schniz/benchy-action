@@ -1,4 +1,4 @@
-import { HttpClient } from "@actions/http-client";
+import { HttpClient, HttpClientResponse } from "@actions/http-client";
 import { Effect } from "effect";
 import * as IdToken from "./id-token";
 import { FileSchema } from "./config";
@@ -32,12 +32,47 @@ export const create = Effect.gen(function* (_) {
   return httpClient;
 });
 
+const readJsonBody = (response: HttpClientResponse) =>
+  Effect.tryPromise({
+    try: async () => ({ ...response, body: await response.readBody() }),
+    catch: (error) =>
+      new GenericError.GenericError({
+        message: `Failed to read response body`,
+        error,
+      }),
+  }).pipe(
+    Effect.flatMap((bodyString) =>
+      Effect.try({
+        try: () => ({
+          ...response,
+          json: JSON.parse(bodyString.body) as unknown,
+        }),
+        catch: (error) =>
+          new GenericError.GenericError({
+            message: `Failed to parse JSON of response body`,
+            error,
+          }),
+      })
+    ),
+    Effect.mapError(
+      (err) =>
+        new GenericError.GenericError({
+          error: err.error,
+          message: `HTTP ${response.message.statusCode}: ${err.message}`,
+        })
+    ),
+    Effect.map((body) => body.json)
+  );
+
 export const postMetrics = (httpClient: HttpClient, metrics: FileSchema) =>
   Effect.tryPromise({
     try: () =>
-      httpClient.postJson("https://bnz-web.vercel.app/api/metrics", {
-        metrics,
-      }),
+      httpClient.post(
+        "https://bnz-web.vercel.app/api/metrics",
+        JSON.stringify({
+          metrics,
+        })
+      ),
     catch: (error) =>
       new GenericError.GenericError({
         message: `Failed to send metrics`,
@@ -46,8 +81,9 @@ export const postMetrics = (httpClient: HttpClient, metrics: FileSchema) =>
   }).pipe(
     Effect.tap((response) =>
       Effect.gen(function* (_) {
+        const body = yield* _(readJsonBody(response));
         const parsed = yield* _(
-          parseResponse(response.result),
+          parseResponse(body),
           Effect.mapError(
             (error) =>
               new GenericError.GenericError({
@@ -61,7 +97,7 @@ export const postMetrics = (httpClient: HttpClient, metrics: FileSchema) =>
             Effect.fail(
               new GenericError.GenericError({
                 error: new Error(
-                  `HTTP ${response.statusCode}: ${parsed.message}`
+                  `HTTP ${response.message.statusCode}: ${parsed.message}`
                 ),
                 message: parsed.message,
               })
