@@ -10,10 +10,10 @@ on:
     branches:
       - main
     paths-ignore:
-      - '**.md'
+      - "**.md"
   pull_request:
     paths-ignore:
-      - '**.md'
+      - "**.md"
   workflow_dispatch:
 
 jobs:
@@ -21,30 +21,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '16.x'
-    - uses: pnpm/action-setup@v2
-      with:
-        run_install: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+      - uses: pnpm/action-setup@v2
+        with:
+          run_install: true
 
-    - name: Rebuild the dist/ directory
-      run: pnpm run prepare
+      - name: Rebuild the dist/ directory
+        run: pnpm run build
 
-    - name: Compare the expected and actual dist/ directories
-      run: |
-        if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
-          echo "Detected uncommitted changes after build.  See status below:"
-          git diff
-          exit 1
-        fi
-      id: diff
+      - name: Compare the expected and actual dist/ directories
+        run: |
+          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build.  See status below:"
+            git diff
+            exit 1
+          fi
+        id: diff
 
-    # If index.js was different than expected, upload the expected version as an artifact
-    - uses: actions/upload-artifact@v3
-      if: ${{ failure() && steps.diff.conclusion == 'failure' }}
-      with:
-        name: dist
-        path: dist/
+      # If index.js was different than expected, upload the expected version as an artifact
+      - uses: actions/upload-artifact@v3
+        if: ${{ failure() && steps.diff.conclusion == 'failure' }}
+        with:
+          name: dist
+          path: dist/

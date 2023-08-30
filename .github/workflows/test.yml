@@ -4,39 +4,41 @@ on:
   push:
     branches:
       - main
-      - 'releases/*'
+      - "releases/*"
 
 env:
-  NODE_VERSION: '16.x'
+  NODE_VERSION: "18.x"
 
 jobs:
   # unit tests
   units:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-    - uses: pnpm/action-setup@v2
-      with:
-        run_install: true
-    - run: pnpm run test
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: pnpm/action-setup@v2
+        with:
+          run_install: true
+      - run: pnpm run test
 
   # test action works running from the graph
   test:
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-    - uses: pnpm/action-setup@v2
-      with:
-        run_install: true
-    - name: track file sizes
-      run: pnpm run create-metrics
-    - uses: ./
-      with:
-        main_branch: main
-        input_file: tmp/metrics.json
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: pnpm/action-setup@v2
+        with:
+          run_install: true
+      - name: track file sizes
+        run: pnpm run create-metrics
+      - uses: ./
+        with:
+          input_file: tmp/metrics.json
