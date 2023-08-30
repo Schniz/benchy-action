@@ -56,7 +56,7 @@ export const postMetrics = (httpClient: HttpClient, metrics: FileSchema) =>
   Effect.tryPromise({
     try: () =>
       httpClient.post(
-        "https://bnz-web.vercel.app/api/metrics",
+        "https://benchy.hagever.com/api/metrics",
         JSON.stringify({
           metrics,
         })
