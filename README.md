@@ -38,12 +38,12 @@ Enabling `id-token: write` on the GitHub Actions job will enable the action to g
 
 ## Action Inputs
 
-| Name         | Description                            | Required | Default |
-| ------------ | -------------------------------------- | -------- | ------- |
-| `key`        | The key to track                       | No       |         |
-| `value`      | The value to track                     | No       |         |
-| `json`       | Data to track in a JSON format         | No       |         |
-| `input_file` | Path to a JSON file to track data from | No       |         |
+| Name         | Description                            |
+| ------------ | -------------------------------------- |
+| `key`        | The key to track                       |
+| `value`      | The value to track                     |
+| `json`       | Data to track in a JSON format         |
+| `input_file` | Path to a JSON file to track data from |
 
 Either `key` and `value`, or `json` or `input_file` must be provided.
 
