@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "#",
-    "build": "tsup",
+    "test": "vitest",
+    "build": "tsup && pnpm run build:json-schema",
+    "build:json-schema": "pnpm ts-node ./scripts/create-json-schema.ts > dist/file-schema.json",
     "create-metrics": "pnpm ts-node ./scripts/create-metrics.ts",
     "version:prepare": "changeset version && pnpm run build",
     "version:publish": "changeset tag"

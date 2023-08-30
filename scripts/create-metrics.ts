@@ -3,7 +3,7 @@
 import { formatErrors as formatSchemaErrors } from "@effect/schema/TreeFormatter";
 import { Globber, create } from "@actions/glob";
 import { relative } from "node:path";
-import { MetricSchema, encodeFileSchema } from "../src/config";
+import { Metric, encodeFileSchema } from "../src/config";
 import * as Fs from "@effect/platform-node/FileSystem";
 import { Effect, pipe } from "effect";
 import { GenericError } from "../src/error";
@@ -57,7 +57,7 @@ const program = Effect.gen(function* (_) {
         value: Number(size.valueOf() / 1024n), // in KB
         units: "KB",
         trend: "lower-is-better",
-      } satisfies MetricSchema;
+      } satisfies Metric;
     })
   );
 

@@ -1,5 +1,5 @@
 import * as Config from "./config";
-import { Effect, Option } from "effect";
+import { Effect } from "effect";
 import * as GenericError from "./error";
 import { exhaustiveEffect } from "./util";
 import * as Chalk from "./chalk";

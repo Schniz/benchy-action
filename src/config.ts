@@ -1,9 +1,37 @@
-import { Config, Effect, Match, pipe } from "effect";
+import { Config, Effect, Match, pipe, Option } from "effect";
 import * as Schema from "@effect/schema/Schema";
+import * as AST from "@effect/schema/AST";
 import { formatErrors as formatSchemaErrors } from "@effect/schema/TreeFormatter";
 import fs from "fs/promises";
 import * as Globber from "@actions/glob";
 import { GenericError } from "./error";
+
+const withJsonSchema =
+  (v: object) =>
+  <A, B>(schema: Schema.Schema<A, B>) =>
+    schema.pipe(
+      Schema.annotations({
+        [AST.JSONSchemaAnnotationId]: {
+          ...AST.getAnnotation<AST.JSONSchemaAnnotation>(
+            AST.JSONSchemaAnnotationId
+          )(schema.ast).pipe(Option.getOrNull),
+          ...v,
+        },
+      })
+    );
+
+const withExamples =
+  <A>(examples: A[]) =>
+  <B>(schema: Schema.Schema<A, B>) =>
+    schema.pipe(Schema.examples(examples), withJsonSchema({ examples }));
+
+const withDescription =
+  (description: string) =>
+  <A, B>(schema: Schema.Schema<A, B>) =>
+    schema.pipe(
+      Schema.description(description),
+      withJsonSchema({ description })
+    );
 
 const actionInput = Config.string("INPUT_FILE").pipe(
   Config.map((path) => ({ _tag: "File" as const, path })),
@@ -47,52 +75,75 @@ const parseJson = (json: string) =>
       new GenericError({ message: `Failed to parse JSON`, error }),
   });
 
-const Trend = Schema.literal("lower-is-better", "higher-is-better");
+const Trend = Schema.union(
+  Schema.literal("lower-is-better").pipe(
+    withDescription(
+      "if value is _lower_ than the previous run, the trend is _good_. otherwise, the trend is bad"
+    )
+  ),
+  Schema.literal("higher-is-better").pipe(
+    withDescription(
+      "if value is _higher_ than the previous run, the trend is _good_. otherwise, the trend is bad"
+    )
+  )
+).pipe(withDescription("The acceptable trend for the given metric"));
 type Trend = Schema.To<typeof Trend>;
 
-const Metric = Schema.struct({
-  key: pipe(Schema.string, Schema.maxLength(120)),
-  sortDate: pipe(Schema.string, Schema.dateFromString, Schema.optional),
-  value: Schema.number,
-  units: pipe(Schema.string, Schema.maxLength(32), Schema.optional),
-  trend: pipe(Trend, Schema.optional),
-});
+const Key = pipe(
+  Schema.string,
+  withDescription("A unique string that represents this metric across runs"),
+  Schema.maxLength(120),
+  Schema.minLength(1),
+  Schema.minLength(1)
+);
+
+const Value = pipe(
+  Schema.number,
+  withDescription("The numeric value of the metric")
+);
+
+const SortDate = pipe(
+  Schema.string,
+  Schema.dateFromString,
+  withDescription("the date to apply sorting by. defaults to the commit time"),
+  withJsonSchema({
+    format: "date-time",
+  })
+);
+
+const Units = pipe(
+  Schema.string,
+  Schema.maxLength(32),
+  withDescription("The units of the metric"),
+  withExamples(["ms", "ns", "bytes", "kb", "mb"])
+);
+
+export const Metric = Schema.struct({
+  key: Key,
+  value: Value,
+  sortDate: SortDate.pipe(Schema.optional),
+  units: Units.pipe(Schema.optional),
+  trend: Trend.pipe(Schema.optional),
+}).pipe(
+  withJsonSchema({
+    additionalProperties: true,
+  })
+);
 
 export type Metric = Schema.To<typeof Metric>;
 
 export const RequestBody = Schema.struct({
-  metrics: pipe(Metric, Schema.array),
+  metrics: Metric.pipe(Schema.array),
 });
-
-const MetricSchema = Schema.struct({
-  key: pipe(
-    Schema.string,
-    Schema.maxLength(120),
-    Schema.description("a key to identify the metric across runs")
-  ),
-  value: pipe(Schema.number, Schema.description("the value of the metric")),
-  sortDate: pipe(
-    Schema.string,
-    Schema.dateFromString,
-    Schema.description(
-      "the date to apply sorting by. defaults to the commit time"
-    ),
-    Schema.optional
-  ),
-  units: pipe(
-    Schema.string,
-    Schema.maxLength(32),
-    Schema.description("the units of the metric. example: ms, MiB"),
-    Schema.optional
-  ),
-  trend: pipe(Trend, Schema.optional),
-});
-
-export type MetricSchema = Schema.To<typeof MetricSchema>;
 
 export const FileSchema = Schema.union(
-  pipe(MetricSchema, Schema.array),
-  MetricSchema
+  Schema.struct({
+    metrics: Schema.array(Metric).pipe(
+      withDescription("A list of metrics to report")
+    ),
+  }).pipe(withJsonSchema({ additionalProperties: true })),
+  Metric.pipe(Schema.array),
+  Metric
 );
 export const encodeFileSchema = Schema.encode(FileSchema);
 const parseFileSchema = (json: unknown) =>
@@ -153,6 +204,6 @@ export const normalize = pipe(
     Json: ({ stringified }) =>
       parseJson(stringified).pipe(Effect.flatMap(parseFileSchema)),
     KeyVal: ({ key, value }) =>
-      Effect.succeed([{ key, value } satisfies Schema.To<typeof MetricSchema>]),
+      Effect.succeed([{ key, value } satisfies Metric]),
   })
 );
