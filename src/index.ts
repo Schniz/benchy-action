@@ -8,6 +8,7 @@ import * as HttpClient from "./http-client";
 import { warning } from "@actions/core";
 import { MetricPoint } from "./body-schema";
 import { table } from "table";
+import { ChalkInstance } from "chalk";
 
 const main = Effect.gen(function* (_) {
   const input = yield* _(Config.read);
@@ -38,14 +39,14 @@ const main = Effect.gen(function* (_) {
     });
     tableData.push([
       color(tableItem.key),
-      color(stringifyMetric(tableItem.currentValue)),
+      color(stringifyMetric(chalk, tableItem.currentValue)),
       Option.match(tableItem.storedValue, {
         onNone: () => "",
-        onSome: (storedValue) => color(stringifyMetric(storedValue)),
+        onSome: (storedValue) => color(stringifyMetric(chalk, storedValue)),
       }),
       Option.match(tableItem.diff, {
         onNone: () => "",
-        onSome: (diff) => color(stringifyMetric(diff)),
+        onSome: (diff) => color(stringifyMetric(chalk, diff)),
       }),
       color(tableItem.sparkline),
     ]);
@@ -54,16 +55,14 @@ const main = Effect.gen(function* (_) {
   yield* _(Effect.sync(() => console.log(table(tableData))));
 });
 
-const stringifyMetric = (point: MetricPoint) =>
-  Effect.gen(function* (_) {
-    const units = Option.match(point.units, {
-      onNone: () => Effect.succeed(""),
-      onSome: (units) =>
-        Chalk.tag.pipe(Effect.map((chalk) => chalk.dim(units))),
-    });
-    const upToThree = Math.round(point.value * 1000) / 1000;
-    return `${upToThree}${units}`;
+const stringifyMetric = (chalk: ChalkInstance, point: MetricPoint) => {
+  const units = Option.match(point.units, {
+    onNone: () => "",
+    onSome: (units) => chalk.dim(units),
   });
+  const upToThree = Math.round(point.value * 1000) / 1000;
+  return `${upToThree}${units}`;
+};
 
 main.pipe(
   Effect.catchTag("IdTokenError", (err) => IdToken.intoGenericError(err)),
