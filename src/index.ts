@@ -7,7 +7,7 @@ import * as IdToken from "./id-token";
 import * as HttpClient from "./http-client";
 import { warning } from "@actions/core";
 import { MetricPoint } from "./body-schema";
-import table from "table";
+import { table } from "table";
 
 const main = Effect.gen(function* (_) {
   const input = yield* _(Config.read);
@@ -51,7 +51,7 @@ const main = Effect.gen(function* (_) {
     ]);
   }
 
-  yield* _(Effect.sync(() => console.log(table.table(tableData))));
+  yield* _(Effect.sync(() => console.log(table(tableData))));
 });
 
 const stringifyMetric = (point: MetricPoint) =>
