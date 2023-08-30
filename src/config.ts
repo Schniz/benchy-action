@@ -148,6 +148,7 @@ export const FileSchema = Schema.union(
 export const encodeFileSchema = Schema.encode(FileSchema);
 const parseFileSchema = (json: unknown) =>
   Schema.parse(FileSchema)(json).pipe(
+    Effect.map((x) => ("metrics" in x ? x.metrics : x)),
     Effect.map((x) => [x].flat()),
     Effect.mapError(
       (error) =>
