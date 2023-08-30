@@ -5,19 +5,7 @@ import { FileSchema } from "./config";
 import * as GenericError from "./error";
 import { debug } from "@actions/core";
 import { inspect } from "util";
-import * as Schema from "@effect/schema/Schema";
-
-const FailureSchema = Schema.struct({
-  error: Schema.literal(true),
-  message: Schema.string,
-});
-
-const SuccessSchema = Schema.struct({
-  error: Schema.literal(false),
-});
-
-const ResponseSchema = Schema.union(FailureSchema, SuccessSchema);
-const parseResponse = Schema.parse(ResponseSchema);
+import { parseResponse } from "./body-schema";
 
 /**
  * Create an HTTP client that is authenticated with the ID token.
@@ -79,7 +67,7 @@ export const postMetrics = (httpClient: HttpClient, metrics: FileSchema) =>
         error,
       }),
   }).pipe(
-    Effect.tap((response) =>
+    Effect.flatMap((response) =>
       Effect.gen(function* (_) {
         const body = yield* _(readJsonBody(response));
         const parsed = yield* _(
@@ -104,6 +92,10 @@ export const postMetrics = (httpClient: HttpClient, metrics: FileSchema) =>
             )
           );
         }
+        return {
+          ...response,
+          body: parsed,
+        };
       })
     ),
     Effect.tap((response) =>
