@@ -1,5 +1,15 @@
 # benchy-action
 
+## 2.1.0
+
+### Minor Changes
+
+- [#45](https://github.com/Schniz/benchy-action/pull/45) [`e3912f4`](https://github.com/Schniz/benchy-action/commit/e3912f426963204492dcd26bb5b47c56251d3bdb) Thanks [@Schniz](https://github.com/Schniz)! - Add file size tracking
+
+### Patch Changes
+
+- [#43](https://github.com/Schniz/benchy-action/pull/43) [`660947d`](https://github.com/Schniz/benchy-action/commit/660947d6bc390aad0ca6109897a4f1fd89a3e70c) Thanks [@Schniz](https://github.com/Schniz)! - apply code review from @mikearnaldi and Datner (can't find them on GH)
+
 ## 2.0.0
 
 ### Major Changes
