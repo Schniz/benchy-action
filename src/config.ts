@@ -1,4 +1,12 @@
-import { Config, Effect, Match, pipe, Option } from "effect";
+import {
+  Config,
+  Effect,
+  Match,
+  pipe,
+  Option,
+  ReadonlyArray,
+  identity,
+} from "effect";
 import * as Schema from "@effect/schema/Schema";
 import * as AST from "@effect/schema/AST";
 import { formatErrors as formatSchemaErrors } from "@effect/schema/TreeFormatter";
@@ -250,18 +258,26 @@ export const getFileSizeMetricsFromGlob = (glob: string) =>
               }),
           })
         );
+
+        if (!stat.isFile()) {
+          return Option.none();
+        }
+
         const kb = stat.size.valueOf() / 1024;
         // TODO: maybe extract `path.relative` and `process.cwd` into
         // a service so I can test it?
         const key = Path.relative(process.cwd(), file);
-        return {
+        return Option.some({
           key,
           value: Number(kb),
           units: "kB",
           trend: "lower-is-better",
-        } satisfies Metric;
+        } satisfies Metric);
       })
     );
 
-    return yield* _(Effect.all(effects, { concurrency: 10 }));
+    return yield* _(
+      Effect.all(effects, { concurrency: 10 }),
+      Effect.map((x) => ReadonlyArray.filterMap(x, identity))
+    );
   });
