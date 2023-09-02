@@ -11,5 +11,4 @@ export const handleInCli = (err: GenericError) =>
     error(err.message);
     debug(`cause: ${err.error}`);
     process.exitCode = 1;
-    return Effect.unit;
   });

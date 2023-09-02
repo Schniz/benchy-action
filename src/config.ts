@@ -5,7 +5,6 @@ import { formatErrors as formatSchemaErrors } from "@effect/schema/TreeFormatter
 import fs from "fs/promises";
 import * as Globber from "@actions/glob";
 import { GenericError } from "./error";
-import * as Fs from "@effect/platform-node/FileSystem";
 import * as Path from "path";
 
 const withJsonSchema =
@@ -241,9 +240,17 @@ export const getFileSizeMetricsFromGlob = (glob: string) =>
     const files = yield* _(resolveGlob(glob));
     const effects = files.map((file) =>
       Effect.gen(function* (_) {
-        const fs = yield* _(Fs.FileSystem);
-        const stat = yield* _(fs.stat(file));
-        const kb = stat.size.valueOf() / 1024n;
+        const stat = yield* _(
+          Effect.tryPromise({
+            try: () => fs.stat(file),
+            catch: (error) =>
+              new GenericError({
+                error,
+                message: `Failed to get file size for ${file}`,
+              }),
+          })
+        );
+        const kb = stat.size.valueOf() / 1024;
         // TODO: maybe extract `path.relative` and `process.cwd` into
         // a service so I can test it?
         const key = Path.relative(process.cwd(), file);
