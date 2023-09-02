@@ -9,9 +9,9 @@ import { warning } from "@actions/core";
 import * as Table from "./table";
 
 const main = Effect.gen(function* (_) {
-  const metrics = yield* _(Config.read);
+  const config = yield* _(Config.read);
   const httpClient = yield* _(HttpClient.create);
-  const response = yield* _(HttpClient.postMetrics(httpClient, metrics));
+  const response = yield* _(HttpClient.postMetrics(httpClient, config.metrics));
 
   for (const warn of response.body.data.warnings) {
     yield* _(Effect.sync(() => warning(warn)));
