@@ -64,7 +64,7 @@ const metricsDataConfig = Config.string("INPUT_FILE").pipe(
 );
 
 const actionInput = Config.all({
-  metricsInput: metricsDataConfig,
+  metricsInput: metricsDataConfig.pipe(Config.option),
   trackFileSizeGlob: Config.string("TRACK_FILE_SIZE").pipe(Config.option),
 }).pipe(Config.nested("INPUT"));
 
@@ -206,16 +206,20 @@ const parseGlob = (glob: string) =>
 
 export type FileSchema = Schema.To<typeof FileSchema>;
 
-export const normalize = pipe(
-  Match.type<Input["metricsInput"]>(),
-  Match.tagsExhaustive({
-    File: ({ path }) => parseGlob(path),
-    Json: ({ stringified }) =>
-      parseJson(stringified).pipe(Effect.flatMap(parseFileSchema)),
-    KeyVal: ({ key, value }) =>
-      Effect.succeed([{ key, value } satisfies Metric]),
-  })
-);
+export const normalize = (value: Input["metricsInput"]) =>
+  Option.match(value, {
+    onNone: () => Effect.succeed([]),
+    onSome: (v) =>
+      Match.value(v).pipe(
+        Match.tagsExhaustive({
+          File: ({ path }) => parseGlob(path),
+          Json: ({ stringified }) =>
+            parseJson(stringified).pipe(Effect.flatMap(parseFileSchema)),
+          KeyVal: ({ key, value }) =>
+            Effect.succeed([{ key, value } satisfies Metric]),
+        })
+      ),
+  });
 
 export const read = Effect.gen(function* (_) {
   const config = yield* _(
@@ -236,10 +240,22 @@ export const read = Effect.gen(function* (_) {
       onSome: (glob) => getFileSizeMetricsFromGlob(glob),
     })
   );
+  const metrics = [...metricsFromInput, ...metricsFromFileSize];
+
+  if (metrics.length === 0) {
+    return yield* _(
+      Effect.fail(
+        new GenericError({
+          error: new Error("No metrics were provided"),
+          message: `No metrics were provided. Please provide metrics via the \`metrics\` input or \`track_file_size_glob\` input`,
+        })
+      )
+    );
+  }
 
   return {
     ...config,
-    metrics: [...metricsFromInput, ...metricsFromFileSize],
+    metrics,
   };
 });
 
