@@ -53,54 +53,54 @@ const readJsonBody = (response: HttpClientResponse) =>
   );
 
 export const postMetrics = (httpClient: HttpClient, metrics: FileSchema) =>
-  Effect.tryPromise({
-    try: () =>
-      httpClient.post(
-        "https://benchy.hagever.com/api/metrics",
-        JSON.stringify({
-          metrics,
-        })
-      ),
-    catch: (error) =>
-      new GenericError.GenericError({
-        message: `Failed to send metrics`,
-        error,
-      }),
-  }).pipe(
-    Effect.flatMap((response) =>
-      Effect.gen(function* (_) {
-        const body = yield* _(readJsonBody(response));
-        const parsed = yield* _(
-          parseResponse(body),
-          Effect.mapError(
-            (error) =>
-              new GenericError.GenericError({
-                error: error,
-                message: `Response is malformed`,
-              })
-          )
-        );
-        if (parsed.error) {
-          return yield* _(
-            Effect.fail(
-              new GenericError.GenericError({
-                error: new Error(
-                  `HTTP ${response.message.statusCode}: ${parsed.message}`
-                ),
-                message: parsed.message,
-              })
-            )
-          );
-        }
-        return {
-          ...response,
-          body: parsed,
-        };
+  Effect.gen(function* (_) {
+    const response = yield* _(
+      Effect.tryPromise({
+        try: () =>
+          httpClient.post(
+            "https://benchy.hagever.com/api/metrics",
+            JSON.stringify({
+              metrics,
+            })
+          ),
+        catch: (error) =>
+          new GenericError.GenericError({
+            message: `Failed to send metrics`,
+            error,
+          }),
       })
-    ),
-    Effect.tap((response) =>
-      Effect.sync(() =>
-        debug(`got response: ${inspect(response, { depth: 10, colors: true })}`)
+    );
+    const body = yield* _(readJsonBody(response));
+    const parsed = yield* _(
+      parseResponse(body),
+      Effect.mapError(
+        (error) =>
+          new GenericError.GenericError({
+            error: error,
+            message: `Response is malformed`,
+          })
       )
-    )
-  );
+    );
+    if (parsed.error) {
+      return yield* _(
+        Effect.fail(
+          new GenericError.GenericError({
+            error: new Error(
+              `HTTP ${response.message.statusCode}: ${parsed.message}`
+            ),
+            message: parsed.message,
+          })
+        )
+      );
+    }
+
+    const result = { ...response, body: parsed };
+
+    yield* _(
+      Effect.sync(() => {
+        debug(`got response: ${inspect(result, { depth: 10, colors: true })}`);
+      })
+    );
+
+    return result;
+  });
