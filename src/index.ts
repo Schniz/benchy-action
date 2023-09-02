@@ -9,9 +9,7 @@ import { warning } from "@actions/core";
 import * as Table from "./table";
 
 const main = Effect.gen(function* (_) {
-  const input = yield* _(Config.read);
-  const metrics = yield* _(Config.normalize(input));
-
+  const metrics = yield* _(Config.read);
   const httpClient = yield* _(HttpClient.create);
   const response = yield* _(HttpClient.postMetrics(httpClient, metrics));
 

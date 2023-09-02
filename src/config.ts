@@ -55,17 +55,6 @@ const actionInput = Config.string("INPUT_FILE").pipe(
   Config.nested("INPUT")
 );
 
-export const read = pipe(
-  Effect.config(actionInput),
-  Effect.mapError(
-    (error) =>
-      new GenericError({
-        error,
-        message: `Failed to read input`,
-      })
-  )
-);
-
 type Input = typeof actionInput extends Config.Config<infer A> ? A : never;
 
 const parseJson = (json: string) =>
@@ -207,4 +196,16 @@ export const normalize = pipe(
     KeyVal: ({ key, value }) =>
       Effect.succeed([{ key, value } satisfies Metric]),
   })
+);
+
+export const read = pipe(
+  Effect.config(actionInput),
+  Effect.mapError(
+    (error) =>
+      new GenericError({
+        error,
+        message: `Failed to read input`,
+      })
+  ),
+  Effect.flatMap(normalize)
 );
