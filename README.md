@@ -38,13 +38,12 @@ Enabling `id-token: write` on the GitHub Actions job will enable the action to g
 
 ## Action Inputs
 
-| Name         | Description                            |
-| ------------ | -------------------------------------- |
-| `key`        | The key to track                       |
-| `value`      | The value to track                     |
-| `json`       | Data to track in a JSON format         |
-| `input_file` | Path to a JSON file to track data from |
-
-Either `key` and `value`, or `json` or `input_file` must be provided.
+| Name              | Description                                                                                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `key`             | The key to track                                                                                                                                                               |
+| `value`           | The value to track                                                                                                                                                             |
+| `json`            | Data to track in a JSON format                                                                                                                                                 |
+| `input_file`      | Path to a JSON file to track data from                                                                                                                                         |
+| `track_file_size` | A glob pattern to track the size of files in the repository. For example, `dist/**/*.min.js` will track the size of all the minified JavaScript files in the `dist` directory. |
 
 See the [JSON Schema](./dist/file-schema.json) for the format of the JSON value/file.

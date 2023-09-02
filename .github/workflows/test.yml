@@ -39,5 +39,4 @@ jobs:
           run_install: true
       - uses: ./
         with:
-          input_file: tmp/metrics.json
           track_file_size: dist/**
