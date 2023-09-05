@@ -1,5 +1,11 @@
 # benchy-action
 
+## 2.1.1
+
+### Patch Changes
+
+- [#48](https://github.com/Schniz/benchy-action/pull/48) [`b148cfa`](https://github.com/Schniz/benchy-action/commit/b148cfa7111532b007f92d61d7130b10b2a10082) Thanks [@Schniz](https://github.com/Schniz)! - fix dependencies not working
+
 ## 2.1.0
 
 ### Minor Changes
