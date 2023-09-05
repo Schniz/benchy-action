@@ -1,5 +1,11 @@
 # benchy-action
 
+## 2.1.2
+
+### Patch Changes
+
+- [#50](https://github.com/Schniz/benchy-action/pull/50) [`06c49b6`](https://github.com/Schniz/benchy-action/commit/06c49b659f09ea97a133d89a9ae7624da49c83d5) Thanks [@Schniz](https://github.com/Schniz)! - fix ansi table printing
+
 ## 2.1.1
 
 ### Patch Changes
