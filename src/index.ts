@@ -8,6 +8,8 @@ import * as HttpClient from "./http-client";
 import { warning } from "@actions/core";
 import * as Table from "./table";
 
+const println = (str: string) => Effect.sync(() => console.log(str));
+
 const main = Effect.gen(function* (_) {
   const config = yield* _(Config.read);
   const httpClient = yield* _(HttpClient.create);
@@ -17,8 +19,8 @@ const main = Effect.gen(function* (_) {
     yield* _(Effect.sync(() => warning(warn)));
   }
 
-  const table = Table.build(response.body.data.metrics);
-  yield* _(Effect.sync(() => console.log(table)));
+  const table = yield* _(Table.build(response.body.data.metrics));
+  yield* _(println(table));
 });
 
 main.pipe(
