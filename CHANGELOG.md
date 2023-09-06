@@ -1,5 +1,11 @@
 # benchy-action
 
+## 2.1.3
+
+### Patch Changes
+
+- [#54](https://github.com/Schniz/benchy-action/pull/54) [`4a3a1e8`](https://github.com/Schniz/benchy-action/commit/4a3a1e86c93998782f7f26e7ccac4d9203da89e2) Thanks [@Schniz](https://github.com/Schniz)! - bump deps
+
 ## 2.1.2
 
 ### Patch Changes
