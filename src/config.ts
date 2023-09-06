@@ -89,7 +89,7 @@ const Trend = Schema.union(
     )
   )
 ).pipe(withDescription("The acceptable trend for the given metric"));
-type Trend = Schema.To<typeof Trend>;
+type Trend = Schema.Schema.To<typeof Trend>;
 
 const Key = pipe(
   Schema.string,
@@ -132,7 +132,7 @@ export const Metric = Schema.struct({
   })
 );
 
-export type Metric = Schema.To<typeof Metric>;
+export type Metric = Schema.Schema.To<typeof Metric>;
 
 export const RequestBody = Schema.struct({
   metrics: Metric.pipe(Schema.array),
@@ -204,7 +204,7 @@ const parseGlob = (glob: string) =>
     return jsons.flat();
   });
 
-export type FileSchema = Schema.To<typeof FileSchema>;
+export type FileSchema = Schema.Schema.To<typeof FileSchema>;
 
 export const normalize = (value: Input["metricsInput"]) =>
   Option.match(value, {
