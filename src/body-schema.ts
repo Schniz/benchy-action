@@ -5,9 +5,9 @@ const MetricPoint = Schema.struct({
   value: Schema.number,
   units: Schema.optionFromNullable(Schema.string),
 });
-export type MetricPoint = Schema.To<typeof MetricPoint>;
+export type MetricPoint = Schema.Schema.To<typeof MetricPoint>;
 
-export const Url = Schema.transformResult(
+export const Url = Schema.transformOrFail(
   Schema.string,
   Schema.instanceOf(URL),
   (string) => {
@@ -41,7 +41,7 @@ export const TableData = Schema.struct({
 
 export const encodeTableData = Schema.encode(TableData);
 
-export type TableData = Schema.To<typeof TableData>;
+export type TableData = Schema.Schema.To<typeof TableData>;
 
 const FailureSchema = Schema.struct({
   error: Schema.literal(true),
