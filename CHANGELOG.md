@@ -1,5 +1,11 @@
 # benchy-action
 
+## 2.2.0
+
+### Minor Changes
+
+- [#56](https://github.com/Schniz/benchy-action/pull/56) [`47fc245`](https://github.com/Schniz/benchy-action/commit/47fc245de183ea0bed753aa333521217247e068f) Thanks [@Schniz](https://github.com/Schniz)! - add comment_markdown output for the action (in case someone wants to comment on their own)
+
 ## 2.1.3
 
 ### Patch Changes
