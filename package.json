@@ -8,7 +8,7 @@
     "build": "tsup && pnpm run build:json-schema",
     "build:json-schema": "pnpm ts-node ./scripts/create-json-schema.ts > dist/file-schema.json",
     "version:prepare": "changeset version && pnpm run build",
-    "version:publish": "changeset tag"
+    "version:publish": "changeset tag && ./scripts/create-tags.sh"
   },
   "packageManager": "pnpm@8.6.2",
   "keywords": [],
