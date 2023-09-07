@@ -51,6 +51,7 @@ const FailureSchema = Schema.struct({
 const SuccessSchema = Schema.struct({
   error: Schema.literal(false),
   data: Schema.struct({
+    markdown: Schema.string,
     warnings: Schema.array(Schema.string),
     metrics: Schema.array(TableData),
   }),
