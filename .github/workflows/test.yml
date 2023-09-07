@@ -40,3 +40,8 @@ jobs:
       - uses: ./
         with:
           track_file_size: dist/**
+        id: benchy
+      - name: print the comment_markdown
+        run: echo "$OUTPUT"
+        env:
+          OUTPUT: ${{ steps.benchy.outputs.comment_markdown }}

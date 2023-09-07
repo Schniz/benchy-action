@@ -5,7 +5,7 @@ import { exhaustiveEffect } from "./util";
 import * as Chalk from "./chalk";
 import * as IdToken from "./id-token";
 import * as HttpClient from "./http-client";
-import { warning } from "@actions/core";
+import { warning, setOutput } from "@actions/core";
 import * as Table from "./table";
 
 const println = (str: string) => Effect.sync(() => console.log(str));
@@ -14,6 +14,12 @@ const main = Effect.gen(function* (_) {
   const config = yield* _(Config.read);
   const httpClient = yield* _(HttpClient.create);
   const response = yield* _(HttpClient.postMetrics(httpClient, config.metrics));
+
+  yield* _(
+    Effect.sync(() =>
+      setOutput("comment_markdown", response.body.data.markdown)
+    )
+  );
 
   for (const warn of response.body.data.warnings) {
     yield* _(Effect.sync(() => warning(warn)));
