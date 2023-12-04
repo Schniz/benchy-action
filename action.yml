@@ -16,5 +16,5 @@ outputs:
   comment_markdown:
     description: "The markdown to post as a comment. Can be used to comment without the companion GitHub app."
 runs:
-  using: "node16"
+  using: "node20"
   main: "dist/index.js"
