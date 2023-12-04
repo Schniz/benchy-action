@@ -21,8 +21,8 @@ devDependencies:
     specifier: ^2.26.2
     version: 2.26.2
   '@effect/platform-node':
-    specifier: ^0.15.0
-    version: 0.15.0(@effect/data@0.18.4)(@effect/io@0.40.0)(@effect/platform@0.15.0)(@effect/stream@0.36.0)
+    specifier: ^0.21.0
+    version: 0.21.0(@effect/schema@0.35.0)(effect@2.0.0-next.31)
   '@effect/schema':
     specifier: ^0.35.0
     version: 0.35.0(@effect/data@0.18.4)(@effect/io@0.40.0)
@@ -335,34 +335,28 @@ packages:
       '@effect/data': 0.18.4
     dev: true
 
-  /@effect/platform-node@0.15.0(@effect/data@0.18.4)(@effect/io@0.40.0)(@effect/platform@0.15.0)(@effect/stream@0.36.0):
-    resolution: {integrity: sha512-nSoK7vgwZsXi0cqkiErZanEZtneRnb6kORKEvgO9OHSQ3tVyCD1C9eH6W/xWczeCzinjCRyTa3PJ2SBVPumqUQ==}
+  /@effect/platform-node@0.21.0(@effect/schema@0.35.0)(effect@2.0.0-next.31):
+    resolution: {integrity: sha512-m8Q7jhZbY2rZTXCrMuv7tgI7kxEVd5oThz7FbxqCYddlnZlwQm/wVek6TRxpD3ITUEbNSIBIo7w4UuW0fp2bhw==}
+    engines: {node: '>=18.0.0'}
     peerDependencies:
-      '@effect/data': ^0.18.4
-      '@effect/io': ^0.40.0
-      '@effect/platform': ^0.15.0
-      '@effect/stream': ^0.36.0
+      effect: ^2.0.0-next.46
     dependencies:
-      '@effect/data': 0.18.4
-      '@effect/io': 0.40.0(@effect/data@0.18.4)
-      '@effect/platform': 0.15.0(@effect/data@0.18.4)(@effect/io@0.40.0)(@effect/schema@0.35.0)(@effect/stream@0.36.0)
-      '@effect/stream': 0.36.0(@effect/data@0.18.4)(@effect/io@0.40.0)
+      '@effect/platform': 0.20.0(@effect/schema@0.35.0)(effect@2.0.0-next.31)
       busboy: 1.6.0
+      effect: 2.0.0-next.31(@effect/data@0.18.4)(@effect/io@0.40.0)(@effect/match@0.35.2)(@effect/stm@0.24.0)(@effect/stream@0.36.0)
       mime: 3.0.0
+    transitivePeerDependencies:
+      - '@effect/schema'
     dev: true
 
-  /@effect/platform@0.15.0(@effect/data@0.18.4)(@effect/io@0.40.0)(@effect/schema@0.35.0)(@effect/stream@0.36.0):
-    resolution: {integrity: sha512-m4pV0Af+XNENi334ZFtivJybyeoGROCCvUtVPB5doo9hLIJpceXLXzYLLYmk/QvYpa33jo/43g2J/zmpvlcI9A==}
+  /@effect/platform@0.20.0(@effect/schema@0.35.0)(effect@2.0.0-next.31):
+    resolution: {integrity: sha512-wDNJDaHh4RjwhyrbklmFpYNeJV4AK7vJm0MnMRdeKuJpNciyPL2gpRYvIoZt3Sn6lD5QhspQeNVUto7KJfLINw==}
     peerDependencies:
-      '@effect/data': ^0.18.4
-      '@effect/io': ^0.40.0
-      '@effect/schema': ^0.35.0
-      '@effect/stream': ^0.36.0
+      '@effect/schema': ^0.41.0
+      effect: ^2.0.0-next.46
     dependencies:
-      '@effect/data': 0.18.4
-      '@effect/io': 0.40.0(@effect/data@0.18.4)
       '@effect/schema': 0.35.0(@effect/data@0.18.4)(@effect/io@0.40.0)
-      '@effect/stream': 0.36.0(@effect/data@0.18.4)(@effect/io@0.40.0)
+      effect: 2.0.0-next.31(@effect/data@0.18.4)(@effect/io@0.40.0)(@effect/match@0.35.2)(@effect/stm@0.24.0)(@effect/stream@0.36.0)
       find-my-way: 7.6.2
       path-browserify: 1.0.1
     dev: true
