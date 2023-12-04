@@ -1,5 +1,11 @@
 # benchy-action
 
+## 2.2.1
+
+### Patch Changes
+
+- [#117](https://github.com/Schniz/benchy-action/pull/117) [`f29b757`](https://github.com/Schniz/benchy-action/commit/f29b7571f3b1148ba7df631b0709a2fab7c4d3ad) Thanks [@Kikobeats](https://github.com/Kikobeats)! - use node20
+
 ## 2.2.0
 
 ### Minor Changes
