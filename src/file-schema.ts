@@ -66,7 +66,7 @@ export const FileSchema = Schema.Union(
     metrics: Schema.Array(Metric).pipe(
       Schema.annotations({ description: "A list of metrics to report" }),
     ),
-  }).annotations({ additionalProperties: true }),
+  }).annotations({ jsonSchema: { additionalProperties: true } }),
   Metric.pipe(Schema.Array),
   Metric,
 );
