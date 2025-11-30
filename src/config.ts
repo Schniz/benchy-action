@@ -40,7 +40,7 @@ const metricsDataConfig = Config.string("INPUT_FILE").pipe(
 const actionInput = Config.all({
   metricsInput: metricsDataConfig.pipe(Config.option),
   trackFileSizeGlob: Config.string("TRACK_FILE_SIZE").pipe(Config.option),
-  serverUrl: Config.string("SERVER_URL").pipe(
+  serverUrl: Config.nonEmptyString("SERVER_URL").pipe(
     Config.withDefault("https://benchy.hagever.com"),
     Config.mapAttempt((x) => new URL(x)),
   ),
