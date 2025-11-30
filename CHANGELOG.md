@@ -1,5 +1,11 @@
 # benchy-action
 
+## 2.2.2
+
+### Patch Changes
+
+- [#120](https://github.com/Schniz/benchy-action/pull/120) [`8b141313a4794d8287b53670eeeda68110b1ad59`](https://github.com/Schniz/benchy-action/commit/8b141313a4794d8287b53670eeeda68110b1ad59) Thanks [@Schniz](https://github.com/Schniz)! - add server_url for custom deployments
+
 ## 2.2.1
 
 ### Patch Changes
