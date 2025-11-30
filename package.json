@@ -6,11 +6,11 @@
   "scripts": {
     "test": "#",
     "build": "tsup && pnpm run build:json-schema",
-    "build:json-schema": "pnpm ts-node ./scripts/create-json-schema.ts > dist/file-schema.json",
+    "build:json-schema": "tsx ./scripts/create-json-schema.ts > dist/file-schema.json",
     "version:prepare": "changeset version && pnpm run build",
     "version:publish": "changeset tag && ./scripts/create-tags.sh"
   },
-  "packageManager": "pnpm@8.6.2",
+  "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -20,16 +20,18 @@
     "@actions/http-client": "^2.1.1",
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
-    "@effect/platform-node": "^0.15.0",
-    "@effect/schema": "^0.35.0",
+    "@effect/language-service": "^0.57.1",
+    "@effect/platform": "^0.93.5",
+    "@effect/platform-node": "^0.102.0",
     "@types/node": "^20.5.9",
     "chalk": "^5.3.0",
     "dedent": "^1.5.1",
-    "effect": "2.0.0-next.31",
+    "effect": "3.19.8",
     "prettier": "^3.0.3",
     "table": "^6.8.1",
     "ts-node": "^10.9.1",
     "tsup": "^7.2.0",
-    "typescript": "^5.2.2"
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   }
 }

@@ -10,15 +10,13 @@ import { parseResponse } from "./body-schema";
 /**
  * Create an HTTP client that is authenticated with the ID token.
  */
-export const create = Effect.gen(function* (_) {
-  const idToken = yield* _(IdToken.read);
-  const httpClient = new HttpClient(`benchy-action`, [], {
-    headers: {
-      Authorization: `Bearer ${idToken}`,
-    },
-  });
-  return httpClient;
+export const create = Effect.gen(function*() {const idToken = yield* IdToken.read;
+const httpClient = new HttpClient(`benchy-action`, [], {
+  headers: {
+    Authorization: `Bearer ${idToken}`,
+  },
 });
+return httpClient;});
 
 const readJsonBody = (response: HttpClientResponse) =>
   Effect.tryPromise({
@@ -53,54 +51,43 @@ const readJsonBody = (response: HttpClientResponse) =>
   );
 
 export const postMetrics = (httpClient: HttpClient, metrics: FileSchema) =>
-  Effect.gen(function* (_) {
-    const response = yield* _(
-      Effect.tryPromise({
-        try: () =>
-          httpClient.post(
-            "https://benchy.hagever.com/api/metrics",
-            JSON.stringify({
-              metrics,
-            })
-          ),
-        catch: (error) =>
-          new GenericError.GenericError({
-            message: `Failed to send metrics`,
-            error,
-          }),
-      })
-    );
-    const body = yield* _(readJsonBody(response));
-    const parsed = yield* _(
-      parseResponse(body),
-      Effect.mapError(
-        (error) =>
-          new GenericError.GenericError({
-            error: error,
-            message: `Response is malformed`,
-          })
-      )
-    );
-    if (parsed.error) {
-      return yield* _(
-        Effect.fail(
-          new GenericError.GenericError({
-            error: new Error(
-              `HTTP ${response.message.statusCode}: ${parsed.message}`
-            ),
-            message: parsed.message,
-          })
-        )
-      );
-    }
-
-    const result = { ...response, body: parsed };
-
-    yield* _(
-      Effect.sync(() => {
-        debug(`got response: ${inspect(result, { depth: 10, colors: true })}`);
-      })
-    );
-
-    return result;
+  Effect.gen(function*() {const response = yield* Effect.tryPromise({
+    try: () =>
+      httpClient.post(
+        "https://benchy.hagever.com/api/metrics",
+        JSON.stringify({
+          metrics,
+        })
+      ),
+    catch: (error) =>
+      new GenericError.GenericError({
+        message: `Failed to send metrics`,
+        error,
+      }),
   });
+  const body = yield* readJsonBody(response);
+  const parsed = yield* parseResponse(body).pipe(Effect.mapError(
+    (error) =>
+      new GenericError.GenericError({
+        error: error,
+        message: `Response is malformed`,
+      })
+  ));
+  if (parsed.error) {
+    return yield* Effect.fail(
+      new GenericError.GenericError({
+        error: new Error(
+          `HTTP ${response.message.statusCode}: ${parsed.message}`
+        ),
+        message: parsed.message,
+      })
+    );
+  }
+  
+  const result = { ...response, body: parsed };
+  
+  yield* Effect.sync(() => {
+    debug(`got response: ${inspect(result, { depth: 10, colors: true })}`);
+  });
+  
+  return result;});
