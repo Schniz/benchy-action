@@ -25,7 +25,7 @@ const main = Effect.gen(function* () {
   yield* println(table);
 });
 
-const runtime = Layer.mergeAll(Chalk.Chalk.Default);
+const runtime = Layer.mergeAll(Chalk.Chalk.Default, Config.ActionInput.Default);
 
 main.pipe(
   Effect.catchTag("IdTokenError", (err) => IdToken.intoGenericError(err)),
