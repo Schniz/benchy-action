@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - "releases/*"
-  workflow_call:
+  workflow_dispatch:
     inputs:
       server_url:
         type: string
