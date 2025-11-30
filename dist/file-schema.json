@@ -1,21 +1,23 @@
 {
-  "anyOf": [
-    {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$defs": {
+    "Metric": {
       "type": "object",
       "required": [
-        "value",
-        "key"
+        "key",
+        "value"
       ],
       "properties": {
-        "value": {
-          "type": "number",
-          "description": "The numeric value of the metric"
-        },
         "key": {
           "type": "string",
           "description": "A unique string that represents this metric across runs",
+          "title": "minLength(1)",
           "maxLength": 120,
           "minLength": 1
+        },
+        "value": {
+          "type": "number",
+          "description": "The numeric value of the metric"
         },
         "sortDate": {
           "type": "string",
@@ -24,32 +26,40 @@
         },
         "units": {
           "type": "string",
-          "maxLength": 32,
           "description": "The units of the metric",
+          "title": "maxLength(32)",
           "examples": [
             "ms",
             "ns",
             "bytes",
             "kb",
             "mb"
-          ]
+          ],
+          "maxLength": 32
         },
         "trend": {
           "anyOf": [
             {
-              "const": "lower-is-better",
+              "type": "string",
+              "enum": [
+                "lower-is-better"
+              ],
               "description": "if value is _lower_ than the previous run, the trend is _good_. otherwise, the trend is bad"
             },
             {
-              "const": "higher-is-better",
-              "description": "if value is _higher_ than the previous run, the trend is _good_. otherwise, the trend is bad"
+              "type": "string",
+              "enum": [
+                "higher-is-better"
+              ]
             }
           ],
           "description": "The acceptable trend for the given metric"
         }
       },
-      "additionalProperties": true
-    },
+      "additionalProperties": false
+    }
+  },
+  "anyOf": [
     {
       "type": "object",
       "required": [
@@ -59,54 +69,7 @@
         "metrics": {
           "type": "array",
           "items": {
-            "type": "object",
-            "required": [
-              "value",
-              "key"
-            ],
-            "properties": {
-              "value": {
-                "type": "number",
-                "description": "The numeric value of the metric"
-              },
-              "key": {
-                "type": "string",
-                "description": "A unique string that represents this metric across runs",
-                "maxLength": 120,
-                "minLength": 1
-              },
-              "sortDate": {
-                "type": "string",
-                "description": "the date to apply sorting by. defaults to the commit time",
-                "format": "date-time"
-              },
-              "units": {
-                "type": "string",
-                "maxLength": 32,
-                "description": "The units of the metric",
-                "examples": [
-                  "ms",
-                  "ns",
-                  "bytes",
-                  "kb",
-                  "mb"
-                ]
-              },
-              "trend": {
-                "anyOf": [
-                  {
-                    "const": "lower-is-better",
-                    "description": "if value is _lower_ than the previous run, the trend is _good_. otherwise, the trend is bad"
-                  },
-                  {
-                    "const": "higher-is-better",
-                    "description": "if value is _higher_ than the previous run, the trend is _good_. otherwise, the trend is bad"
-                  }
-                ],
-                "description": "The acceptable trend for the given metric"
-              }
-            },
-            "additionalProperties": true
+            "$ref": "#/$defs/Metric"
           },
           "description": "A list of metrics to report"
         }
@@ -116,55 +79,11 @@
     {
       "type": "array",
       "items": {
-        "type": "object",
-        "required": [
-          "value",
-          "key"
-        ],
-        "properties": {
-          "value": {
-            "type": "number",
-            "description": "The numeric value of the metric"
-          },
-          "key": {
-            "type": "string",
-            "description": "A unique string that represents this metric across runs",
-            "maxLength": 120,
-            "minLength": 1
-          },
-          "sortDate": {
-            "type": "string",
-            "description": "the date to apply sorting by. defaults to the commit time",
-            "format": "date-time"
-          },
-          "units": {
-            "type": "string",
-            "maxLength": 32,
-            "description": "The units of the metric",
-            "examples": [
-              "ms",
-              "ns",
-              "bytes",
-              "kb",
-              "mb"
-            ]
-          },
-          "trend": {
-            "anyOf": [
-              {
-                "const": "lower-is-better",
-                "description": "if value is _lower_ than the previous run, the trend is _good_. otherwise, the trend is bad"
-              },
-              {
-                "const": "higher-is-better",
-                "description": "if value is _higher_ than the previous run, the trend is _good_. otherwise, the trend is bad"
-              }
-            ],
-            "description": "The acceptable trend for the given metric"
-          }
-        },
-        "additionalProperties": true
+        "$ref": "#/$defs/Metric"
       }
+    },
+    {
+      "$ref": "#/$defs/Metric"
     }
   ]
 }

@@ -5,6 +5,11 @@ on:
     branches:
       - main
       - "releases/*"
+  workflow_call:
+    inputs:
+      server_url:
+        type: string
+        description: The URL of the Benchy server to report results to
 
 env:
   NODE_VERSION: "18.x"
@@ -40,6 +45,7 @@ jobs:
       - uses: ./
         with:
           track_file_size: dist/**
+          server_url: ${{ inputs.server_url }}
         id: benchy
       - name: print the comment_markdown
         run: echo "$OUTPUT"

@@ -12,9 +12,9 @@ type TableRow = [
 ];
 
 export const build = (data: readonly TableData[]) =>
-  Effect.gen(function* (_) {
-    const chalk = yield* _(Chalk.tag);
-    const stringifyMetric = yield* _(getStringifyMetric);
+  Effect.gen(function* () {
+    const chalk = yield* Chalk.Chalk;
+    const stringifyMetric = getStringifyMetric(chalk);
     const tableData: TableRow[] = [
       ["", chalk.bold("change"), chalk.bold("current"), chalk.bold("diff"), ""],
     ];
@@ -41,13 +41,11 @@ export const build = (data: readonly TableData[]) =>
     return table(tableData);
   });
 
-const getStringifyMetric = Chalk.tag.pipe(
-  Effect.map((chalk) => (point: MetricPoint) => {
-    const units = Option.match(point.units, {
-      onNone: () => "",
-      onSome: (units) => chalk.dim(units),
-    });
-    const upToThree = Math.round(point.value * 1000) / 1000;
-    return `${upToThree}${units}`;
-  })
-);
+const getStringifyMetric = (chalk: Chalk.Chalk) => (point: MetricPoint) => {
+  const units = Option.match(point.units, {
+    onNone: () => "",
+    onSome: (units) => chalk.dim(units),
+  });
+  const upToThree = Math.round(point.value * 1000) / 1000;
+  return `${upToThree}${units}`;
+};

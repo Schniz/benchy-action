@@ -1,5 +1,5 @@
 import * as Config from "./config";
-import { Effect } from "effect";
+import { Effect, Layer } from "effect";
 import * as GenericError from "./error";
 import { exhaustiveEffect } from "./util";
 import * as Chalk from "./chalk";
@@ -10,29 +10,27 @@ import * as Table from "./table";
 
 const println = (str: string) => Effect.sync(() => console.log(str));
 
-const main = Effect.gen(function* (_) {
-  const config = yield* _(Config.read);
-  const httpClient = yield* _(HttpClient.create);
-  const response = yield* _(HttpClient.postMetrics(httpClient, config.metrics));
+const main = Effect.gen(function* () {
+  const config = yield* Config.read;
+  const httpClient = yield* HttpClient.create;
+  const response = yield* HttpClient.postMetrics(httpClient, config.metrics);
 
-  yield* _(
-    Effect.sync(() =>
-      setOutput("comment_markdown", response.body.data.markdown)
-    )
-  );
+  setOutput("comment_markdown", response.body.data.markdown);
 
   for (const warn of response.body.data.warnings) {
-    yield* _(Effect.sync(() => warning(warn)));
+    yield* Effect.sync(() => warning(warn));
   }
 
-  const table = yield* _(Table.build(response.body.data.metrics));
-  yield* _(println(table));
+  const table = yield* Table.build(response.body.data.metrics);
+  yield* println(table);
 });
+
+const runtime = Layer.mergeAll(Chalk.Chalk.Default, Config.ActionInput.Default);
 
 main.pipe(
   Effect.catchTag("IdTokenError", (err) => IdToken.intoGenericError(err)),
   Effect.catchTag("GenericError", (err) => GenericError.handleInCli(err)),
   exhaustiveEffect,
-  Effect.provideServiceEffect(Chalk.tag, Chalk.withForcedAnsiColors),
-  Effect.runPromise
+  Effect.provide(runtime),
+  Effect.runPromise,
 );

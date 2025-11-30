@@ -25,7 +25,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "16.x"
+          node-version: "22.x"
       - uses: pnpm/action-setup@v2
         with:
           run_install: true
@@ -43,7 +43,7 @@ jobs:
         id: diff
 
       # If index.js was different than expected, upload the expected version as an artifact
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v5
         if: ${{ failure() && steps.diff.conclusion == 'failure' }}
         with:
           name: dist

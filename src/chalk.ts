@@ -1,6 +1,7 @@
-import { type ChalkInstance, Chalk } from "chalk";
-import { Context, Effect } from "effect";
+import { Chalk as ChalkClass } from "chalk";
+import { Effect } from "effect";
 
-export const tag = Context.Tag<ChalkInstance>();
-
-export const withForcedAnsiColors = Effect.sync(() => new Chalk({ level: 2 }));
+export class Chalk extends Effect.Service<Chalk>()("bnz-action/chalk", {
+  sync: () => new ChalkClass({ level: 2 }),
+  accessors: true,
+}) {}

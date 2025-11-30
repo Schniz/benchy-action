@@ -9,33 +9,33 @@ export class IdTokenError extends Data.TaggedClass("IdTokenError")<{
 }> {}
 
 export const intoGenericError = (tokenError: IdTokenError) =>
-  Effect.gen(function* (_) {
-    const chalk = yield* _(Chalk.tag);
+  Effect.gen(function* () {
+    const chalk = yield* Chalk.Chalk;
     const ID_TOKEN_COLORED = chalk.cyan("`id-token`");
     const message = dedent`
-      Failed to read GitHub Actions ID token.
-
-      This means you probably forgot to add permissions for ${ID_TOKEN_COLORED} in your workflow/job definition.
-      The ${ID_TOKEN_COLORED} permissions allows GitHub to sign your requests to the Benchy API. This does not
-      give GitHub access to your Benchy account: it's merely a way to prove that the request is coming
-      from your GitHub workflow.
-
-      An example of a workflow with the ${ID_TOKEN_COLORED} permission:
-
-      \`\`\`yaml
-       jobs:
-         test:
-           runs-on: ubuntu-latest
-      ${chalk.green(`+    permissions:`)}
-      ${chalk.green(`+      id-token: write`)}
-           steps:
-             # ...
-      \`\`\`
-
-      For more information about the ${ID_TOKEN_COLORED} permisison, see the GitHub documentation on OpenID Connect: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#overview-of-openid-connect
-   `;
-    return yield* _(
-      Effect.fail(new GenericError({ message, error: tokenError.error }))
+    Failed to read GitHub Actions ID token.
+  
+    This means you probably forgot to add permissions for ${ID_TOKEN_COLORED} in your workflow/job definition.
+    The ${ID_TOKEN_COLORED} permissions allows GitHub to sign your requests to the Benchy API. This does not
+    give GitHub access to your Benchy account: it's merely a way to prove that the request is coming
+    from your GitHub workflow.
+  
+    An example of a workflow with the ${ID_TOKEN_COLORED} permission:
+  
+    \`\`\`yaml
+     jobs:
+       test:
+         runs-on: ubuntu-latest
+    ${chalk.green(`+    permissions:`)}
+    ${chalk.green(`+      id-token: write`)}
+         steps:
+           # ...
+    \`\`\`
+  
+    For more information about the ${ID_TOKEN_COLORED} permisison, see the GitHub documentation on OpenID Connect: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#overview-of-openid-connect
+     `;
+    return yield* Effect.fail(
+      new GenericError({ message, error: tokenError.error }),
     );
   });
 
