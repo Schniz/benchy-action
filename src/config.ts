@@ -40,6 +40,10 @@ const metricsDataConfig = Config.string("INPUT_FILE").pipe(
 const actionInput = Config.all({
   metricsInput: metricsDataConfig.pipe(Config.option),
   trackFileSizeGlob: Config.string("TRACK_FILE_SIZE").pipe(Config.option),
+  serverUrl: Config.string("SERVER_URL").pipe(
+    Config.withDefault("https://benchy.hagever.com"),
+    Config.mapAttempt((x) => new URL(x)),
+  ),
 }).pipe(Config.nested("INPUT"));
 
 type Input = typeof actionInput extends Config.Config<infer A> ? A : never;
@@ -113,16 +117,15 @@ const normalize = (value: Input["metricsInput"]) =>
       ),
   });
 
+export class ActionInput extends Effect.Service<ActionInput>()(
+  "benchy-action/config/ActionInput",
+  {
+    effect: actionInput,
+  },
+) {}
+
 export const read = Effect.gen(function* () {
-  const config = yield* actionInput.pipe(
-    Effect.mapError(
-      (error) =>
-        new GenericError({
-          error,
-          message: `Failed to read input`,
-        }),
-    ),
-  );
+  const config = yield* ActionInput;
   const metricsFromInput = yield* normalize(config.metricsInput);
   const metricsFromFileSize = yield* config.trackFileSizeGlob.pipe(
     Option.match({

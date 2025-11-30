@@ -12,6 +12,8 @@ inputs:
     description: "A file containing a json for an array of metrics"
   track_file_size:
     description: "A glob pattern to track file size of matching files"
+  server_url:
+    description: "The URL of the Benchy server to report results to"
 outputs:
   comment_markdown:
     description: "The markdown to post as a comment. Can be used to comment without the companion GitHub app."
