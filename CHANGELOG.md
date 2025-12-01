@@ -1,5 +1,11 @@
 # benchy-action
 
+## 2.2.3
+
+### Patch Changes
+
+- [#122](https://github.com/Schniz/benchy-action/pull/122) [`7ade57634af1398b274f7af17a565ca088d8b8fe`](https://github.com/Schniz/benchy-action/commit/7ade57634af1398b274f7af17a565ca088d8b8fe) Thanks [@Schniz](https://github.com/Schniz)! - add response data in debug info
+
 ## 2.2.2
 
 ### Patch Changes
