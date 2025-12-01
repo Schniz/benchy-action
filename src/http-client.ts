@@ -1,5 +1,5 @@
 import { HttpClient, HttpClientResponse } from "@actions/http-client";
-import { Effect } from "effect";
+import { Effect, ParseResult } from "effect";
 import * as IdToken from "./id-token";
 import { ActionInput, FileSchema } from "./config";
 import * as GenericError from "./error";
@@ -69,7 +69,7 @@ export const postMetrics = (httpClient: HttpClient, metrics: FileSchema) =>
       Effect.mapError(
         (error) =>
           new GenericError.GenericError({
-            error: error,
+            error: `${ParseResult.TreeFormatter.formatErrorSync(error)}\n\nresponse body:${JSON.stringify(body)}`,
             message: `Response is malformed`,
           }),
       ),
